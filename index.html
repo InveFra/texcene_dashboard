@@ -1,0 +1,1227 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Texcene Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+:root{--navy:#1B2A4A;--teal:#00C9B1;--bg:#F7F8FA;--white:#fff;--red:#E53E3E;--orange:#F6AD55;--green:#48BB78;--text:#2D3748;--muted:#718096;--border:#E2E8F0;--card-shadow:0 1px 4px rgba(0,0,0,0.08)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);font-size:14px}
+.sidebar{position:fixed;left:0;top:0;width:240px;height:100vh;background:var(--navy);display:flex;flex-direction:column;z-index:100}
+.sidebar-logo{padding:24px 20px 20px;border-bottom:1px solid rgba(255,255,255,.1)}
+.sidebar-logo .brand{color:#fff;font-size:20px;font-weight:700}
+.sidebar-logo .sub{color:var(--teal);font-size:11px;font-weight:500;letter-spacing:1px;text-transform:uppercase;margin-top:2px}
+.nav-items{flex:1;padding:16px 0}
+.nav-item{display:flex;align-items:center;gap:12px;padding:11px 20px;cursor:pointer;color:rgba(255,255,255,.65);font-size:13px;font-weight:500;border-left:3px solid transparent;transition:all .15s}
+.nav-item:hover{color:#fff;background:rgba(255,255,255,.06)}
+.nav-item.active{color:var(--teal);background:rgba(0,201,177,.1);border-left-color:var(--teal)}
+.nav-item svg{width:18px;height:18px;flex-shrink:0}
+.header{position:fixed;left:240px;right:0;top:0;height:60px;background:var(--white);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 28px;z-index:99}
+.header-title{font-size:15px;font-weight:600;color:var(--navy)}
+.period-tabs{display:flex;gap:4px;background:#f1f4f8;padding:3px;border-radius:8px}
+.period-btn{padding:5px 12px;border:none;background:transparent;border-radius:6px;font-size:12px;font-weight:500;color:var(--muted);cursor:pointer;transition:all .15s}
+.period-btn.active{background:var(--white);color:var(--navy);box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.header-right{font-size:11px;color:var(--muted)}
+.main{margin-left:240px;margin-top:60px;padding:28px;min-height:calc(100vh - 60px)}
+.screen{display:none}.screen.active{display:block}
+.card{background:var(--white);border-radius:12px;box-shadow:var(--card-shadow);padding:20px}
+.card-title{font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:14px}
+.kpi-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:16px;margin-bottom:20px}
+.kpi-card{background:var(--white);border-radius:12px;box-shadow:var(--card-shadow);padding:18px 16px;transition:box-shadow .15s}
+.kpi-card:hover{box-shadow:0 4px 12px rgba(0,0,0,.1)}
+.kpi-card.alert-card{background:#FFF5F5;border-left:4px solid var(--red)}
+.kpi-label{font-size:11px;color:var(--muted);font-weight:500;margin-bottom:6px}
+.kpi-val{font-size:21px;font-weight:700;color:var(--navy);line-height:1.2;margin-bottom:4px}
+.kpi-val.red{color:var(--red)}.kpi-val.orange{color:#D97706}
+.kpi-sub{font-size:11px;color:var(--muted);margin-top:4px}
+.kpi-delta{font-size:11px;font-weight:600;margin-top:5px}
+.delta-up{color:var(--green)}.delta-down{color:var(--red)}
+.badge{display:inline-flex;align-items:center;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700}
+.badge.red{background:#FED7D7;color:var(--red)}.badge.orange{background:#FEEBC8;color:#C05621}
+.badge.green{background:#C6F6D5;color:#276749}.badge.teal{background:#E6FFFA;color:#234E52}
+.badge.critico{background:var(--red);color:#fff}
+.prog-bar{height:5px;background:#E2E8F0;border-radius:10px;overflow:hidden;margin-top:8px}
+.prog-fill{height:100%;border-radius:10px}
+.row-2{display:grid;grid-template-columns:65fr 35fr;gap:16px;margin-bottom:20px}
+.alert-list{display:flex;flex-direction:column;gap:8px;max-height:320px;overflow-y:auto}
+.alert-item{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;border-radius:8px;border-left:3px solid;background:var(--bg)}
+.alert-item.red{border-color:var(--red)}.alert-item.orange{border-color:var(--orange)}.alert-item.green{border-color:var(--green)}
+.alert-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:4px}
+.alert-item.red .alert-dot{background:var(--red)}.alert-item.orange .alert-dot{background:var(--orange)}.alert-item.green .alert-dot{background:var(--green)}
+.alert-title{font-size:12px;font-weight:600}.alert-desc{font-size:11px;color:var(--muted);margin-top:2px}
+.tabs{display:flex;gap:2px;margin-bottom:20px;border-bottom:2px solid var(--border)}
+.tab-btn{padding:10px 18px;border:none;background:transparent;font-size:13px;font-weight:500;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .15s}
+.tab-btn.active{color:var(--teal);border-bottom-color:var(--teal);font-weight:600}
+.tab-content{display:none}.tab-content.active{display:block}
+.dept-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:20px}
+.dept-card{background:var(--white);border-radius:12px;box-shadow:var(--card-shadow);padding:20px;text-align:center}
+.dept-name{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:16px}
+.gauge-wrap{position:relative;width:100px;height:54px;margin:0 auto 12px;overflow:hidden}
+.gauge-bg{width:100px;height:100px;border-radius:50%;position:absolute;top:0;left:0}
+.gauge-inner{position:absolute;width:72px;height:72px;background:var(--white);border-radius:50%;top:14px;left:14px}
+.gauge-val{position:absolute;bottom:2px;left:0;width:100%;text-align:center;font-size:18px;font-weight:700}
+.dept-metrics{display:flex;justify-content:space-around;margin:8px 0;padding-top:8px;border-top:1px solid var(--border)}
+.dept-metric span{display:block;font-size:10px;color:var(--muted);margin-bottom:2px}
+.dept-metric strong{font-size:13px;font-weight:600}
+.dept-prod{font-size:12px;color:var(--muted);margin-top:8px}
+.dept-status{font-size:11px;margin-top:6px;font-weight:500}
+.machine-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:20px}
+.machine-card{background:var(--white);border-radius:10px;box-shadow:var(--card-shadow);padding:16px;transition:all .2s}
+.machine-card.critico{border:1.5px solid var(--red);background:#FFFAFA}
+.machine-card.hidden{display:none}
+.machine-name{font-size:12px;font-weight:700;color:var(--navy);margin-bottom:12px;display:flex;justify-content:space-between;align-items:center}
+.machine-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-top:10px;padding-top:10px;border-top:1px solid var(--border)}
+.machine-metrics div{text-align:center}
+.machine-metrics span{display:block;font-size:9px;color:var(--muted);text-transform:uppercase}
+.machine-metrics strong{font-size:12px;font-weight:600}
+.machine-footer{display:flex;justify-content:space-between;margin-top:8px;font-size:10px;color:var(--muted)}
+.status-dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:4px}
+.status-dot.green{background:var(--green)}.status-dot.orange{background:var(--orange)}.status-dot.red{background:var(--red)}
+.filter-bar{display:flex;gap:10px;align-items:center;margin-bottom:16px;flex-wrap:wrap}
+.filter-bar select{padding:6px 10px;border:1px solid var(--border);border-radius:8px;font-size:12px;color:var(--text);background:var(--white);outline:none;cursor:pointer}
+.filter-bar select:focus{border-color:var(--teal)}
+.filter-label{font-size:12px;color:var(--muted);font-weight:500}
+.data-table{width:100%;border-collapse:collapse;font-size:13px}
+.data-table th{background:var(--navy);color:#fff;padding:10px 12px;text-align:left;font-size:11px;font-weight:600;letter-spacing:.4px;white-space:nowrap}
+.data-table td{padding:9px 12px;border-bottom:1px solid var(--border);vertical-align:middle}
+.data-table tr:nth-child(even) td{background:#F9FAFB}
+.data-table tr.total-row td{background:#EDF2F7;font-weight:700}
+.data-table tr.critico-row td{background:#FFF5F5}
+.pct-pill{display:inline-block;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:600}
+.pct-pill.green{background:#C6F6D5;color:#276749}.pct-pill.orange{background:#FEEBC8;color:#C05621}.pct-pill.red{background:#FED7D7;color:var(--red)}
+.scad-item{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)}
+.scad-item:last-child{border-bottom:none}
+.scad-icon{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.scad-bar-wrap{height:3px;background:var(--border);border-radius:10px;margin-top:3px;width:100%}
+.scad-bar{height:100%;border-radius:10px}
+.scad-net{background:var(--teal);color:#fff;border-radius:10px;padding:12px 20px;text-align:center;margin-top:12px}
+.scad-net span{font-size:11px;opacity:.85}.scad-net strong{display:block;font-size:18px;font-weight:700;margin-top:2px}
+.porto-panels{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.porto-bar{display:flex;height:10px;border-radius:10px;overflow:hidden;margin:10px 0}
+.porto-bar-a{background:#CBD5E0}.porto-bar-w{background:var(--teal)}.porto-bar-d{background:var(--green)}
+.porto-legend{display:flex;gap:12px;font-size:10px;color:var(--muted);margin-bottom:10px}
+.porto-kpi{display:flex;gap:16px;font-size:11px;color:var(--muted);margin-bottom:10px;padding:8px;background:var(--bg);border-radius:8px}
+.hero-nums{display:grid;grid-template-columns:repeat(3,1fr)}
+.hero-num{text-align:center;padding:24px}
+.hero-num:not(:last-child){border-right:1px solid var(--border)}
+.hero-num .num{font-size:30px;font-weight:700;color:var(--navy)}
+.hero-num .lbl{font-size:12px;color:var(--muted);margin-top:4px}
+.hero-num .delta{font-size:12px;font-weight:600;margin-top:6px}
+.treemap{display:flex;flex-direction:column;gap:3px;height:200px}
+.treemap-row{display:flex;gap:3px;flex:1}
+.treemap-cell{border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;font-size:11px;cursor:default;padding:8px}
+.treemap-cell .tc-pct{font-size:18px;font-weight:700;margin:2px 0}
+.delta-good{color:var(--green);font-weight:600}.delta-bad{color:var(--red);font-weight:600}
+.summary-pills{display:flex;gap:12px;margin-bottom:20px;flex-wrap:wrap}
+.s-pill{background:var(--white);border-radius:20px;padding:8px 18px;box-shadow:var(--card-shadow);font-size:12px}
+.s-pill strong{color:var(--navy);font-size:15px;font-weight:700;margin-right:4px}
+.period-notice{font-size:11px;color:var(--teal);font-weight:600;padding:4px 10px;background:rgba(0,201,177,.08);border-radius:6px;margin-left:8px}
+/* DATE RANGE PICKER */
+.period-btn.custom-active{background:var(--teal);color:#fff;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+.drp-wrap{position:fixed;top:68px;left:50%;transform:translateX(-50%);z-index:200;display:none}
+.drp-wrap.open{display:block}
+.drp-box{background:var(--white);border-radius:14px;box-shadow:0 8px 32px rgba(0,0,0,.18);padding:20px 24px;display:flex;align-items:flex-end;gap:16px;min-width:420px}
+.drp-field{display:flex;flex-direction:column;gap:5px}
+.drp-field label{font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+.drp-field input[type=date]{padding:8px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;font-family:'Inter',sans-serif;color:var(--text);outline:none;cursor:pointer;min-width:140px}
+.drp-field input[type=date]:focus{border-color:var(--teal)}
+.drp-sep{font-size:18px;color:var(--muted);padding-bottom:8px}
+.drp-apply{padding:9px 20px;background:var(--teal);color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;transition:background .15s;white-space:nowrap}
+.drp-apply:hover{background:#00a896}
+.drp-cancel{padding:9px 14px;background:transparent;color:var(--muted);border:1px solid var(--border);border-radius:8px;font-size:13px;cursor:pointer}
+.drp-cancel:hover{background:var(--bg)}
+.drp-range-tag{font-size:11px;color:var(--muted);margin-top:6px;text-align:center}
+.drp-backdrop{position:fixed;inset:0;z-index:199;display:none}
+.drp-backdrop.open{display:block}
+@media(max-width:1200px){.kpi-grid{grid-template-columns:repeat(3,1fr)}}
+</style>
+</head>
+<body>
+<nav class="sidebar">
+  <div class="sidebar-logo"><div class="brand">texcene</div><div class="sub">Dashboard</div></div>
+  <div class="nav-items">
+    <div class="nav-item active" data-screen="panoramica" onclick="showScreen('panoramica')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg><span>Panoramica</span></div>
+    <div class="nav-item" data-screen="produttivo" onclick="showScreen('produttivo')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 20h20M4 20V10l8-7 8 7v10"/><path d="M10 20v-6h4v6"/></svg><span>Produttivo</span></div>
+    <div class="nav-item" data-screen="finanziario" onclick="showScreen('finanziario')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg><span>Finanziario</span></div>
+    <div class="nav-item" data-screen="economico" onclick="showScreen('economico')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg><span>Economico</span></div>
+  </div>
+</nav>
+<header class="header">
+  <div class="header-title" id="page-title">Panoramica</div>
+  <div class="period-tabs">
+    <button class="period-btn" onclick="applyPeriod('oggi',this)">Oggi</button>
+    <button class="period-btn" onclick="applyPeriod('settimana',this)">Settimana</button>
+    <button class="period-btn active" onclick="applyPeriod('mese',this)">Mese</button>
+    <button class="period-btn" onclick="applyPeriod('trimestre',this)">Trimestre</button>
+    <button class="period-btn" onclick="applyPeriod('ytd',this)">YTD</button>
+    <button class="period-btn" onclick="applyPeriod('anno',this)">Anno</button>
+    <button class="period-btn" id="btn-custom" onclick="toggleDatePicker()">Personalizzato</button>
+  </div>
+  <div class="header-right">Ult. aggiornamento: 30 mar 2026 14:30</div>
+</header>
+<div class="drp-backdrop" id="drp-backdrop" onclick="closeDatePicker()"></div>
+<div class="drp-wrap" id="drp-wrap">
+  <div class="drp-box">
+    <div class="drp-field">
+      <label>Dal</label>
+      <input type="date" id="drp-from" value="2026-03-01">
+    </div>
+    <div class="drp-field">
+      <label>Al</label>
+      <input type="date" id="drp-to" value="2026-03-30">
+    </div>
+    <button class="drp-apply" onclick="applyCustomPeriod()">Applica</button>
+    <button class="drp-cancel" onclick="closeDatePicker()">Annulla</button>
+  </div>
+  <div class="drp-range-tag" id="drp-range-tag"></div>
+</div>
+<main class="main">
+<!-- ===== PANORAMICA ===== -->
+<div id="screen-panoramica" class="screen active">
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-label" id="kpi-ricavi-label">Ricavi — Marzo 2026</div>
+      <div class="kpi-val" id="kpi-ricavi-val">€ 1.075.000</div>
+      <div class="kpi-sub" id="kpi-ricavi-sub">marzo 2026</div>
+      <div class="kpi-delta delta-up" id="kpi-ricavi-delta">▲ +4,2% vs febbraio</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label" id="kpi-ref-label">Fatturato 2025</div>
+      <div class="kpi-val" id="kpi-ref-val" style="font-size:18px">€ 16.891.240</div>
+      <div class="kpi-sub" id="kpi-ref-sub">anno di riferimento</div>
+      <div class="kpi-delta delta-up" id="kpi-ref-delta">▲ +4,8% vs 2024</div>
+    </div>
+    <div class="kpi-card alert-card">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start">
+        <div class="kpi-label">Scaduto Clienti</div><span class="badge red">ATTENZIONE</span>
+      </div>
+      <div class="kpi-val red">€ 47.200</div>
+      <div class="kpi-sub">3 clienti oltre scadenza</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">OEE Stabilimento</div>
+      <div class="kpi-val orange" id="kpi-oee-val">72%</div>
+      <div class="kpi-sub" id="kpi-oee-sub">Media — 3 dipartimenti</div>
+      <div style="font-size:11px;color:#D97706;font-weight:600;margin-top:4px">▼ target 85%</div>
+      <div class="prog-bar"><div class="prog-fill" id="kpi-oee-bar" style="width:72%;background:#D97706"></div></div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label" id="kpi-prod-label">Produzione YTD</div>
+      <div class="kpi-val" id="kpi-prod-val" style="font-size:18px">614.133 Kg</div>
+      <div class="kpi-sub" id="kpi-prod-sub">Tela 374.933 · Spugna 239.200</div>
+      <div class="kpi-delta delta-up" id="kpi-prod-delta">▲ +7,6% vs stesso periodo 2025</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Portafoglio</div>
+      <div class="kpi-val" id="kpi-ordini-val">47 ordini</div>
+      <div class="kpi-sub" id="kpi-ordini-sub">3.441 articoli scheda</div>
+      <div class="kpi-delta" style="color:var(--muted)" id="kpi-ordini-delta">In lavorazione</div>
+    </div>
+  </div>
+  <div class="row-2">
+    <div class="card">
+      <div class="card-title" id="cf-pan-title">Cash Flow Proiettato — prossimi 90 giorni</div>
+      <canvas id="chart-cashflow-pan" height="260"></canvas>
+    </div>
+    <div class="card">
+      <div class="card-title">Alert Attivi</div>
+      <div class="alert-list">
+        <div class="alert-item red"><div class="alert-dot"></div><div><div class="alert-title">RAM 3 [01-03] — OEE 38%</div><div class="alert-desc">Sotto soglia minima — fermo da stamane</div></div></div>
+        <div class="alert-item red"><div class="alert-dot"></div><div><div class="alert-title">SPAZZOLATRICE — OEE 24%</div><div class="alert-desc">Fermo prolungato — verificare stato</div></div></div>
+        <div class="alert-item red"><div class="alert-dot"></div><div><div class="alert-title">Clienti scaduti — € 47.200</div><div class="alert-desc">3 posizioni oltre scadenza</div></div></div>
+        <div class="alert-item orange"><div class="alert-dot"></div><div><div class="alert-title">Banca Intesa — 82% plafond utilizzato</div><div class="alert-desc">Soglia attenzione superata</div></div></div>
+        <div class="alert-item orange"><div class="alert-dot"></div><div><div class="alert-title">RIBA Rossi SpA — scadenza tra 3 gg</div><div class="alert-desc">€ 18.400 da presentare in banca</div></div></div>
+        <div class="alert-item orange"><div class="alert-dot"></div><div><div class="alert-title">PCT Spugna marzo -12% vs target</div><div class="alert-desc">Ciclo tempo sotto obiettivo mensile</div></div></div>
+        <div class="alert-item green"><div class="alert-dot"></div><div><div class="alert-title">Sync Oracle + MySQL completato</div><div class="alert-desc">Dati aggiornati alle 14:30</div></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ===== PRODUTTIVO ===== -->
+<div id="screen-produttivo" class="screen">
+  <div class="dept-grid">
+    <div class="dept-card">
+      <div class="dept-name">STABILIMENTO — Impianto Globale</div>
+      <div class="gauge-wrap"><div class="gauge-bg" id="gauge-stab"></div><div class="gauge-inner"></div><div class="gauge-val" id="gval-stab">72%</div></div>
+      <div class="dept-metrics">
+        <div class="dept-metric"><span>Disponibilità</span><strong id="d-stab-disp">78%</strong></div>
+        <div class="dept-metric"><span>Velocità</span><strong>91%</strong></div>
+        <div class="dept-metric"><span>Qualità</span><strong>99,7%</strong></div>
+      </div>
+      <div class="dept-prod">Prod.: <strong id="d-stab-kg">4.840 Kg</strong> · <strong>28,4 Km</strong></div>
+      <div class="dept-status" style="color:#D97706">9 macchine attive · 2 in fermo</div>
+    </div>
+    <div class="dept-card">
+      <div class="dept-name">TELA — Dipartimento Tessuto</div>
+      <div class="gauge-wrap"><div class="gauge-bg" id="gauge-tela"></div><div class="gauge-inner"></div><div class="gauge-val" id="gval-tela">81%</div></div>
+      <div class="dept-metrics">
+        <div class="dept-metric"><span>Disponibilità</span><strong id="d-tela-disp">86%</strong></div>
+        <div class="dept-metric"><span>Velocità</span><strong>92%</strong></div>
+        <div class="dept-metric"><span>Qualità</span><strong>99,8%</strong></div>
+      </div>
+      <div class="dept-prod">Prod.: <strong id="d-tela-kg">2.920 Kg</strong> · <strong>18,1 Km</strong></div>
+      <div class="dept-status" style="color:#D97706">6 macchine attive · 1 in fermo</div>
+    </div>
+    <div class="dept-card" style="border:1.5px solid #FEB2B2">
+      <div class="dept-name" style="color:var(--red)">SPUGNA — Dipartimento Terry ⚠</div>
+      <div class="gauge-wrap"><div class="gauge-bg" id="gauge-spugna"></div><div class="gauge-inner" style="background:#FFF5F5"></div><div class="gauge-val" id="gval-spugna">61%</div></div>
+      <div class="dept-metrics">
+        <div class="dept-metric"><span>Disponibilità</span><strong id="d-spugna-disp">67%</strong></div>
+        <div class="dept-metric"><span>Velocità</span><strong>90%</strong></div>
+        <div class="dept-metric"><span>Qualità</span><strong>99,4%</strong></div>
+      </div>
+      <div class="dept-prod">Prod.: <strong id="d-spugna-kg">1.920 Kg</strong> · <strong>10,3 Km</strong></div>
+      <div class="dept-status" style="color:var(--red)">3 macchine attive · 1 FERMO CRITICO</div>
+    </div>
+  </div>
+  <div class="tabs">
+    <button class="tab-btn active" onclick="showProdTab('oee',this)">OEE Macchine</button>
+    <button class="tab-btn" onclick="showProdTab('ciclo',this)">Ciclo Tempo</button>
+    <button class="tab-btn" onclick="showProdTab('rvsp',this)">Realizzato vs Pianificato</button>
+    <button class="tab-btn" onclick="showProdTab('porto',this)">Portafoglio Ordini</button>
+  </div>
+
+  <!-- TAB OEE -->
+  <div id="prod-tab-oee" class="tab-content active">
+    <div class="filter-bar">
+      <span class="filter-label">Dipartimento:</span>
+      <select id="filter-dept" onchange="applyMachineFilters()">
+        <option value="tutti">Tutti</option>
+        <option value="TELA">TELA</option>
+        <option value="SPUGNA">SPUGNA</option>
+      </select>
+      <span class="filter-label" style="margin-left:8px">Turno:</span>
+      <select id="filter-turno" onchange="applyMachineFilters()">
+        <option value="tutti">Tutti i turni (media)</option>
+        <option value="t1">T1 — Mattina (6–14)</option>
+        <option value="t2">T2 — Pomeriggio (14–22)</option>
+        <option value="t3">T3 — Notte (22–6)</option>
+      </select>
+      <span class="period-notice" id="oee-period-notice">Periodo: Mese</span>
+    </div>
+    <div class="machine-grid" id="machine-cards"></div>
+    <div class="card" style="margin-bottom:20px">
+      <div class="card-title">Trend OEE — 30 giorni · macchine chiave</div>
+      <canvas id="chart-oee-trend" height="180"></canvas>
+    </div>
+    <div class="card">
+      <div class="card-title" id="turno-oee-title">OEE per Turno — Settimana corrente (media turni)</div>
+      <canvas id="chart-turni-oee" height="200"></canvas>
+    </div>
+  </div>
+
+  <!-- TAB CICLO TEMPO -->
+  <div id="prod-tab-ciclo" class="tab-content">
+    <div class="card" style="margin-bottom:16px">
+      <div class="card-title">Analisi Ciclo Tempo <span class="period-notice" id="ciclo-period-notice">Mese</span></div>
+      <table class="data-table">
+        <thead><tr><th>KPI</th><th>TELA (Tessuto)</th><th>SPUGNA (Terry)</th><th>STABILIMENTO</th><th>∆ Anno Prec.</th></tr></thead>
+        <tbody>
+          <tr><td>Fattore Macchina</td><td id="ct-fm-tela">0,94</td><td id="ct-fm-spugna">0,87</td><td>0,91</td><td class="delta-bad">▼ −0,02</td></tr>
+          <tr><td>Ciclo Min (medio)</td><td id="ct-cmin-tela">4,2 min</td><td id="ct-cmin-spugna">5,8 min</td><td id="ct-cmin-tot">4,9 min</td><td class="delta-bad">▲ +0,3 min</td></tr>
+          <tr><td>Ciclo Ora (medio)</td><td>0,07 h</td><td>0,10 h</td><td>0,08 h</td><td class="delta-bad">▲ +0,005 h</td></tr>
+          <tr><td>Ciclo Giorno (medio)</td><td id="ct-cgg-tela">1,8 gg</td><td id="ct-cgg-spugna">2,4 gg</td><td id="ct-cgg-tot">2,1 gg</td><td class="delta-bad">▲ +0,2 gg</td></tr>
+          <tr><td>Ciclo Sett. (medio)</td><td>0,36 sett</td><td>0,48 sett</td><td>0,42 sett</td><td class="delta-bad">▲ +0,04</td></tr>
+          <tr class="total-row"><td>PCT periodo corrente</td><td id="ct-pct-tela">5.570.900</td><td id="ct-pct-spugna">2.947.157</td><td id="ct-pct-tot">8.518.057</td><td>—</td></tr>
+          <tr class="total-row"><td>PCT Anno Prec.</td><td id="ct-pctprec-tela">6.012.400</td><td id="ct-pctprec-spugna">3.200.000</td><td id="ct-pctprec-tot">9.212.400</td><td class="delta-bad">▼ −7,7%</td></tr>
+          <tr class="total-row"><td><strong>PCT Media 2021–24</strong></td><td><strong>5.741.942</strong></td><td><strong>3.063.000</strong></td><td><strong>8.804.942</strong></td><td class="delta-bad">▼ −3,2%</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card">
+      <div class="card-title">Confronto PCT — Anno Corrente vs Anno Precedente vs Media 2021–24</div>
+      <canvas id="chart-pct" height="220"></canvas>
+    </div>
+  </div>
+
+  <!-- TAB RVSP -->
+  <div id="prod-tab-rvsp" class="tab-content">
+    <div class="card" style="margin-bottom:16px;overflow-x:auto">
+      <div class="card-title">Produzione Realizzata vs Pianificata <span class="period-notice" id="rvsp-period-notice">Mese</span></div>
+      <table class="data-table">
+        <thead><tr><th>Macchina</th><th>Tipologia</th><th>Realizzato</th><th>Pianificato</th><th>Pianif. Anno</th><th>% Avanz.</th><th>∆</th></tr></thead>
+        <tbody id="rvsp-tbody"></tbody>
+      </table>
+    </div>
+    <div class="card"><div class="card-title">Realizzato vs Pianificato per Macchina</div><canvas id="chart-rvsp" height="240"></canvas></div>
+  </div>
+
+  <!-- TAB PORTAFOGLIO -->
+  <div id="prod-tab-porto" class="tab-content">
+    <div class="summary-pills">
+      <div class="s-pill"><strong id="porto-wip">148.890 Kg</strong> WIP totale</div>
+      <div class="s-pill"><strong>4,2 gg</strong> Cycle Time medio</div>
+      <div class="s-pill"><strong id="porto-ordini">47</strong> ordini attivi</div>
+      <div class="s-pill"><strong>3.441</strong> articoli scheda</div>
+    </div>
+    <div class="porto-panels" id="porto-panels"></div>
+  </div>
+</div>
+<!-- ===== FINANZIARIO ===== -->
+<div id="screen-finanziario" class="screen">
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:20px">
+    <div class="kpi-card"><div class="kpi-label">Liquidità Disponibile</div><div class="kpi-val">€ 284.500</div><div class="kpi-sub">Saldo aggregato conti</div></div>
+    <div class="kpi-card"><div class="kpi-label">Plafond Accordato</div><div class="kpi-val">€ 1.200.000</div><div class="kpi-sub">Totale linee di credito</div></div>
+    <div class="kpi-card"><div class="kpi-label">Credito Utilizzato</div><div class="kpi-val orange">€ 742.000</div><div class="kpi-sub">61,8% del plafond</div><div class="prog-bar"><div class="prog-fill" style="width:62%;background:#D97706"></div></div></div>
+    <div class="kpi-card"><div class="kpi-label">Anticipo Fatture (RIBA)</div><div class="kpi-val">€ 95.000</div><div class="kpi-sub">34 fatture — Intesa + UniCredit</div></div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px">
+    <div class="card">
+      <div class="card-title">Ciclo Attivo — Da Incassare</div>
+      <div class="scad-item"><div class="scad-icon" style="background:#C6F6D5">✅</div><div style="flex:1"><div style="font-size:12px;font-weight:500">Già incassato <span id="fin-period-tag" style="color:var(--muted);font-weight:400">(marzo)</span></div><div class="scad-bar-wrap"><div class="scad-bar" id="sbar-incassato" style="width:27%;background:var(--green)"></div></div></div><div style="font-size:14px;font-weight:700;color:var(--green)" id="fin-incassato">€ 1.124.800</div></div>
+      <div class="scad-item"><div class="scad-icon" style="background:#BEE3F8">🔵</div><div style="flex:1"><div style="font-size:12px;font-weight:500">In scadenza 0–30 gg</div><div class="scad-bar-wrap"><div class="scad-bar" style="width:16%;background:#63B3ED"></div></div></div><div style="font-size:14px;font-weight:700;color:#2B6CB0">€ 687.400</div></div>
+      <div class="scad-item"><div class="scad-icon" style="background:#FEEBC8">🟡</div><div style="flex:1"><div style="font-size:12px;font-weight:500">In scadenza 31–60 gg</div><div class="scad-bar-wrap"><div class="scad-bar" style="width:12%;background:var(--orange)"></div></div></div><div style="font-size:14px;font-weight:700;color:#C05621">€ 498.000</div></div>
+      <div class="scad-item" style="background:#FFF5F5;margin:4px -4px;padding:10px 4px;border-radius:8px"><div class="scad-icon" style="background:#FED7D7">🔴</div><div style="flex:1"><div style="font-size:12px;font-weight:700">Scaduto <span class="badge red" style="margin-left:6px">ALERT</span></div></div><div style="font-size:14px;font-weight:700;color:var(--red)">€ 47.200</div></div>
+      <div class="scad-item"><div class="scad-icon" style="background:#EDF2F7">➡️</div><div style="flex:1"><div style="font-size:12px;color:var(--muted);font-style:italic">Programmato (da ordini)</div></div><div style="font-size:14px;color:var(--muted)">€ 1.845.000</div></div>
+      <div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border);font-size:12px;color:var(--muted)">Esposizione clienti: <strong style="color:var(--text)">€ 4.202.400</strong></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Ciclo Passivo — Da Pagare</div>
+      <div class="scad-item"><div class="scad-icon" style="background:#C6F6D5">✅</div><div style="flex:1"><div style="font-size:12px;font-weight:500">Già pagato</div><div class="scad-bar-wrap"><div class="scad-bar" style="width:32%;background:var(--green)"></div></div></div><div style="font-size:14px;font-weight:700;color:var(--green)">€ 887.000</div></div>
+      <div class="scad-item"><div class="scad-icon" style="background:#BEE3F8">🔵</div><div style="flex:1"><div style="font-size:12px;font-weight:500">In scadenza 0–30 gg</div><div class="scad-bar-wrap"><div class="scad-bar" style="width:13%;background:#63B3ED"></div></div></div><div style="font-size:14px;font-weight:700;color:#2B6CB0">€ 364.000</div></div>
+      <div class="scad-item"><div class="scad-icon" style="background:#FEEBC8">🟡</div><div style="flex:1"><div style="font-size:12px;font-weight:500">In scadenza 31–60 gg</div><div class="scad-bar-wrap"><div class="scad-bar" style="width:7%;background:var(--orange)"></div></div></div><div style="font-size:14px;font-weight:700;color:#C05621">€ 189.000</div></div>
+      <div class="scad-item" style="background:#FFF5F5;margin:4px -4px;padding:10px 4px;border-radius:8px"><div class="scad-icon" style="background:#FED7D7">🔴</div><div style="flex:1"><div style="font-size:12px;font-weight:700">Scaduto <span class="badge red" style="margin-left:6px">ALERT</span></div></div><div style="font-size:14px;font-weight:700;color:var(--red)">€ 8.500</div></div>
+      <div class="scad-item"><div class="scad-icon" style="background:#EDF2F7">➡️</div><div style="flex:1"><div style="font-size:12px;color:var(--muted);font-style:italic">Programmato (da ordini)</div></div><div style="font-size:14px;color:var(--muted)">€ 1.290.000</div></div>
+      <div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border);font-size:12px;color:var(--muted)">Esposizione fornitori: <strong style="color:var(--text)">€ 2.738.500</strong></div>
+    </div>
+  </div>
+  <div style="background:var(--teal);color:#fff;border-radius:12px;padding:14px 24px;text-align:center;margin-bottom:20px">
+    <span style="font-size:12px;opacity:.85">Saldo Netto Programmato (Entrate − Uscite)</span>
+    <div style="font-size:24px;font-weight:700;margin-top:4px" id="fin-saldo-netto">€ +1.463.900</div>
+  </div>
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+      <div class="card-title" style="margin-bottom:0" id="cf-fin-title">Proiezione Cash Flow — prossimi 90 giorni</div>
+    </div>
+    <canvas id="chart-cashflow-fin" height="220"></canvas>
+  </div>
+</div>
+
+<!-- ===== ECONOMICO ===== -->
+<div id="screen-economico" class="screen">
+  <div class="card" style="margin-bottom:20px">
+    <div class="hero-nums">
+      <div class="hero-num"><div class="num" id="eco-hero1">€ 17.742.174</div><div class="lbl" id="eco-hero1-lbl">Ricavi totali 2025</div><div class="delta delta-up" id="eco-hero1-delta">▲ +4,8% vs 2024</div></div>
+      <div class="hero-num"><div class="num" id="eco-hero2">€ 7.619.524</div><div class="lbl" id="eco-hero2-lbl">Margine lordo 2025</div><div class="delta" style="color:var(--teal)" id="eco-hero2-delta">43,0% dei ricavi</div></div>
+      <div class="hero-num"><div class="num" id="eco-hero3">3.441</div><div class="lbl" id="eco-hero3-lbl">Articoli scheda</div><div class="delta" style="color:var(--muted)" id="eco-hero3-delta">ordini processati</div></div>
+    </div>
+  </div>
+  <div class="card" style="margin-bottom:20px;overflow-x:auto">
+    <div class="card-title">Ricavi e Costi per Entità <span class="period-notice" id="eco-period-notice">Mese</span></div>
+    <table class="data-table" id="eco-table"></table>
+  </div>
+  <div style="display:grid;grid-template-columns:2fr 1.5fr 1fr;gap:16px">
+    <div class="card">
+      <div class="card-title">Distribuzione Ricavi per Tipologia</div>
+      <div class="treemap">
+        <div class="treemap-row" style="flex:2.2">
+          <div class="treemap-cell" style="background:#1B2A4A;flex:2.2"><div style="font-size:12px;font-weight:700">TELA TINTO</div><div class="tc-pct">38%</div><div style="font-size:10px;opacity:.8" id="tm1-val">€ 6.742.000</div></div>
+          <div class="treemap-cell" style="background:#2D4A7A;flex:1"><div style="font-size:12px;font-weight:700">TELA BIANCO</div><div class="tc-pct">18%</div><div style="font-size:10px;opacity:.8" id="tm2-val">€ 3.193.000</div></div>
+        </div>
+        <div class="treemap-row" style="flex:1.6">
+          <div class="treemap-cell" style="background:#00A896;flex:1.75"><div style="font-size:12px;font-weight:700">SPUGNA TINTO</div><div class="tc-pct">28%</div><div style="font-size:10px;opacity:.8" id="tm3-val">€ 4.967.000</div></div>
+          <div class="treemap-cell" style="background:#00C9B1;flex:1"><div style="font-size:12px;font-weight:700">SPUGNA BIANCO</div><div class="tc-pct">16%</div><div style="font-size:10px;opacity:.8" id="tm4-val">€ 2.840.000</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="card"><div class="card-title">Clienti / Kg — Top 8</div><canvas id="chart-clienti" height="200"></canvas></div>
+    <div class="card">
+      <div class="card-title" id="eco-yoy-title">2026 vs 2025 — YTD Q1</div>
+      <div id="eco-yoy-list" style="display:flex;flex-direction:column;gap:6px"></div>
+    </div>
+  </div>
+</div>
+</main>
+<script>
+// ============================================================
+// STATE
+// ============================================================
+let currentPeriod = 'mese';
+
+// ============================================================
+// PERIOD DATA
+// ============================================================
+const P = {
+  oggi:{
+    ricaviLabel:'Ricavi — Oggi 30 mar', ricavi:58400, ricaviSub:'lunedì 30 marzo 2026',
+    ricaviDelta:'▲ +3,2% vs ieri', ricaviDeltaUp:true,
+    refLabel:'Media giornaliera 2025', refVal:'€ 46.278', refSub:'benchmark giornaliero', refDelta:'▲ +26,2% vs media',
+    prodLabel:'Produzione oggi', prodKg:'4.840 Kg', prodSub:'Tela 2.920 · Spugna 1.920', prodDelta:'▲ +2,1% vs ieri',
+    ordini:'47 ordini', ordiniSub:'3.441 articoli scheda', ordiniDelta:'In lavorazione',
+    oee:72,
+    cfTitle:'Cash Flow intraday — oggi',
+    cfLabels:['06:00','08:00','10:00','12:00','14:00','16:00','18:00','20:00'],
+    cfEnt:[0,8200,14800,22400,31600,42100,49800,58400],
+    cfUsc:[0,6400,12100,17800,24200,31600,40200,49200],
+    finLabels:['06:00','08:00','10:00','12:00','14:00','16:00','18:00','20:00'],
+    finEnt:[8200,6600,7600,9200,10500,7700,8600,0],
+    finUsc:[6400,5700,5700,6400,7400,8600,9000,0],
+    ecoS:0.033,
+    pctTela:185697, pctSpugna:98239, pctPrecTela:200413, pctPrecSpugna:106667,
+    cicloMin:[4.2,5.8], cicloGg:[1.8,2.4],
+    heroLbl:'Oggi 30 mar 2026', hero1:58400, hero2:24800, hero3:47,
+    yoyTitle:'Oggi vs ieri',
+    yoy:[{l:'Ricavi',v:'€ 58.400',d:'▲ +3,2%',up:true},{l:'Kg prodotti',v:'4.840 Kg',d:'▲ +2,1%',up:true},{l:'OEE medio',v:'72%',d:'▼ −2,0%',up:false},{l:'Fermi impr.',v:'530 min',d:'▼ −18%',up:false}]
+  },
+  settimana:{
+    ricaviLabel:'Ricavi — Settimana 24–30 mar', ricavi:298600, ricaviSub:'settimana 24–30 marzo 2026',
+    ricaviDelta:'▲ +5,1% vs sett. prec.', ricaviDeltaUp:true,
+    refLabel:'Media settimanale 2025', refVal:'€ 324.831', refSub:'benchmark settimanale', refDelta:'▼ −8,1% vs media 2025',
+    prodLabel:'Produzione settimana', prodKg:'33.880 Kg', prodSub:'Tela 20.440 · Spugna 13.440', prodDelta:'▲ +5,3% vs sett. prec.',
+    ordini:'47 ordini', ordiniSub:'3.441 articoli scheda', ordiniDelta:'In lavorazione',
+    oee:73,
+    cfTitle:'Cash Flow — prossime 7 settimane',
+    cfLabels:['Lun','Mar','Mer','Gio','Ven','Sab','Dom'],
+    cfEnt:[0,42800,87200,134600,184200,241800,298600],
+    cfUsc:[0,38400,76200,116800,158400,212000,268800],
+    finLabels:['Lun','Mar','Mer','Gio','Ven','Sab'],
+    finEnt:[42800,44400,47400,49600,57600,56800],
+    finUsc:[38400,37800,40600,41600,53600,56800],
+    ecoS:0.23,
+    pctTela:1281307, pctSpugna:677846, pctPrecTela:1382852, pctPrecSpugna:736000,
+    cicloMin:[4.3,5.9], cicloGg:[1.8,2.5],
+    heroLbl:'Settimana 24–30 mar', hero1:298600, hero2:128000, hero3:47,
+    yoyTitle:'Settimana vs sett. prec.',
+    yoy:[{l:'Ricavi',v:'€ 298.600',d:'▲ +5,1%',up:true},{l:'Kg prodotti',v:'33.880 Kg',d:'▲ +5,3%',up:true},{l:'OEE medio',v:'73%',d:'▲ +1,0%',up:true},{l:'Cycle Time',v:'4,3 gg',d:'▼ −4,4%',up:false}]
+  },
+  mese:{
+    ricaviLabel:'Ricavi — Marzo 2026', ricavi:1075000, ricaviSub:'marzo 2026',
+    ricaviDelta:'▲ +4,2% vs febbraio', ricaviDeltaUp:true,
+    refLabel:'Fatturato 2025', refVal:'€ 16.891.240', refSub:'anno di riferimento', refDelta:'▲ +4,8% vs 2024',
+    prodLabel:'Produzione marzo', prodKg:'145.200 Kg', prodSub:'Tela 88.600 · Spugna 56.600', prodDelta:'▲ +3,8% vs febbraio',
+    ordini:'47 ordini', ordiniSub:'3.441 articoli scheda', ordiniDelta:'In lavorazione',
+    oee:72,
+    cfTitle:'Cash Flow proiettato — prossimi 90 giorni',
+    cfLabels:['30/3','6/4','13/4','20/4','27/4','4/5','11/5','18/5','25/5','1/6','8/6','15/6','22/6'],
+    cfEnt:[0,487400,885000,1232000,1630000,1925000,2240000,2520000,2780000,3070000,3300000,3580000,3890000],
+    cfUsc:[0,264000,572000,880000,1162000,1445000,1720000,1998000,2260000,2540000,2820000,2995000,3275000],
+    finLabels:['30/3','6/4','13/4','20/4','27/4','4/5','11/5','18/5','25/5','1/6','8/6','15/6','22/6'],
+    finEnt:[487400,397600,347000,398000,295000,315000,280000,260000,290000,230000,280000,200000,310000],
+    finUsc:[264000,308000,308000,282000,283000,275000,278000,262000,280000,280000,175000,280000,280000],
+    ecoS:1,
+    pctTela:5570900, pctSpugna:2947157, pctPrecTela:6012400, pctPrecSpugna:3200000,
+    cicloMin:[4.2,5.8], cicloGg:[1.8,2.4],
+    heroLbl:'Marzo 2026', hero1:1075000, hero2:461313, hero3:47,
+    yoyTitle:'Marzo 2026 vs Marzo 2025',
+    yoy:[{l:'Ricavi',v:'€ 1.075.000',d:'▲ +4,2%',up:true},{l:'Margine lordo',v:'€ 461.313',d:'▲ +5,1%',up:true},{l:'Kg prodotti',v:'145.200 Kg',d:'▲ +3,8%',up:true},{l:'OEE medio',v:'72%',d:'▼ −2,0%',up:false},{l:'Ordini attivi',v:'47',d:'▲ +14,6%',up:true},{l:'Cycle Time',v:'4,2 gg',d:'▲ −6,7%',up:true}]
+  },
+  trimestre:{
+    ricaviLabel:'Ricavi — Q1 2026', ricavi:3225000, ricaviSub:'gennaio–marzo 2026',
+    ricaviDelta:'▲ +6,2% vs Q1 2025', ricaviDeltaUp:true,
+    refLabel:'Q1 2025', refVal:'€ 3.036.000', refSub:'stesso trimestre 2025', refDelta:'▲ +6,2% crescita',
+    prodLabel:'Produzione Q1 2026', prodKg:'435.600 Kg', prodSub:'Tela 265.800 · Spugna 169.800', prodDelta:'▲ +5,9% vs Q1 2025',
+    ordini:'134 ordini', ordiniSub:'10.323 articoli scheda Q1', ordiniDelta:'Chiusi nel trimestre',
+    oee:73,
+    cfTitle:'Cash Flow proiettato — 12 mesi',
+    cfLabels:['Gen','Feb','Mar','Apr','Mag','Giu','Lug','Ago','Set','Ott','Nov','Dic',''],
+    cfEnt:[0,1012000,2048000,3225000,4287000,5380000,6492000,7440000,8532000,9684000,10872000,12060000,13248000],
+    cfUsc:[0,792000,1584000,2376000,3276000,4080000,4920000,5832000,6768000,7704000,8640000,9576000,10512000],
+    finLabels:['Gen','Feb','Mar','Apr','Mag','Giu','Lug','Ago','Set','Ott','Nov','Dic'],
+    finEnt:[1012000,1036000,1177000,1062000,1093000,1112000,948000,1092000,1152000,1188000,1188000,1188000],
+    finUsc:[792000,792000,792000,900000,804000,840000,912000,936000,936000,936000,936000,936000],
+    ecoS:3,
+    pctTela:16712700, pctSpugna:8841471, pctPrecTela:18037200, pctPrecSpugna:9600000,
+    cicloMin:[4.1,5.7], cicloGg:[1.7,2.3],
+    heroLbl:'Q1 2026', hero1:3225000, hero2:1384000, hero3:134,
+    yoyTitle:'Q1 2026 vs Q1 2025',
+    yoy:[{l:'Ricavi',v:'€ 3.225.000',d:'▲ +6,2%',up:true},{l:'Margine lordo',v:'€ 1.384.000',d:'▲ +7,1%',up:true},{l:'Kg prodotti',v:'435.600 Kg',d:'▲ +5,9%',up:true},{l:'OEE medio',v:'73%',d:'▼ −1,0%',up:false},{l:'Ordini chiusi',v:'134',d:'▲ +12,6%',up:true},{l:'Cycle Time',v:'4,1 gg',d:'▲ −8,9%',up:true}]
+  },
+  ytd:{
+    ricaviLabel:'Ricavi YTD — gen/mar 2026', ricavi:4284500, ricaviSub:'1 gennaio – 30 marzo 2026',
+    ricaviDelta:'▲ +6,2% vs YTD 2025', ricaviDeltaUp:true,
+    refLabel:'YTD 2025', refVal:'€ 4.034.000', refSub:'stesso periodo 2025', refDelta:'▲ +6,2% crescita',
+    prodLabel:'Produzione YTD', prodKg:'1.842.400 Kg', prodSub:'Tela 1.124.800 · Spugna 717.600', prodDelta:'▲ +7,6% vs YTD 2025',
+    ordini:'134 ordini', ordiniSub:'10.323 articoli scheda YTD', ordiniDelta:'Chiusi da inizio anno',
+    oee:73,
+    cfTitle:'Cash Flow proiettato — fine anno',
+    cfLabels:['Gen','Feb','Mar','Apr','Mag','Giu','Lug','Ago','Set','Ott','Nov','Dic',''],
+    cfEnt:[0,1012000,2048000,4284500,5347000,6440000,7552000,8500000,9592000,10744000,11932000,13120000,14308000],
+    cfUsc:[0,792000,1584000,2376000,3276000,4080000,4920000,5832000,6768000,7704000,8640000,9576000,10512000],
+    finLabels:['Gen','Feb','Mar','Apr','Mag','Giu','Lug','Ago','Set','Ott','Nov','Dic'],
+    finEnt:[1012000,1036000,2236500,1062000,1093000,1112000,948000,1092000,1152000,1188000,1188000,1188000],
+    finUsc:[792000,792000,792000,900000,804000,840000,912000,936000,936000,936000,936000,936000],
+    ecoS:3,
+    pctTela:16712700, pctSpugna:8841471, pctPrecTela:18037200, pctPrecSpugna:9600000,
+    cicloMin:[4.1,5.7], cicloGg:[1.7,2.3],
+    heroLbl:'YTD gen–mar 2026', hero1:4284500, hero2:1840000, hero3:134,
+    yoyTitle:'YTD 2026 vs YTD 2025',
+    yoy:[{l:'Ricavi YTD',v:'€ 4.284.500',d:'▲ +6,2%',up:true},{l:'Margine YTD',v:'€ 1.840.000',d:'▲ +7,1%',up:true},{l:'Kg prodotti',v:'1.842.400 Kg',d:'▲ +7,6%',up:true},{l:'OEE medio',v:'73%',d:'▼ −1,0%',up:false},{l:'Ordini chiusi',v:'134',d:'▲ +12,6%',up:true},{l:'Cycle Time medio',v:'4,1 gg',d:'▲ −8,9%',up:true}]
+  },
+  anno:{
+    ricaviLabel:'Ricavi — Anno 2025', ricavi:16891240, ricaviSub:'consuntivo 2025',
+    ricaviDelta:'▲ +4,8% vs 2024', ricaviDeltaUp:true,
+    refLabel:'Anno 2024', refVal:'€ 16.114.000', refSub:'anno precedente', refDelta:'▲ +4,8% crescita 2025',
+    prodLabel:'Produzione 2025', prodKg:'7.384.000 Kg', prodSub:'Tela 4.504.200 · Spugna 2.879.800', prodDelta:'▲ +3,2% vs 2024',
+    ordini:'537 ordini', ordiniSub:'41.292 articoli scheda 2025', ordiniDelta:'Chiusi nel 2025',
+    oee:74,
+    cfTitle:'Cash Flow 2025 — mensile consuntivo',
+    cfLabels:['Gen','Feb','Mar','Apr','Mag','Giu','Lug','Ago','Set','Ott','Nov','Dic',''],
+    cfEnt:[0,1012000,2048000,3225000,4287000,5380000,6492000,7440000,8532000,9684000,10872000,12060000,16891240],
+    cfUsc:[0,792000,1584000,2376000,3276000,4080000,4920000,5832000,6768000,7704000,8640000,9576000,13248000],
+    finLabels:['Gen','Feb','Mar','Apr','Mag','Giu','Lug','Ago','Set','Ott','Nov','Dic'],
+    finEnt:[1012000,1036000,1177000,1062000,1093000,1112000,948000,1092000,1152000,1188000,1188000,1831240],
+    finUsc:[792000,792000,792000,900000,804000,840000,912000,936000,936000,936000,936000,936000],
+    ecoS:12,
+    pctTela:66850800, pctSpugna:35365884, pctPrecTela:64134720, pctPrecSpugna:33588480,
+    cicloMin:[4.0,5.6], cicloGg:[1.7,2.3],
+    heroLbl:'Anno 2025', hero1:16891240, hero2:7619524, hero3:537,
+    yoyTitle:'Anno 2025 vs Anno 2024',
+    yoy:[{l:'Ricavi',v:'€ 16.891.240',d:'▲ +4,8%',up:true},{l:'Margine lordo',v:'€ 7.619.524',d:'▲ +5,2%',up:true},{l:'Kg prodotti',v:'7.384.000 Kg',d:'▲ +3,2%',up:true},{l:'OEE medio',v:'74%',d:'▲ +1,0%',up:true},{l:'Ordini',v:'537',d:'▲ +8,9%',up:true},{l:'Cycle Time',v:'4,0 gg',d:'▲ −11,1%',up:true}]
+  }
+};
+
+// ============================================================
+// MACHINES DATA
+// ============================================================
+const BASE_MACHINES = [
+  {name:'BRUCIAPELO',     oee:{tutti:89,t1:92,t2:88,t3:0},  disp:94,vel:92,qual:99.7,status:'marcia',fermi:{tutti:0,t1:0,t2:0,t3:0},   kg:620,  vms:92, dept:'TELA'},
+  {name:'CANDEGGIO KUSTER',oee:{tutti:88,t1:90,t2:87,t3:0}, disp:92,vel:94,qual:99.9,status:'marcia',fermi:{tutti:15,t1:10,t2:20,t3:0}, kg:410,  vms:18, dept:'TELA'},
+  {name:'FALDA',          oee:{tutti:76,t1:79,t2:74,t3:0},  disp:84,vel:88,qual:99.5,status:'marcia',fermi:{tutti:45,t1:30,t2:60,t3:0}, kg:340,  vms:45, dept:'TELA'},
+  {name:'FOULARD',        oee:{tutti:87,t1:89,t2:86,t3:82}, disp:91,vel:93,qual:99.8,status:'marcia',fermi:{tutti:20,t1:15,t2:25,t3:35},kg:580,  vms:62, dept:'TELA'},
+  {name:'GARZA',          oee:{tutti:71,t1:74,t2:70,t3:0},  disp:78,vel:90,qual:99.6,status:'marcia',fermi:{tutti:82,t1:62,t2:90,t3:0}, kg:290,  vms:38, dept:'TELA'},
+  {name:'LAVAGGIO-CONTINUA',oee:{tutti:84,t1:86,t2:83,t3:78},disp:89,vel:92,qual:99.7,status:'manut',fermi:{tutti:135,t1:120,t2:140,t3:180},kg:680,vms:32,dept:'TELA'},
+  {name:'RAM 1 [01-04]',  oee:{tutti:85,t1:88,t2:85,t3:0}, disp:90,vel:92,qual:99.9,status:'marcia',fermi:{tutti:30,t1:20,t2:35,t3:0}, kg:720,  vms:68, dept:'SPUGNA'},
+  {name:'RAM 2 [01-05]',  oee:{tutti:82,t1:85,t2:82,t3:79},disp:88,vel:91,qual:99.7,status:'marcia',fermi:{tutti:45,t1:30,t2:50,t3:65},kg:680,  vms:65, dept:'SPUGNA'},
+  {name:'RAM 3 [01-03]',  oee:{tutti:38,t1:38,t2:38,t3:38},disp:44,vel:85,qual:99.2,status:'fermo', fermi:{tutti:412,t1:412,t2:412,t3:412},kg:120,vms:24,dept:'SPUGNA',critico:true},
+  {name:'RAM SPUGNA 4',   oee:{tutti:67,t1:70,t2:66,t3:0}, disp:72,vel:91,qual:99.8,status:'marcia',fermi:{tutti:98,t1:80,t2:110,t3:0},kg:520,  vms:34, dept:'SPUGNA'},
+  {name:'SPAZZOLATRICE',  oee:{tutti:24,t1:24,t2:24,t3:24},disp:28,vel:84,qual:99.1,status:'fermo', fermi:{tutti:520,t1:520,t2:520,t3:520},kg:80,vms:18,dept:'TELA',critico:true}
+];
+
+const RVSP_BASE = [
+  {mac:'BRUCIAPELO',       tipo:'Tela — Tinto',  real:18620,pian:19800,pianAnno:237600},
+  {mac:'CANDEGGIO KUSTER', tipo:'Tela — Tinto',  real:12840,pian:13200,pianAnno:158400},
+  {mac:'FALDA',            tipo:'Tela — Bianco', real:9450, pian:11000,pianAnno:132000},
+  {mac:'FOULARD',          tipo:'Tela — Tinto',  real:17280,pian:18000,pianAnno:216000},
+  {mac:'GARZA',            tipo:'Tela — Bianco', real:8700, pian:10500,pianAnno:126000},
+  {mac:'LAVAGGIO-CONTINUA',tipo:'Tela — Tinto',  real:20400,pian:21600,pianAnno:259200},
+  {mac:'RAM 1 [01-04]',   tipo:'Spugna — Tinto', real:21600,pian:22800,pianAnno:273600},
+  {mac:'RAM 2 [01-05]',   tipo:'Spugna — Tinto', real:20400,pian:22200,pianAnno:266400},
+  {mac:'RAM 3 [01-03]',   tipo:'Spugna — Bianco',real:3600, pian:9600, pianAnno:115200,critico:true},
+  {mac:'RAM SPUGNA 4',    tipo:'Spugna — Tinto', real:15600,pian:19200,pianAnno:230400},
+  {mac:'SPAZZOLATRICE',   tipo:'Tela — Bianco',  real:2400, pian:9000, pianAnno:108000,critico:true}
+];
+
+const PORTO_BASE = [
+  {title:'Tinto / Tela',    avviare:89400, wip:112800,done:83400, ct:'3,8 gg',ord:18,
+   orders:[{cod:'ORD-2601',cli:'Gruppo Albini',kg:'840',scad:'02 apr',stato:'In lavor.'},
+           {cod:'ORD-2598',cli:'Marzotto SpA',kg:'620',scad:'05 apr',stato:'In lavor.'},
+           {cod:'ORD-2612',cli:'Canclini',kg:'480',scad:'08 apr',stato:'Da avviare'}]},
+  {title:'Tinto / Spugna',  avviare:42600, wip:68400, done:37200, ct:'5,1 gg',ord:12,orders:[]},
+  {title:'Bianco / Tela',   avviare:38400, wip:34200, done:22200, ct:'4,5 gg',ord:11,orders:[]},
+  {title:'Bianco / Spugna', avviare:18000, wip:24600, done:11400, ct:'3,9 gg',ord:6, orders:[]}
+];
+
+// ============================================================
+// UTILS
+// ============================================================
+const fN = n => Math.round(n).toLocaleString('it-IT');
+const fE = n => '€ ' + fN(n);
+const oeeC = v => v>=85?'#48BB78':v>=60?'#D97706':'#E53E3E';
+
+function setGauge(bgId,valId,pct){
+  const deg = Math.round((pct/100)*180);
+  const c = oeeC(pct);
+  const el = document.getElementById(bgId);
+  if(el) el.style.background = `conic-gradient(from 180deg,${c} 0deg,${c} ${deg}deg,#E2E8F0 ${deg}deg,#E2E8F0 360deg)`;
+  const vEl = document.getElementById(valId);
+  if(vEl){ vEl.textContent = pct+'%'; vEl.style.color = c; }
+}
+
+// ============================================================
+// CHARTS
+// ============================================================
+const CI = {};
+const inited = {};
+
+function ensureChart(screen){
+  if(inited[screen]) return;
+  inited[screen] = true;
+  const pd = P[currentPeriod];
+
+  if(screen==='panoramica'){
+    CI.cfPan = new Chart(document.getElementById('chart-cashflow-pan'),{
+      type:'line',
+      data:{labels:pd.cfLabels,datasets:[
+        {label:'Entrate prog.',data:pd.cfEnt,borderColor:'#00C9B1',backgroundColor:'rgba(0,201,177,.12)',fill:true,tension:.4,pointRadius:3},
+        {label:'Uscite prog.',data:pd.cfUsc,borderColor:'#FC8181',backgroundColor:'rgba(252,129,129,.1)',fill:true,tension:.4,pointRadius:3}
+      ]},
+      options:{plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:11}}}},
+        scales:{y:{ticks:{callback:v=>'€ '+fN(v)}}},interaction:{mode:'index',intersect:false}}
+    });
+  }
+
+  if(screen==='produttivo'){
+    setGauge('gauge-stab','gval-stab',72);
+    setGauge('gauge-tela','gval-tela',81);
+    setGauge('gauge-spugna','gval-spugna',61);
+    buildMachineCards();
+    buildRvspTable();
+    buildPortoPanels();
+    // OEE 30-day trend
+    const days=[]; for(let i=29;i>=0;i--){const d=new Date(2026,2,30-i);days.push(d.getDate()+'/'+(d.getMonth()+1));}
+    const rnd=(base,rng)=>days.map(()=>Math.max(0,Math.min(100,Math.round(base-rng/2+Math.random()*rng))));
+    CI.oeeTrend = new Chart(document.getElementById('chart-oee-trend'),{
+      type:'line',
+      data:{labels:days,datasets:[
+        {label:'BRUCIAPELO',data:rnd(88,8),borderColor:'#00C9B1',tension:.4,pointRadius:2,borderWidth:2},
+        {label:'CANDEGGIO KUSTER',data:rnd(87,7),borderColor:'#1B2A4A',tension:.4,pointRadius:2,borderWidth:2},
+        {label:'RAM 1',data:rnd(84,8),borderColor:'#48BB78',tension:.4,pointRadius:2,borderWidth:2},
+        {label:'RAM 3',data:rnd(36,14),borderColor:'#E53E3E',tension:.4,pointRadius:2,borderWidth:2},
+        {label:'SPAZZOLATRICE',data:rnd(23,10),borderColor:'#F6AD55',tension:.4,pointRadius:2,borderWidth:2}
+      ]},
+      options:{plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10}}}},
+        scales:{y:{min:0,max:100,ticks:{callback:v=>v+'%'}}},interaction:{mode:'index',intersect:false}}
+    });
+    // OEE per turno
+    const mNames = BASE_MACHINES.map(m=>m.name.length>14?m.name.substring(0,14)+'…':m.name);
+    CI.turniOee = new Chart(document.getElementById('chart-turni-oee'),{
+      type:'bar',
+      data:{labels:mNames,datasets:[
+        {label:'T1 Mattina',   data:BASE_MACHINES.map(m=>m.oee.t1),backgroundColor:'#00C9B1'},
+        {label:'T2 Pomeriggio',data:BASE_MACHINES.map(m=>m.oee.t2),backgroundColor:'#1B2A4A'},
+        {label:'T3 Notte',     data:BASE_MACHINES.map(m=>m.oee.t3),backgroundColor:'#F6AD55'}
+      ]},
+      options:{plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:11}}}},
+        scales:{x:{ticks:{font:{size:9}}},y:{min:0,max:100,ticks:{callback:v=>v+'%'}}}}
+    });
+    // PCT
+    CI.pct = new Chart(document.getElementById('chart-pct'),{
+      type:'bar',
+      data:{labels:['TELA','SPUGNA'],datasets:[
+        {label:'PCT corrente',  data:[pd.pctTela,pd.pctSpugna],backgroundColor:'#00C9B1'},
+        {label:'PCT anno prec.',data:[pd.pctPrecTela,pd.pctPrecSpugna],backgroundColor:'#1B2A4A'},
+        {label:'PCT media 2021-24',data:[5741942,3063000],backgroundColor:'#A0AEC0'}
+      ]},
+      options:{plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:11}}}},scales:{y:{ticks:{callback:v=>fN(v)}}}}
+    });
+    // RVSP chart
+    CI.rvsp = new Chart(document.getElementById('chart-rvsp'),{
+      type:'bar',
+      data:{labels:RVSP_BASE.map(r=>r.mac.length>14?r.mac.substring(0,12)+'…':r.mac),
+        datasets:[
+          {label:'Realizzato',data:RVSP_BASE.map(r=>Math.round(r.real*pd.ecoS)),backgroundColor:'#00C9B1'},
+          {label:'Pianificato',data:RVSP_BASE.map(r=>Math.round(r.pian*pd.ecoS)),backgroundColor:'rgba(27,42,74,.25)'}
+        ]},
+      options:{indexAxis:'y',plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:11}}}},
+        scales:{x:{ticks:{callback:v=>fN(v)+' Kg'}}}}
+    });
+  }
+
+  if(screen==='finanziario'){
+    const saldo = pd.finEnt.map((e,i)=>e-(pd.finUsc[i]||0));
+    let cum=0; const saldoCum = saldo.map(v=>(cum+=v,cum));
+    CI.cfFin = new Chart(document.getElementById('chart-cashflow-fin'),{
+      type:'bar',
+      data:{labels:pd.finLabels,datasets:[
+        {label:'Entrate',data:pd.finEnt,backgroundColor:'rgba(0,201,177,.7)',order:2},
+        {label:'Uscite',data:pd.finUsc,backgroundColor:'rgba(252,129,129,.7)',order:2},
+        {label:'Saldo cumulativo',data:saldoCum,type:'line',borderColor:'#1B2A4A',borderDash:[5,3],
+         pointRadius:3,borderWidth:2,order:1,yAxisID:'y1'}
+      ]},
+      options:{plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:11}}}},
+        scales:{y:{ticks:{callback:v=>'€ '+fN(v)}},y1:{position:'right',ticks:{callback:v=>'€ '+fN(v)},grid:{drawOnChartArea:false}}},
+        interaction:{mode:'index',intersect:false}}
+    });
+  }
+
+  if(screen==='economico'){
+    buildEcoTable();
+    CI.clienti = new Chart(document.getElementById('chart-clienti'),{
+      type:'doughnut',
+      data:{labels:['Gruppo Albini','Marzotto SpA','Canclini','Albini&Fontana','Cotonificio','Loro Piana','Lanificio L.','Altri'],
+        datasets:[{data:[22,18,14,11,9,8,7,11],
+          backgroundColor:['#1B2A4A','#00C9B1','#2D4A7A','#48BB78','#00A896','#F6AD55','#A0AEC0','#CBD5E0'],
+          borderWidth:2,borderColor:'#fff'}]},
+      options:{plugins:{legend:{position:'bottom',labels:{boxWidth:8,font:{size:10}}}},cutout:'68%'}
+    });
+  }
+}
+// ============================================================
+// UPDATE FUNCTIONS
+// ============================================================
+function updatePanoramica(pd){
+  document.getElementById('kpi-ricavi-label').textContent = pd.ricaviLabel;
+  document.getElementById('kpi-ricavi-val').textContent = fE(pd.ricavi);
+  document.getElementById('kpi-ricavi-sub').textContent = pd.ricaviSub;
+  const rd = document.getElementById('kpi-ricavi-delta');
+  rd.textContent = pd.ricaviDelta;
+  rd.className = 'kpi-delta ' + (pd.ricaviDeltaUp?'delta-up':'delta-down');
+  document.getElementById('kpi-ref-label').textContent = pd.refLabel;
+  document.getElementById('kpi-ref-val').textContent = pd.refVal;
+  document.getElementById('kpi-ref-sub').textContent = pd.refSub;
+  document.getElementById('kpi-ref-delta').textContent = pd.refDelta;
+  document.getElementById('kpi-prod-label').textContent = pd.prodLabel;
+  document.getElementById('kpi-prod-val').textContent = pd.prodKg;
+  document.getElementById('kpi-prod-sub').textContent = pd.prodSub;
+  const ppd = document.getElementById('kpi-prod-delta');
+  ppd.textContent = pd.prodDelta;
+  ppd.className = 'kpi-delta delta-up';
+  document.getElementById('kpi-ordini-val').textContent = pd.ordini;
+  document.getElementById('kpi-ordini-sub').textContent = pd.ordiniSub;
+  document.getElementById('kpi-ordini-delta').textContent = pd.ordiniDelta;
+  document.getElementById('kpi-oee-val').textContent = pd.oee + '%';
+  document.getElementById('kpi-oee-bar').style.width = pd.oee + '%';
+  document.getElementById('cf-pan-title').textContent = pd.cfTitle;
+  if(CI.cfPan){
+    CI.cfPan.data.labels = pd.cfLabels;
+    CI.cfPan.data.datasets[0].data = pd.cfEnt;
+    CI.cfPan.data.datasets[1].data = pd.cfUsc;
+    CI.cfPan.update();
+  }
+}
+
+function updateProduttivo(pd){
+  const notices = ['oee-period-notice','ciclo-period-notice','rvsp-period-notice'];
+  const labels = {oggi:'Oggi',settimana:'Settimana',mese:'Mese',trimestre:'Trimestre',ytd:'YTD',anno:'Anno'};
+  notices.forEach(id=>{ const el=document.getElementById(id); if(el) el.textContent='Periodo: '+labels[currentPeriod]; });
+  // Ciclo tempo values
+  document.getElementById('ct-pct-tela').textContent = fN(pd.pctTela);
+  document.getElementById('ct-pct-spugna').textContent = fN(pd.pctSpugna);
+  document.getElementById('ct-pct-tot').textContent = fN(pd.pctTela+pd.pctSpugna);
+  document.getElementById('ct-pctprec-tela').textContent = fN(pd.pctPrecTela);
+  document.getElementById('ct-pctprec-spugna').textContent = fN(pd.pctPrecSpugna);
+  document.getElementById('ct-pctprec-tot').textContent = fN(pd.pctPrecTela+pd.pctPrecSpugna);
+  document.getElementById('ct-cmin-tela').textContent = pd.cicloMin[0].toFixed(1).replace('.',',')+' min';
+  document.getElementById('ct-cmin-spugna').textContent = pd.cicloMin[1].toFixed(1).replace('.',',')+' min';
+  document.getElementById('ct-cmin-tot').textContent = ((pd.cicloMin[0]+pd.cicloMin[1])/2).toFixed(1).replace('.',',')+' min';
+  document.getElementById('ct-cgg-tela').textContent = pd.cicloGg[0].toFixed(1).replace('.',',')+' gg';
+  document.getElementById('ct-cgg-spugna').textContent = pd.cicloGg[1].toFixed(1).replace('.',',')+' gg';
+  document.getElementById('ct-cgg-tot').textContent = ((pd.cicloGg[0]+pd.cicloGg[1])/2).toFixed(1).replace('.',',')+' gg';
+  // PCT chart
+  if(CI.pct){
+    CI.pct.data.datasets[0].data = [pd.pctTela,pd.pctSpugna];
+    CI.pct.data.datasets[1].data = [pd.pctPrecTela,pd.pctPrecSpugna];
+    CI.pct.update();
+  }
+  // RVSP
+  updateRvspTable(pd.ecoS);
+  if(CI.rvsp){
+    CI.rvsp.data.datasets[0].data = RVSP_BASE.map(r=>Math.round(r.real*pd.ecoS));
+    CI.rvsp.data.datasets[1].data = RVSP_BASE.map(r=>Math.round(r.pian*pd.ecoS));
+    CI.rvsp.update();
+  }
+  // Porto WIP + ordini scale
+  const wip = Math.round(148890 * pd.ecoS);
+  const ord = currentPeriod==='mese'?47:currentPeriod==='anno'?537:currentPeriod==='settimana'?47:134;
+  const piEl=document.getElementById('porto-wip'); if(piEl) piEl.textContent=fN(wip)+' Kg';
+  const poEl=document.getElementById('porto-ordini'); if(poEl) poEl.textContent=ord;
+}
+
+function updateFinanziario(pd){
+  document.getElementById('cf-fin-title').textContent = pd.cfTitle;
+  // Scale scadenzario by ecoS
+  const s = pd.ecoS;
+  document.getElementById('fin-incassato').textContent = fE(Math.round(1124800*s));
+  const tag = document.getElementById('fin-period-tag');
+  if(tag) tag.textContent = '('+{oggi:'oggi',settimana:'settimana',mese:'marzo',trimestre:'Q1',ytd:'YTD',anno:'2025'}[currentPeriod]+')';
+  const saldo = Math.round(1463900*s);
+  document.getElementById('fin-saldo-netto').textContent = '€ +' + fN(saldo);
+  if(CI.cfFin){
+    const saldoArr = pd.finEnt.map((e,i)=>e-(pd.finUsc[i]||0));
+    let cum=0; const saldoCum = saldoArr.map(v=>(cum+=v,cum));
+    CI.cfFin.data.labels = pd.finLabels;
+    CI.cfFin.data.datasets[0].data = pd.finEnt;
+    CI.cfFin.data.datasets[1].data = pd.finUsc;
+    CI.cfFin.data.datasets[2].data = saldoCum;
+    CI.cfFin.update();
+  }
+}
+
+function updateEconomico(pd){
+  const s = pd.ecoS;
+  document.getElementById('eco-period-notice').textContent = {oggi:'Oggi',settimana:'Settimana',mese:'Mese',trimestre:'Trimestre',ytd:'YTD',anno:'Anno'}[currentPeriod];
+  // Hero numbers
+  document.getElementById('eco-hero1').textContent = fE(pd.hero1);
+  document.getElementById('eco-hero1-lbl').textContent = 'Ricavi — ' + pd.heroLbl;
+  document.getElementById('eco-hero2').textContent = fE(pd.hero2);
+  document.getElementById('eco-hero2-lbl').textContent = 'Margine lordo — ' + pd.heroLbl;
+  document.getElementById('eco-hero3').textContent = pd.hero3.toLocaleString('it-IT');
+  document.getElementById('eco-hero3-lbl').textContent = 'Ordini / Articoli — ' + pd.heroLbl;
+  // Treemap values
+  ['tm1-val','tm2-val','tm3-val','tm4-val'].forEach((id,i)=>{
+    const base=[6742000,3193000,4967000,2840000];
+    const el=document.getElementById(id); if(el) el.textContent=fE(Math.round(base[i]*s));
+  });
+  // YoY list
+  document.getElementById('eco-yoy-title').textContent = pd.yoyTitle;
+  const list = document.getElementById('eco-yoy-list');
+  if(list){
+    list.innerHTML = pd.yoy.map(item=>`
+      <div style="display:flex;justify-content:space-between;align-items:center;font-size:12px;padding:6px 0;border-bottom:1px solid var(--border)">
+        <span style="color:var(--muted)">${item.l}</span>
+        <div style="text-align:right"><div>${item.v}</div>
+        <div style="font-size:10px;font-weight:600;color:${item.up?'var(--green)':'var(--red)'}">${item.d}</div></div>
+      </div>`).join('');
+  }
+  // Rebuild eco table
+  buildEcoTable(s);
+}
+
+// ============================================================
+// ECO TABLE
+// ============================================================
+function buildEcoTable(s){
+  s = s || P[currentPeriod].ecoS;
+  const tbl = document.getElementById('eco-table');
+  if(!tbl) return;
+  const R = n => fE(Math.round(n*s));
+  const P2 = (n,t) => '('+((n/t)*100).toFixed(0)+'%)';
+  const rows = [
+    ['Ricavi', 380000,362000,215000,198000,480000,458000],
+    ['Costi Energia', 28500,27100,17200,15800,4800,4600],
+    ['Costi Personale', 95000,90500,64500,59400,38400,36600],
+    ['Coloranti/Ausiliari', 57000,54300,32250,29700,null,null],
+    ['Acquisto Tessuti', null,null,null,null,288000,274800],
+    ['Magazzino+Lav.c/Terzi', null,null,null,null,72000,68700],
+    ['Altri Costi', 38000,36200,21500,19800,14400,13700]
+  ];
+  const ricaviRow = rows[0];
+  let tHtml = `<thead><tr>
+    <th>KPI</th>
+    <th style="background:#243558">Tela 2026</th><th style="background:#2d4a7a">Tela 2025</th>
+    <th style="background:#00a896">Spugna 2026</th><th style="background:#008f80">Spugna 2025</th>
+    <th style="background:#3d5a80">Vendita 2026</th><th style="background:#2e4460">Vendita 2025</th>
+  </tr></thead><tbody>`;
+  rows.forEach(r=>{
+    tHtml += `<tr><td>${r[0]}</td>`;
+    for(let i=1;i<7;i++){
+      tHtml += r[i]!=null ? `<td>${R(r[i])}</td>` : `<td style="color:var(--muted)">—</td>`;
+    }
+    tHtml += '</tr>';
+  });
+  const mgn = [380000-218500,362000-208100,215000-135450,198000-124700,480000-417600,458000-398300];
+  const mgnPct = mgn.map((m,i)=>((m/[380000,362000,215000,198000,480000,458000][i])*100).toFixed(1));
+  const pc = v => parseFloat(v)>=30?'green':parseFloat(v)>=15?'orange':'red';
+  tHtml += `<tr class="total-row"><td><strong>Margine Lordo</strong></td>
+    ${mgn.map((m,i)=>`<td><span class="pct-pill ${pc(mgnPct[i])}">${mgnPct[i].replace('.',',')}%</span> ${R(m)}</td>`).join('')}
+  </tr></tbody>`;
+  tbl.innerHTML = tHtml;
+}
+
+// ============================================================
+// MACHINE CARDS
+// ============================================================
+let cardsBuilt = false;
+function buildMachineCards(){
+  if(cardsBuilt) return;
+  cardsBuilt = true;
+  const grid = document.getElementById('machine-cards');
+  if(!grid) return;
+  BASE_MACHINES.forEach((m,idx)=>{
+    const turno = document.getElementById('filter-turno')?.value || 'tutti';
+    const oee = m.oee[turno]||0;
+    const fermi = m.fermi[turno]||0;
+    const deg = Math.round((oee/100)*180);
+    const c = oeeColor(oee);
+    const statusL = m.status==='marcia'?'In marcia':m.status==='manut'?'Manutenzione':'Fermo';
+    const dotC = m.status==='marcia'?'green':m.status==='manut'?'orange':'red';
+    const html = `<div class="machine-card${m.critico?' critico':''}" id="mc-${idx}" data-dept="${m.dept}">
+      <div class="machine-name">
+        ${m.name}
+        <span class="badge ${m.critico?'critico':'teal'}">${m.critico?'CRITICO':m.dept}</span>
+      </div>
+      <div style="position:relative;width:80px;height:44px;overflow:hidden;margin:0 auto 8px">
+        <div id="mc-gauge-${idx}" style="width:80px;height:80px;border-radius:50%;position:absolute;top:0;left:0;
+          background:conic-gradient(from 180deg,${c} 0deg,${c} ${deg}deg,#E2E8F0 ${deg}deg,#E2E8F0 360deg)"></div>
+        <div style="position:absolute;width:56px;height:56px;background:${m.critico?'#FFFAFA':'#fff'};border-radius:50%;top:12px;left:12px"></div>
+        <div id="mc-val-${idx}" style="position:absolute;bottom:1px;width:100%;text-align:center;font-size:15px;font-weight:700;color:${c}">${oee>0?oee+'%':'—'}</div>
+      </div>
+      <div style="text-align:center;margin-bottom:8px">
+        <span class="status-dot ${dotC}"></span><span style="font-size:11px;font-weight:500">${statusL}</span>
+      </div>
+      <div class="machine-metrics">
+        <div><span>Disp.</span><strong style="color:${oeeC(m.disp)}">${m.disp}%</strong></div>
+        <div><span>Vel.</span><strong style="color:${oeeC(m.vel)}">${m.vel}%</strong></div>
+        <div><span>Qual.</span><strong style="color:var(--green)">${m.qual.toFixed(1).replace('.',',')}%</strong></div>
+      </div>
+      <div class="machine-footer">
+        <span>Fermi: <strong id="mc-fermi-${idx}">${fermi} min</strong></span>
+        <span><strong>${fN(m.kg)} Kg</strong> · ${m.vms} m/min</span>
+      </div>
+    </div>`;
+    grid.insertAdjacentHTML('beforeend', html);
+  });
+}
+
+function oeeColor(v){ return v>=85?'#48BB78':v>=60?'#D97706':'#E53E3E'; }
+
+function applyMachineFilters(){
+  const dept = document.getElementById('filter-dept')?.value || 'tutti';
+  const turno = document.getElementById('filter-turno')?.value || 'tutti';
+  const notice = document.getElementById('oee-period-notice');
+  const turnoLabel = {tutti:'Tutti i turni',t1:'T1 Mattina',t2:'T2 Pomeriggio',t3:'T3 Notte'};
+  if(notice) notice.textContent = 'Periodo: ' + {oggi:'Oggi',settimana:'Sett.',mese:'Mese',trimestre:'Trim.',ytd:'YTD',anno:'Anno'}[currentPeriod] + ' · ' + turnoLabel[turno];
+  const turnoTitleEl = document.getElementById('turno-oee-title');
+  if(turnoTitleEl) turnoTitleEl.textContent = 'OEE per Turno — Settimana corrente · ' + turnoLabel[turno];
+  BASE_MACHINES.forEach((m,idx)=>{
+    const card = document.getElementById('mc-'+idx);
+    if(!card) return;
+    // Dept filter
+    const show = dept==='tutti' || m.dept===dept;
+    card.classList.toggle('hidden', !show);
+    // Turno OEE update
+    const oee = m.oee[turno]||0;
+    const c = oeeColor(oee);
+    const deg = Math.round((oee/100)*180);
+    const gauge = document.getElementById('mc-gauge-'+idx);
+    if(gauge) gauge.style.background = `conic-gradient(from 180deg,${c} 0deg,${c} ${deg}deg,#E2E8F0 ${deg}deg,#E2E8F0 360deg)`;
+    const val = document.getElementById('mc-val-'+idx);
+    if(val){ val.textContent = oee>0?oee+'%':'—'; val.style.color = c; }
+    const fermiEl = document.getElementById('mc-fermi-'+idx);
+    if(fermiEl) fermiEl.textContent = (m.fermi[turno]||0)+' min';
+  });
+  // Update turno chart highlight
+  if(CI.turniOee){
+    const alpha = {tutti:0.9,t1:0.9,t2:0.3,t3:0.3};
+    const alpha2 = {tutti:0.9,t1:0.3,t2:0.9,t3:0.3};
+    const alpha3 = {tutti:0.9,t1:0.3,t2:0.3,t3:0.9};
+    CI.turniOee.data.datasets[0].backgroundColor = `rgba(0,201,177,${alpha[turno]})`;
+    CI.turniOee.data.datasets[1].backgroundColor = `rgba(27,42,74,${alpha2[turno]})`;
+    CI.turniOee.data.datasets[2].backgroundColor = `rgba(246,173,85,${alpha3[turno]})`;
+    CI.turniOee.update();
+  }
+}
+
+// ============================================================
+// RVSP TABLE
+// ============================================================
+let rvspBuilt = false;
+function buildRvspTable(){
+  if(rvspBuilt) return; rvspBuilt = true;
+  updateRvspTable(P[currentPeriod].ecoS);
+}
+
+function updateRvspTable(s){
+  const tbody = document.getElementById('rvsp-tbody');
+  if(!tbody) return;
+  const noticeEl = document.getElementById('rvsp-period-notice');
+  if(noticeEl) noticeEl.textContent = {oggi:'Oggi',settimana:'Settimana',mese:'Mese',trimestre:'Trimestre',ytd:'YTD',anno:'Anno'}[currentPeriod];
+  let totR=0,totP=0,totPA=0,totRT=0,totPT=0,totRS=0,totPS=0;
+  let html = '';
+  RVSP_BASE.forEach(r=>{
+    const rS=Math.round(r.real*s), pS=Math.round(r.pian*s), paS=Math.round(r.pianAnno*s);
+    const pct=(rS/pS*100); const d=((rS-pS)/pS*100);
+    const pc=pct>=95?'green':pct>=80?'orange':'red';
+    const ds=(d>=0?'▲ ':'▼ ')+Math.abs(d).toFixed(1)+'%';
+    totR+=rS;totP+=pS;totPA+=paS;
+    if(r.tipo.includes('Tela')){totRT+=rS;totPT+=pS;}else{totRS+=rS;totPS+=pS;}
+    html+=`<tr class="${r.critico?'critico-row':''}">
+      <td><strong>${r.mac}</strong></td><td>${r.tipo}</td>
+      <td>${fN(rS)} Kg</td><td>${fN(pS)} Kg</td><td>${fN(paS)} Kg</td>
+      <td><span class="pct-pill ${pc}">${pct.toFixed(1).replace('.',',')}%</span></td>
+      <td class="${d>=0?'delta-good':'delta-bad'}">${ds}${r.critico?' <span class="badge critico">CRITICO</span>':''}</td>
+    </tr>`;
+  });
+  const pT=(totRT/totPT*100).toFixed(1),pS2=(totRS/totPS*100).toFixed(1),pAll=(totR/totP*100).toFixed(1);
+  const pc=v=>parseFloat(v)>=95?'green':parseFloat(v)>=80?'orange':'red';
+  html+=`<tr class="total-row"><td colspan="2"><strong>TOTALE TELA</strong></td><td><strong>${fN(totRT)} Kg</strong></td><td><strong>${fN(totPT)} Kg</strong></td><td>—</td><td><span class="pct-pill ${pc(pT)}">${pT.replace('.',',')}%</span></td><td></td></tr>
+  <tr class="total-row"><td colspan="2"><strong>TOTALE SPUGNA</strong></td><td><strong>${fN(totRS)} Kg</strong></td><td><strong>${fN(totPS)} Kg</strong></td><td>—</td><td><span class="pct-pill ${pc(pS2)}">${pS2.replace('.',',')}%</span></td><td></td></tr>
+  <tr class="total-row" style="background:#D8E4F0"><td colspan="2"><strong>TOTALE STABILIMENTO</strong></td><td><strong>${fN(totR)} Kg</strong></td><td><strong>${fN(totP)} Kg</strong></td><td><strong>${fN(totPA)} Kg</strong></td><td><span class="pct-pill ${pc(pAll)}">${pAll.replace('.',',')}%</span></td><td></td></tr>`;
+  tbody.innerHTML = html;
+}
+
+// ============================================================
+// PORTAFOGLIO
+// ============================================================
+let portoBuilt = false;
+function buildPortoPanels(){
+  if(portoBuilt) return; portoBuilt = true;
+  const wrap = document.getElementById('porto-panels');
+  if(!wrap) return;
+  PORTO_BASE.forEach(p=>{
+    const tot=p.avviare+p.wip+p.done;
+    const pA=Math.round(p.avviare/tot*100),pW=Math.round(p.wip/tot*100),pD=100-pA-pW;
+    const ordHtml = p.orders.length?`<table class="data-table" style="font-size:11px;margin-top:8px">
+      <thead><tr><th>Ordine</th><th>Cliente</th><th>Kg</th><th>Scadenza</th><th>Stato</th></tr></thead>
+      <tbody>${p.orders.map(o=>`<tr><td>${o.cod}</td><td>${o.cli}</td><td>${o.kg}</td><td>${o.scad}</td><td>${o.stato}</td></tr>`).join('')}</tbody>
+    </table>`:'';
+    wrap.insertAdjacentHTML('beforeend',`<div class="card">
+      <div class="card-title">${p.title}</div>
+      <div style="font-size:26px;font-weight:700;color:var(--navy);margin-bottom:4px">${fN(tot)} Kg</div>
+      <div class="porto-bar"><div class="porto-bar-a" style="flex:${pA}"></div><div class="porto-bar-w" style="flex:${pW}"></div><div class="porto-bar-d" style="flex:${pD}"></div></div>
+      <div class="porto-legend">
+        <span style="display:flex;align-items:center;gap:4px"><span style="width:8px;height:8px;background:#CBD5E0;display:inline-block;border-radius:2px"></span>Da avviare: ${fN(p.avviare)} Kg</span>
+        <span style="display:flex;align-items:center;gap:4px"><span style="width:8px;height:8px;background:var(--teal);display:inline-block;border-radius:2px"></span>WIP: ${fN(p.wip)} Kg</span>
+        <span style="display:flex;align-items:center;gap:4px"><span style="width:8px;height:8px;background:var(--green);display:inline-block;border-radius:2px"></span>Fatto: ${fN(p.done)} Kg</span>
+      </div>
+      <div class="porto-kpi"><span>WIP: <strong>${fN(p.wip)} Kg</strong></span><span>Cycle Time: <strong>${p.ct}</strong></span><span>Ordini: <strong>${p.ord}</strong></span></div>
+      ${ordHtml}
+    </div>`);
+  });
+}
+
+// ============================================================
+// MAIN PERIOD APPLY
+// ============================================================
+function applyPeriod(p, btn){
+  currentPeriod = p;
+  document.querySelectorAll('.period-btn').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  const pd = P[p];
+  // Update all active screens
+  updatePanoramica(pd);
+  if(inited.produttivo) updateProduttivo(pd);
+  if(inited.finanziario) updateFinanziario(pd);
+  if(inited.economico) updateEconomico(pd);
+}
+
+// ============================================================
+// NAVIGATION
+// ============================================================
+const pageTitles={panoramica:'Panoramica',produttivo:'Produttivo',finanziario:'Finanziario',economico:'Economico'};
+
+function showScreen(name){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('screen-'+name).classList.add('active');
+  document.querySelector('[data-screen="'+name+'"]').classList.add('active');
+  document.getElementById('page-title').textContent=pageTitles[name];
+  setTimeout(()=>{ ensureChart(name); if(name==='produttivo') updateProduttivo(P[currentPeriod]); },50);
+}
+
+function showProdTab(tab,btn){
+  document.querySelectorAll('#screen-produttivo .tab-content').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('#screen-produttivo .tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('prod-tab-'+tab).classList.add('active');
+  if(btn) btn.classList.add('active');
+  setTimeout(()=>ensureChart('produttivo'),50);
+}
+
+// ============================================================
+// CUSTOM DATE RANGE PICKER
+// ============================================================
+function toggleDatePicker(){
+  const wrap = document.getElementById('drp-wrap');
+  const backdrop = document.getElementById('drp-backdrop');
+  const isOpen = wrap.classList.contains('open');
+  if(isOpen){ closeDatePicker(); return; }
+  wrap.classList.add('open');
+  backdrop.classList.add('open');
+}
+
+function closeDatePicker(){
+  document.getElementById('drp-wrap').classList.remove('open');
+  document.getElementById('drp-backdrop').classList.remove('open');
+}
+
+function applyCustomPeriod(){
+  const fromVal = document.getElementById('drp-from').value;
+  const toVal   = document.getElementById('drp-to').value;
+  if(!fromVal || !toVal){ alert('Seleziona entrambe le date.'); return; }
+  const from = new Date(fromVal);
+  const to   = new Date(toVal);
+  if(to < from){ alert('La data finale deve essere successiva a quella iniziale.'); return; }
+  const days = Math.round((to - from) / 86400000) + 1;
+
+  // Scale factor relative to 1 month (30 days → ecoS 1)
+  const ecoS = days / 30;
+  const ricavi = Math.round(1075000 * ecoS);
+  const kg = Math.round(145200 * ecoS);
+  const kgTela = Math.round(88600 * ecoS);
+  const kgSpugna = Math.round(56600 * ecoS);
+  const hero2 = Math.round(461313 * ecoS);
+
+  // Build labels for cash-flow chart (weekly points)
+  const cfLabels = [];
+  const cfEnt = [0];
+  const cfUsc = [0];
+  const finLabels = [];
+  const finEnt = [];
+  const finUsc = [];
+  const weeks = Math.ceil(days / 7);
+  for(let w = 1; w <= weeks; w++){
+    const d = new Date(from.getTime() + w * 7 * 86400000);
+    cfLabels.push(d.getDate()+'/'+(d.getMonth()+1));
+    cfEnt.push(Math.round(ricavi * (w / weeks)));
+    cfUsc.push(Math.round(ricavi * 0.57 * (w / weeks)));
+    finLabels.push(d.getDate()+'/'+(d.getMonth()+1));
+    finEnt.push(Math.round((ricavi / weeks) * (0.88 + Math.random()*0.24)));
+    finUsc.push(Math.round((ricavi * 0.57 / weeks) * (0.92 + Math.random()*0.16)));
+  }
+  cfLabels.unshift(from.getDate()+'/'+(from.getMonth()+1));
+
+  // Italian date formatting
+  const mesi = ['gennaio','febbraio','marzo','aprile','maggio','giugno','luglio','agosto','settembre','ottobre','novembre','dicembre'];
+  const fmtDate = d => d.getDate()+' '+mesi[d.getMonth()]+' '+d.getFullYear();
+  const labelRange = fmtDate(from)+' – '+fmtDate(to);
+  const shortRange = from.getDate()+'/'+(from.getMonth()+1)+'–'+to.getDate()+'/'+(to.getMonth()+1);
+
+  // Format number Italian style
+  const fmt = n => n.toLocaleString('it-IT');
+
+  // Build synthetic period data object
+  const pd = {
+    ricaviLabel: 'Ricavi — '+shortRange,
+    ricavi,
+    ricaviSub: labelRange,
+    ricaviDelta: '▲ personalizzato',
+    ricaviDeltaUp: true,
+    refLabel: 'Media mensile 2025',
+    refVal: '€ '+fmt(Math.round(16891240/12)),
+    refSub: 'benchmark mensile',
+    refDelta: ecoS >= 1 ? '▲ confronto mese' : '▲ confronto parziale',
+    prodLabel: 'Produzione '+shortRange,
+    prodKg: fmt(kg)+' Kg',
+    prodSub: 'Tela '+fmt(kgTela)+' · Spugna '+fmt(kgSpugna),
+    prodDelta: '▲ periodo personalizzato',
+    ordini: '47 ordini',
+    ordiniSub: '3.441 articoli scheda',
+    ordiniDelta: 'In lavorazione',
+    oee: 72,
+    cfTitle: 'Cash Flow — '+labelRange,
+    cfLabels,
+    cfEnt,
+    cfUsc,
+    finLabels,
+    finEnt,
+    finUsc,
+    ecoS,
+    pctTela: Math.round(5570900 * ecoS),
+    pctSpugna: Math.round(2947157 * ecoS),
+    pctPrecTela: Math.round(6012400 * ecoS),
+    pctPrecSpugna: Math.round(3200000 * ecoS),
+    cicloMin: [4.2, 5.8],
+    cicloGg: [1.8, 2.4],
+    heroLbl: shortRange,
+    hero1: ricavi,
+    hero2,
+    hero3: 47,
+    yoyTitle: labelRange,
+    yoy: [
+      {l:'Ricavi', v:'€ '+fmt(ricavi), d:'▲ periodo personalizzato', up:true},
+      {l:'Kg prodotti', v:fmt(kg)+' Kg', d:'▲ periodo personalizzato', up:true},
+      {l:'OEE medio', v:'72%', d:'—', up:true},
+      {l:'Ordini attivi', v:'47', d:'—', up:true}
+    ]
+  };
+
+  // Update button state
+  currentPeriod = 'custom';
+  document.querySelectorAll('.period-btn').forEach(b=>b.classList.remove('active'));
+  const btnCustom = document.getElementById('btn-custom');
+  btnCustom.classList.add('active');
+  document.getElementById('drp-range-tag').textContent = days+' giorni selezionati';
+
+  // Apply
+  updatePanoramica(pd);
+  if(inited.produttivo)  updateProduttivo(pd);
+  if(inited.finanziario) updateFinanziario(pd);
+  if(inited.economico)   updateEconomico(pd);
+
+  closeDatePicker();
+}
+
+// ============================================================
+// BOOT
+// ============================================================
+ensureChart('panoramica');
+</script>
+</body>
+</html>
