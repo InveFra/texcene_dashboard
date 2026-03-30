@@ -137,6 +137,40 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);font-
 .drp-backdrop{position:fixed;inset:0;z-index:199;display:none}
 .drp-backdrop.open{display:block}
 @media(max-width:1200px){.kpi-grid{grid-template-columns:repeat(3,1fr)}}
+/* ===== SCREEN PANELS ===== */
+.screen-panels-wrap{margin-top:28px;border-top:2px dashed var(--border);padding-top:20px}
+.screen-panels-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.screen-panels-title{font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;display:flex;align-items:center;gap:8px}
+.panels-count{background:var(--teal);color:#fff;border-radius:10px;padding:1px 7px;font-size:10px;font-weight:700}
+.panel-add-toggle{padding:6px 14px;background:var(--navy);color:#fff;border:none;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;display:flex;align-items:center;gap:6px;transition:background .15s}
+.panel-add-toggle:hover{background:#2d4a7a}
+.panel-add-form{background:var(--white);border-radius:12px;border:1.5px dashed var(--teal);padding:16px;margin-bottom:16px;display:none}
+.panel-add-form.open{display:block}
+.panel-add-row{display:flex;gap:10px;align-items:flex-start}
+.panel-add-row textarea{flex:1;padding:10px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:13px;font-family:'Inter',sans-serif;color:var(--text);resize:none;outline:none;min-height:52px;transition:border-color .15s;line-height:1.5}
+.panel-add-row textarea:focus{border-color:var(--teal)}
+.panel-gen-btn{padding:10px 18px;background:var(--teal);color:#fff;border:none;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;font-family:'Inter',sans-serif;transition:background .15s}
+.panel-gen-btn:hover{background:#00a896}
+.panel-gen-btn:disabled{background:var(--border);color:var(--muted);cursor:default}
+.panel-add-exs{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.panel-add-ex{padding:4px 10px;background:var(--bg);border:1px solid var(--border);border-radius:14px;font-size:11px;color:var(--muted);cursor:pointer;transition:all .15s}
+.panel-add-ex:hover{border-color:var(--teal);color:var(--teal)}
+.panel-add-status{font-size:11px;color:var(--muted);margin-top:8px;display:flex;align-items:center;gap:6px;min-height:16px}
+.ai-panel{background:var(--white);border-radius:12px;box-shadow:var(--card-shadow);margin-bottom:16px;border:1px solid var(--border);overflow:hidden;transition:box-shadow .15s}
+.ai-panel:hover{box-shadow:0 4px 16px rgba(0,0,0,.1)}
+.ai-panel-header{display:flex;justify-content:space-between;align-items:center;padding:11px 16px;background:#FAFBFC;border-bottom:1px solid var(--border);cursor:default}
+.ai-panel-title{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:600;color:var(--navy);flex:1;min-width:0}
+.ai-panel-title span.lbl{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ai-panel-controls{display:none;gap:4px;flex-shrink:0}
+body.editing .ai-panel-controls{display:flex}
+.ai-panel-btn{width:28px;height:28px;border:none;border-radius:6px;cursor:pointer;font-size:13px;background:transparent;color:var(--muted);transition:all .15s;display:flex;align-items:center;justify-content:center}
+.ai-panel-btn:hover{background:var(--border)}
+.ai-panel-btn.danger:hover{background:#FED7D7;color:var(--red)}
+.ai-panel-body{padding:18px;min-height:60px}
+.ai-panel.is-hidden .ai-panel-body{display:none}
+.ai-panel.is-hidden .ai-panel-header{border-bottom:none;background:var(--bg)}
+.ai-panel.is-generating .ai-panel-body{display:flex;align-items:center;justify-content:center;min-height:120px;gap:10px;color:var(--muted);font-size:13px}
+.panels-empty{text-align:center;padding:28px;color:var(--muted);font-size:12px}
 /* ===== EDIT MODE ===== */
 .edit-mode-btn{padding:5px 12px;border:1.5px solid var(--border);border-radius:6px;font-size:12px;font-weight:600;color:var(--muted);cursor:pointer;background:transparent;transition:all .15s;display:flex;align-items:center;gap:5px}
 .edit-mode-btn:hover{border-color:var(--teal);color:var(--teal)}
@@ -150,32 +184,65 @@ body.editing .drag-handle{display:block}
 body.editing .drag-handle:hover{color:var(--teal)}
 .edit-toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:var(--navy);color:#fff;padding:8px 18px;border-radius:20px;font-size:12px;font-weight:500;z-index:500;opacity:0;transition:opacity .25s;pointer-events:none}
 .edit-toast.show{opacity:1}
-/* ===== AI MODIFICA PANEL ===== */
-.ai-mod-fab{position:fixed;bottom:28px;right:28px;z-index:300;display:flex;flex-direction:column;align-items:flex-end;gap:8px}
-.ai-mod-fab-btn{display:flex;align-items:center;gap:8px;padding:11px 18px;background:var(--navy);color:#fff;border:none;border-radius:50px;font-size:13px;font-weight:600;cursor:pointer;box-shadow:0 4px 16px rgba(27,42,74,.35);transition:all .2s;font-family:'Inter',sans-serif}
-.ai-mod-fab-btn:hover{background:#2d4a7a;transform:translateY(-1px)}
-.ai-mod-fab-btn svg{width:16px;height:16px}
-.ai-mod-panel{position:fixed;bottom:0;left:240px;right:0;z-index:299;transform:translateY(100%);transition:transform .3s cubic-bezier(.4,0,.2,1)}
-.ai-mod-panel.open{transform:translateY(0)}
-.ai-mod-panel-inner{background:var(--white);border-top:1px solid var(--border);box-shadow:0 -8px 32px rgba(0,0,0,.12);padding:16px 28px 20px}
-.ai-mod-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
-.ai-mod-title{font-size:13px;font-weight:700;color:var(--navy);display:flex;align-items:center;gap:8px}
-.ai-mod-close{width:28px;height:28px;border:none;background:var(--bg);border-radius:6px;cursor:pointer;font-size:16px;color:var(--muted);display:flex;align-items:center;justify-content:center}
-.ai-mod-close:hover{background:var(--border)}
-.ai-mod-bar{display:flex;gap:10px;align-items:center}
-.ai-mod-bar input{flex:1;padding:10px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:13px;font-family:'Inter',sans-serif;color:var(--text);outline:none;transition:border-color .15s}
-.ai-mod-bar input:focus{border-color:var(--teal)}
-.ai-mod-apply{padding:10px 20px;background:var(--teal);color:#fff;border:none;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;transition:background .15s;white-space:nowrap}
-.ai-mod-apply:hover{background:#00a896}
-.ai-mod-apply:disabled{background:var(--border);cursor:default;color:var(--muted)}
-.ai-mod-undo{padding:10px 14px;background:var(--bg);color:var(--muted);border:1.5px solid var(--border);border-radius:10px;font-size:13px;cursor:pointer;font-family:'Inter',sans-serif;display:none}
-.ai-mod-undo:hover{border-color:var(--navy);color:var(--navy)}
-.ai-mod-chips{display:flex;gap:7px;margin-top:10px;flex-wrap:wrap}
-.ai-mod-chip{padding:5px 11px;background:var(--bg);border:1px solid var(--border);border-radius:16px;font-size:11px;color:var(--muted);cursor:pointer;transition:all .15s}
-.ai-mod-chip:hover{border-color:var(--teal);color:var(--teal)}
-.ai-mod-status{font-size:11px;color:var(--muted);margin-top:8px;min-height:16px;display:flex;align-items:center;gap:6px}
-.ai-mod-spin{width:12px;height:12px;border:2px solid var(--border);border-top-color:var(--teal);border-radius:50%;animation:spin .7s linear infinite;display:none}
+/* ===== AI MODIFICA SPIN ===== */
+.ai-mod-spin{width:12px;height:12px;border:2px solid rgba(255,255,255,.25);border-top-color:var(--teal);border-radius:50%;animation:spin .7s linear infinite;display:none}
 .ai-mod-spin.show{display:inline-block}
+/* ===== CONVERSATION LIST ===== */
+.ai-full-layout{display:grid;grid-template-columns:210px 1fr 270px;gap:16px;height:calc(100vh - 140px)}
+.conv-sidebar{display:flex;flex-direction:column;gap:8px;min-height:0}
+.conv-sidebar-header{display:flex;justify-content:space-between;align-items:center}
+.conv-sidebar-title{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.6px}
+.conv-new-btn{width:26px;height:26px;background:var(--teal);color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;transition:background .15s}
+.conv-new-btn:hover{background:#00a896}
+.conv-list{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:4px}
+.conv-list::-webkit-scrollbar{width:3px}.conv-list::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+.conv-item{padding:9px 10px;border-radius:8px;cursor:pointer;border:1px solid transparent;transition:all .15s;position:relative;group:true}
+.conv-item:hover{background:var(--white);border-color:var(--border)}
+.conv-item.active{background:var(--white);border-color:var(--teal);box-shadow:var(--card-shadow)}
+.conv-item-title{font-size:12px;font-weight:500;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding-right:20px}
+.conv-item.active .conv-item-title{color:var(--navy);font-weight:600}
+.conv-item-date{font-size:10px;color:var(--muted);margin-top:2px}
+.conv-item-del{position:absolute;top:50%;right:8px;transform:translateY(-50%);width:18px;height:18px;background:none;border:none;cursor:pointer;color:var(--muted);font-size:12px;opacity:0;transition:opacity .15s;border-radius:4px;display:flex;align-items:center;justify-content:center}
+.conv-item:hover .conv-item-del{opacity:1}
+.conv-item-del:hover{background:#FED7D7;color:var(--red)}
+/* ===== QUICK CHAT PANEL (bottom slide-up) ===== */
+.qchat-panel{position:fixed;bottom:0;left:240px;right:0;z-index:299;transform:translateY(100%);transition:transform .3s cubic-bezier(.4,0,.2,1)}
+.qchat-panel.open{transform:translateY(0)}
+.qchat-inner{background:var(--white);border-top:1px solid var(--border);box-shadow:0 -8px 32px rgba(0,0,0,.12);display:grid;grid-template-rows:auto 1fr auto;height:340px}
+.qchat-header{display:flex;justify-content:space-between;align-items:center;padding:10px 20px;border-bottom:1px solid var(--border);flex-shrink:0}
+.qchat-title{font-size:13px;font-weight:700;color:var(--navy);display:flex;align-items:center;gap:8px}
+.qchat-actions{display:flex;align-items:center;gap:8px}
+.qchat-conv-sel{font-size:11px;padding:4px 8px;border:1px solid var(--border);border-radius:6px;background:var(--bg);color:var(--text);outline:none;cursor:pointer;max-width:160px}
+.qchat-close{width:26px;height:26px;border:none;background:var(--bg);border-radius:6px;cursor:pointer;color:var(--muted);font-size:14px;display:flex;align-items:center;justify-content:center}
+.qchat-close:hover{background:var(--border)}
+.qchat-messages{overflow-y:auto;padding:12px 20px;display:flex;flex-direction:column;gap:10px}
+.qchat-messages::-webkit-scrollbar{width:3px}.qchat-messages::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+.qchat-input-bar{padding:10px 16px;border-top:1px solid var(--border);display:flex;gap:8px;align-items:center;flex-shrink:0}
+.qchat-input-bar input{flex:1;padding:8px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;font-family:'Inter',sans-serif;outline:none;transition:border-color .15s}
+.qchat-input-bar input:focus{border-color:var(--teal)}
+.qchat-send{width:34px;height:34px;background:var(--teal);border:none;border-radius:8px;cursor:pointer;color:#fff;display:flex;align-items:center;justify-content:center;transition:background .15s;flex-shrink:0}
+.qchat-send:hover{background:#00a896}
+.qchat-send:disabled{background:var(--border);cursor:default}
+/* Edit mode — AI Modifica bar */
+.edit-ai-bar{display:none;position:fixed;bottom:0;left:240px;right:0;z-index:298;background:rgba(27,42,74,.97);padding:10px 24px;align-items:center;gap:10px}
+body.editing .edit-ai-bar{display:flex}
+.edit-ai-bar input{flex:1;padding:8px 14px;border:1.5px solid rgba(255,255,255,.2);border-radius:8px;font-size:13px;font-family:'Inter',sans-serif;color:#fff;background:rgba(255,255,255,.1);outline:none;transition:border-color .15s}
+.edit-ai-bar input::placeholder{color:rgba(255,255,255,.4)}
+.edit-ai-bar input:focus{border-color:var(--teal)}
+.edit-ai-bar-label{font-size:11px;color:rgba(255,255,255,.6);white-space:nowrap;display:flex;align-items:center;gap:6px}
+.edit-ai-apply{padding:8px 16px;background:var(--teal);color:#fff;border:none;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;font-family:'Inter',sans-serif}
+.edit-ai-apply:disabled{background:rgba(255,255,255,.15);color:rgba(255,255,255,.4);cursor:default}
+.edit-ai-undo{padding:8px 12px;background:rgba(255,255,255,.1);color:rgba(255,255,255,.7);border:1px solid rgba(255,255,255,.2);border-radius:8px;font-size:12px;cursor:pointer;font-family:'Inter',sans-serif;display:none}
+.edit-ai-undo.show{display:block}
+.edit-ai-spin{width:14px;height:14px;border:2px solid rgba(255,255,255,.3);border-top-color:var(--teal);border-radius:50%;animation:spin .7s linear infinite;display:none;flex-shrink:0}
+.edit-ai-spin.show{display:block}
+/* Chat toggle button in header */
+.chat-toggle-btn{width:34px;height:34px;background:var(--navy);border:none;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;position:relative}
+.chat-toggle-btn:hover{background:#2d4a7a}
+.chat-toggle-btn.active{background:var(--teal)}
+.chat-toggle-btn svg{width:16px;height:16px;color:#fff}
+.chat-unread{position:absolute;top:-3px;right:-3px;width:8px;height:8px;background:var(--red);border-radius:50%;border:2px solid var(--white);display:none}
+.chat-unread.show{display:block}
 /* ===== AI ADVISOR ===== */
 .ai-layout{display:grid;grid-template-columns:1fr 300px;gap:20px;height:calc(100vh - 140px)}
 .ai-chat-col{display:flex;flex-direction:column;min-height:0}
@@ -356,6 +423,10 @@ body.editing .drag-handle:hover{color:var(--teal)}
     <button class="period-btn" id="btn-custom" onclick="toggleDatePicker()">Personalizzato</button>
   </div>
   <div class="header-right" style="display:flex;align-items:center;gap:12px">
+    <button class="chat-toggle-btn" id="chat-toggle-btn" onclick="toggleQuickChat()" title="Chat AI">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      <div class="chat-unread" id="chat-unread"></div>
+    </button>
     <button class="edit-mode-btn" id="edit-mode-btn" onclick="toggleEditMode()">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
       <span id="edit-btn-label">Modifica layout</span>
@@ -648,19 +719,18 @@ body.editing .drag-handle:hover{color:var(--teal)}
 
   <!-- TAB CHAT -->
   <div id="ai-tab-chat" class="tab-content active">
-  <div class="ai-layout">
+  <div class="ai-full-layout">
+    <!-- CONVERSATION SIDEBAR -->
+    <div class="conv-sidebar">
+      <div class="conv-sidebar-header">
+        <span class="conv-sidebar-title">Conversazioni</span>
+        <button class="conv-new-btn" onclick="createNewConv()" title="Nuova conversazione">+</button>
+      </div>
+      <div class="conv-list" id="conv-list"></div>
+    </div>
     <!-- CHAT COLUMN -->
     <div class="ai-chat-col card" style="padding:20px">
-      <div class="ai-messages" id="ai-messages">
-        <div class="ai-msg assistant">
-          <div class="ai-msg-avatar">AI</div>
-          <div class="ai-msg-bubble">
-            Ciao! Sono il tuo <strong>AI Advisor</strong> per Texcene.<br><br>
-            Ho accesso ai dati correnti della dashboard: ricavi, OEE, cash flow, scadenzario e portafoglio ordini. Puoi chiedermi analisi, confronti, o ragionare insieme su decisioni strategiche.<br><br>
-            Come posso aiutarti?
-          </div>
-        </div>
-      </div>
+      <div class="ai-messages" id="ai-messages"></div>
       <div class="ai-input-bar">
         <textarea id="ai-input" placeholder="Scrivi una domanda o scenario..." rows="1" onkeydown="aiKeyDown(event)" oninput="autoResize(this)"></textarea>
         <button class="ai-send-btn" id="ai-send-btn" onclick="aiSend()" title="Invia">
@@ -836,30 +906,39 @@ body.editing .drag-handle:hover{color:var(--teal)}
 </div>
 </main>
 </div><!-- end app-wrap -->
-<!-- ===== AI MODIFICA FAB ===== -->
-<div class="ai-mod-fab" id="ai-mod-fab" style="display:none">
-  <button class="ai-mod-fab-btn" onclick="toggleAiModPanel()">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-    Modifica con AI
-  </button>
-</div>
-<div class="ai-mod-panel" id="ai-mod-panel">
-  <div class="ai-mod-panel-inner">
-    <div class="ai-mod-header">
-      <div class="ai-mod-title">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-        AI Modifica — <span id="ai-mod-screen-name">Panoramica</span>
+<!-- ===== QUICK CHAT PANEL ===== -->
+<div class="qchat-panel" id="qchat-panel">
+  <div class="qchat-inner">
+    <div class="qchat-header">
+      <div class="qchat-title">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        AI Chat
       </div>
-      <button class="ai-mod-close" onclick="toggleAiModPanel()">✕</button>
+      <div class="qchat-actions">
+        <select class="qchat-conv-sel" id="qchat-conv-sel" onchange="switchConv(this.value)"></select>
+        <button onclick="createNewConv()" style="padding:4px 10px;background:var(--navy);color:#fff;border:none;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif">+ Nuova</button>
+        <button class="qchat-close" onclick="toggleQuickChat()">✕</button>
+      </div>
     </div>
-    <div class="ai-mod-bar">
-      <input type="text" id="ai-mod-input" placeholder='Es. "Metti il cash flow in cima e aggiungi un KPI con il margine lordo"' onkeydown="if(event.key==='Enter') applyAiMod()">
-      <button class="ai-mod-apply" id="ai-mod-apply-btn" onclick="applyAiMod()">Applica</button>
-      <button class="ai-mod-undo" id="ai-mod-undo-btn" onclick="undoAiMod()">↩ Annulla</button>
+    <div class="qchat-messages" id="qchat-messages"></div>
+    <div class="qchat-input-bar">
+      <input type="text" id="qchat-input" placeholder="Scrivi un messaggio..." onkeydown="if(event.key==='Enter')qchatSend()">
+      <button class="qchat-send" id="qchat-send-btn" onclick="qchatSend()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      </button>
     </div>
-    <div class="ai-mod-chips" id="ai-mod-chips"></div>
-    <div class="ai-mod-status"><div class="ai-mod-spin" id="ai-mod-spin"></div><span id="ai-mod-status-text"></span></div>
   </div>
+</div>
+<!-- ===== EDIT MODE AI BAR ===== -->
+<div class="edit-ai-bar" id="edit-ai-bar">
+  <div class="edit-ai-bar-label">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+    AI Modifica — <span id="ai-mod-screen-name">Panoramica</span>:
+  </div>
+  <input type="text" id="ai-mod-input" placeholder='Es. "Metti il cash flow in cima, aggiungi KPI margine lordo"' onkeydown="if(event.key==='Enter')applyAiMod()">
+  <div class="edit-ai-spin" id="ai-mod-spin"></div>
+  <button class="edit-ai-apply" id="ai-mod-apply-btn" onclick="applyAiMod()">Applica</button>
+  <button class="edit-ai-undo" id="ai-mod-undo-btn" onclick="undoAiMod()">↩ Annulla</button>
 </div>
 <div class="edit-toast" id="edit-toast"></div>
 <script>
@@ -867,11 +946,110 @@ body.editing .drag-handle:hover{color:var(--teal)}
 // AI ADVISOR
 // ============================================================
 const AI_MODEL = 'claude-haiku-4-5-20251001';
-let aiHistory = [];
 
-function buildSystemPrompt(){
-  return getAgentPrompt();
+// ============================================================
+// MULTI-CONVERSATION SYSTEM
+// ============================================================
+let conversations = JSON.parse(localStorage.getItem('txc_convs') || '[]');
+let activeConvId = null;
+
+function saveConvs(){ localStorage.setItem('txc_convs', JSON.stringify(conversations)); }
+
+function getActiveConv(){ return conversations.find(c=>c.id===activeConvId)||null; }
+
+function getActiveHistory(){ return getActiveConv()?.messages||[]; }
+
+function convTitle(messages){
+  const firstUser = messages.find(m=>m.role==='user');
+  if(!firstUser) return 'Nuova conversazione';
+  return firstUser.content.length>42 ? firstUser.content.slice(0,42)+'…' : firstUser.content;
 }
+
+function createNewConv(updateUI=true){
+  const conv = { id:'c'+Date.now(), title:'Nuova conversazione', messages:[], updatedAt:new Date().toISOString() };
+  conversations.unshift(conv);
+  activeConvId = conv.id;
+  saveConvs();
+  if(updateUI){ renderConvList(); renderChatMessages('ai-messages'); renderQChatMessages(); updateQChatSelect(); }
+  return conv;
+}
+
+function switchConv(id){
+  activeConvId = id;
+  renderConvList();
+  renderChatMessages('ai-messages');
+  renderQChatMessages();
+  updateQChatSelect();
+}
+
+function deleteConv(id, e){
+  if(e){ e.stopPropagation(); }
+  if(!confirm('Eliminare questa conversazione?')) return;
+  conversations = conversations.filter(c=>c.id!==id);
+  if(activeConvId===id) activeConvId = conversations[0]?.id||null;
+  if(!activeConvId && conversations.length===0) createNewConv(false);
+  saveConvs();
+  renderConvList();
+  renderChatMessages('ai-messages');
+  renderQChatMessages();
+  updateQChatSelect();
+}
+
+function initConversations(){
+  if(conversations.length===0) createNewConv(false);
+  activeConvId = conversations[0].id;
+  renderConvList();
+  renderChatMessages('ai-messages');
+  updateQChatSelect();
+}
+
+function renderConvList(){
+  const list = document.getElementById('conv-list');
+  if(!list) return;
+  list.innerHTML = conversations.map(c=>`
+    <div class="conv-item${c.id===activeConvId?' active':''}" onclick="switchConv('${c.id}')">
+      <div class="conv-item-title">${c.title}</div>
+      <div class="conv-item-date">${new Date(c.updatedAt).toLocaleDateString('it-IT',{day:'2-digit',month:'short'})}</div>
+      <button class="conv-item-del" onclick="deleteConv('${c.id}',event)" title="Elimina">×</button>
+    </div>`).join('');
+}
+
+function updateQChatSelect(){
+  const sel = document.getElementById('qchat-conv-sel');
+  if(!sel) return;
+  sel.innerHTML = conversations.map(c=>`<option value="${c.id}"${c.id===activeConvId?' selected':''}>${c.title.length>28?c.title.slice(0,28)+'…':c.title}</option>`).join('');
+}
+
+const WELCOME_MSG = {role:'assistant',content:'Ciao! Sono il tuo **AI Advisor** per Texcene.\n\nHo accesso ai dati correnti della dashboard: ricavi, OEE, cash flow, scadenzario e portafoglio ordini. Puoi chiedermi analisi, confronti, o ragionare insieme su decisioni strategiche.\n\nCome posso aiutarti?'};
+
+function renderChatMessages(containerId){
+  const wrap = document.getElementById(containerId);
+  if(!wrap) return;
+  const messages = getActiveHistory();
+  const toRender = messages.length===0 ? [WELCOME_MSG] : messages;
+  wrap.innerHTML = '';
+  toRender.forEach(m=>appendMsgToEl(wrap, m.role, m.content));
+  wrap.scrollTop = wrap.scrollHeight;
+}
+
+function renderQChatMessages(){
+  renderChatMessages('qchat-messages');
+}
+
+function appendMsgToEl(wrap, role, content){
+  const div = document.createElement('div');
+  div.className = 'ai-msg '+role;
+  const avatar = role==='user'?'T':'AI';
+  let html = content
+    .replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>')
+    .replace(/^[-•]\s(.+)$/gm,'<li>$1</li>')
+    .replace(/(<li>.*<\/li>)/s,'<ul>$1</ul>')
+    .replace(/\n/g,'<br>');
+  div.innerHTML=`<div class="ai-msg-avatar">${avatar}</div><div class="ai-msg-bubble">${html}</div>`;
+  wrap.appendChild(div);
+}
+
+function buildSystemPrompt(){ return getAgentPrompt(); }
 
 function aiKeyDown(e){
   if(e.key==='Enter' && !e.shiftKey){ e.preventDefault(); aiSend(); }
@@ -884,81 +1062,94 @@ function autoResize(el){
 
 function aiQuick(btn){ document.getElementById('ai-input').value=btn.textContent.replace(/^[^\s]+\s/,'').trim(); aiSend(); }
 
-function aiAppendMsg(role, content){
-  const wrap = document.getElementById('ai-messages');
-  const div = document.createElement('div');
-  div.className = 'ai-msg '+role;
-  const avatar = role==='user'?'T':'AI';
-  // Convert markdown-lite: **bold**, bullet lists
-  let html = content
-    .replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>')
-    .replace(/^[-•]\s(.+)$/gm,'<li>$1</li>')
-    .replace(/(<li>.*<\/li>)/s,'<ul>$1</ul>')
-    .replace(/\n/g,'<br>');
-  div.innerHTML=`<div class="ai-msg-avatar">${avatar}</div><div class="ai-msg-bubble">${html}</div>`;
-  wrap.appendChild(div);
-  wrap.scrollTop=wrap.scrollHeight;
-}
-
-function aiShowTyping(){
-  const wrap=document.getElementById('ai-messages');
+function showTypingIn(containerId){
+  const wrap=document.getElementById(containerId);
+  if(!wrap) return;
   const div=document.createElement('div');
-  div.className='ai-msg assistant';div.id='ai-typing';
+  div.className='ai-msg assistant';div.id='ai-typing-'+containerId;
   div.innerHTML='<div class="ai-msg-avatar">AI</div><div class="ai-msg-bubble"><div class="ai-typing"><span></span><span></span><span></span></div></div>';
   wrap.appendChild(div);wrap.scrollTop=wrap.scrollHeight;
 }
+function hideTypingIn(containerId){ const el=document.getElementById('ai-typing-'+containerId); if(el) el.remove(); }
 
-function aiHideTyping(){ const el=document.getElementById('ai-typing'); if(el) el.remove(); }
-
-async function aiSend(){
-  const input=document.getElementById('ai-input');
-  const text=input.value.trim();
+async function sendMessage(text, inputId, sendBtnId){
   if(!text) return;
   const key=localStorage.getItem('txc_ai_key');
-  if(!key){ alert('Configura prima la tua API Key Anthropic nella colonna destra.'); return; }
-  input.value='';input.style.height='auto';
-  document.getElementById('ai-send-btn').disabled=true;
-  aiAppendMsg('user',text);
-  aiHistory.push({role:'user',content:text});
-  aiShowTyping();
-  // Update context summary
+  if(!key){ alert('Configura prima la API Key in Account → API Key Anthropic.'); return; }
+
+  if(!activeConvId || !getActiveConv()) createNewConv(true);
+
+  const conv = getActiveConv();
+  conv.messages.push({role:'user', content:text});
+  conv.title = convTitle(conv.messages);
+  conv.updatedAt = new Date().toISOString();
+
+  // Append to both panels if open
+  ['ai-messages','qchat-messages'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el && (el.closest('.screen.active')||el.closest('.qchat-panel.open'))){
+      appendMsgToEl(el, 'user', text);
+      el.scrollTop=el.scrollHeight;
+      showTypingIn(id);
+    }
+  });
+
+  const sendBtn=document.getElementById(sendBtnId);
+  if(sendBtn) sendBtn.disabled=true;
+
+  // Update context
   const pd=P[currentPeriod]||P['mese'];
   const ctxEl=document.getElementById('ai-ctx-summary');
   if(ctxEl) ctxEl.textContent=`Periodo: ${currentPeriod} · Ricavi: € ${fN(pd.ricavi)} · OEE: ${pd.oee}%`;
+
   try{
     const resp=await fetch('https://api.anthropic.com/v1/messages',{
       method:'POST',
-      headers:{
-        'content-type':'application/json',
-        'x-api-key':key,
-        'anthropic-version':'2023-06-01',
-        'anthropic-dangerous-direct-browser-access':'true'
-      },
-      body:JSON.stringify({
-        model:AI_MODEL,
-        max_tokens:1024,
-        system:buildSystemPrompt(),
-        messages:aiHistory
-      })
+      headers:{'content-type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      body:JSON.stringify({model:AI_MODEL,max_tokens:1024,system:buildSystemPrompt(),messages:conv.messages})
     });
-    aiHideTyping();
+    ['ai-messages','qchat-messages'].forEach(id=>hideTypingIn(id));
     if(!resp.ok){
       const err=await resp.json();
-      aiAppendMsg('assistant','⚠️ Errore API: '+(err.error?.message||resp.status)+'. Controlla la tua API Key.');
-      aiHistory.pop();
+      const errMsg='⚠️ Errore API: '+(err.error?.message||resp.status);
+      conv.messages.pop();
+      ['ai-messages','qchat-messages'].forEach(id=>{ const el=document.getElementById(id); if(el&&(el.closest('.screen.active')||el.closest('.qchat-panel.open'))){ appendMsgToEl(el,'assistant',errMsg); el.scrollTop=el.scrollHeight; }});
     } else {
-      const data=await resp.json();
-      const reply=data.content[0].text;
-      aiHistory.push({role:'assistant',content:reply});
-      aiAppendMsg('assistant',reply);
+      const reply=await resp.json().then(d=>d.content[0].text);
+      conv.messages.push({role:'assistant',content:reply});
+      conv.updatedAt=new Date().toISOString();
+      ['ai-messages','qchat-messages'].forEach(id=>{ const el=document.getElementById(id); if(el&&(el.closest('.screen.active')||el.closest('.qchat-panel.open'))){ appendMsgToEl(el,'assistant',reply); el.scrollTop=el.scrollHeight; }});
+      // Unread badge if qchat is closed
+      if(!document.getElementById('qchat-panel').classList.contains('open')){
+        document.getElementById('chat-unread').classList.add('show');
+      }
     }
-  } catch(e){
-    aiHideTyping();
-    aiAppendMsg('assistant','⚠️ Errore di connessione: '+e.message+'. Assicurati che la API Key sia corretta e riprova.');
-    aiHistory.pop();
+  } catch(err){
+    ['ai-messages','qchat-messages'].forEach(id=>hideTypingIn(id));
+    conv.messages.pop();
+    ['ai-messages','qchat-messages'].forEach(id=>{ const el=document.getElementById(id); if(el&&(el.closest('.screen.active')||el.closest('.qchat-panel.open'))){ appendMsgToEl(el,'assistant','⚠️ Errore: '+err.message); el.scrollTop=el.scrollHeight; }});
   }
-  document.getElementById('ai-send-btn').disabled=false;
-  document.getElementById('ai-input').focus();
+
+  saveConvs();
+  renderConvList();
+  updateQChatSelect();
+  if(sendBtn) sendBtn.disabled=false;
+}
+
+function aiSend(){
+  const input=document.getElementById('ai-input');
+  const text=input.value.trim(); if(!text) return;
+  input.value=''; input.style.height='auto';
+  sendMessage(text,'ai-input','ai-send-btn');
+  setTimeout(()=>document.getElementById('ai-input').focus(),50);
+}
+
+function qchatSend(){
+  const input=document.getElementById('qchat-input');
+  const text=input.value.trim(); if(!text) return;
+  input.value='';
+  sendMessage(text,'qchat-input','qchat-send-btn');
+  setTimeout(()=>document.getElementById('qchat-input').focus(),50);
 }
 
 function saveApiKey(){
@@ -1318,7 +1509,8 @@ function doLogin(){
     sessionStorage.setItem('txc_user', user);
     document.getElementById('login-screen').classList.add('hidden');
     document.getElementById('app-wrap').classList.add('visible');
-    document.getElementById('ai-mod-fab').style.display = 'flex';
+    initConversations();
+    setTimeout(()=>{ ensureChart('panoramica'); initScreenPanels('panoramica'); }, 100);
     document.getElementById('header-username').textContent = user;
     document.getElementById('acc-display-name').textContent = user;
     const now = new Date();
@@ -1387,6 +1579,12 @@ document.addEventListener('DOMContentLoaded',()=>{
     document.getElementById('app-wrap').classList.add('visible');
     document.getElementById('header-username').textContent = saved;
     document.getElementById('acc-display-name').textContent = saved;
+    initConversations();
+    setTimeout(()=>{
+      ensureChart('panoramica');
+      updatePanoramica(P['mese']);
+      initScreenPanels('panoramica');
+    }, 120);
   }
 });
 
@@ -2034,9 +2232,13 @@ function showScreen(name){
   document.querySelector('[data-screen="'+name+'"]').classList.add('active');
   document.getElementById('page-title').textContent=pageTitles[name]||name;
   updateFabVisibility(name);
-  if(name==='ai'){ setTimeout(()=>{ initAiKeyStatus(); renderDbHistory(); },50); return; }
+  if(name==='ai'){ setTimeout(()=>{ initAiKeyStatus(); renderDbHistory(); initConversations(); renderConvList(); },50); return; }
   if(name==='account'){ setTimeout(initPromptEditor, 50); return; }
-  setTimeout(()=>{ ensureChart(name); if(name==='produttivo') updateProduttivo(P[currentPeriod]); },50);
+  setTimeout(()=>{
+    ensureChart(name);
+    if(name==='produttivo') updateProduttivo(P[currentPeriod]);
+    initScreenPanels(name);
+  },50);
 }
 
 function showProdTab(tab,btn){
@@ -2172,6 +2374,185 @@ function applyCustomPeriod(){
 }
 
 // ============================================================
+// SCREEN PANELS SYSTEM
+// ============================================================
+let screenPanels = JSON.parse(localStorage.getItem('txc_screen_panels') || '{}');
+
+const PANEL_SCREEN_EXAMPLES = {
+  panoramica: ['KPI margine lordo + trend mensile','Alert critici espansi con dettaglio','Confronto ricavi settimana vs target'],
+  produttivo: ['Heatmap OEE tutte le macchine','Fermi imprevisti per reparto','Top 5 macchine per efficienza'],
+  finanziario: ['Proiezione cash flow 30 giorni dettagliata','Scadenzario clienti top 10','DSO e DPO per mese'],
+  economico: ['Trend margine per entità ultimi 6 mesi','Costi energia vs ricavi mensile','Confronto budget vs consuntivo']
+};
+
+function savePanelsToStorage(){ localStorage.setItem('txc_screen_panels', JSON.stringify(screenPanels)); }
+
+function getPanels(screenName){ return screenPanels[screenName] || []; }
+
+function initScreenPanels(screenName){
+  const screenEl = document.getElementById('screen-'+screenName);
+  if(!screenEl || ['ai','account'].includes(screenName)) return;
+  let wrap = screenEl.querySelector('.screen-panels-wrap');
+  if(!wrap){
+    wrap = document.createElement('div');
+    wrap.className = 'screen-panels-wrap';
+    wrap.id = 'panels-wrap-'+screenName;
+    wrap.innerHTML = buildPanelsWrapHTML(screenName);
+    screenEl.appendChild(wrap);
+    // Bind add form textarea resize
+    const ta = wrap.querySelector('.panel-add-ta');
+    if(ta) ta.addEventListener('input', ()=>autoResize(ta));
+  }
+  renderAllPanels(screenName);
+  updatePanelsCount(screenName);
+}
+
+function buildPanelsWrapHTML(screenName){
+  const exs = (PANEL_SCREEN_EXAMPLES[screenName]||[]).map(e=>
+    `<button class="panel-add-ex" onclick="setPanelPrompt('${screenName}','${e.replace(/'/g,"\\'")}')">+ ${e}</button>`
+  ).join('');
+  return `
+  <div class="screen-panels-header">
+    <div class="screen-panels-title">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+      Pannelli AI <span class="panels-count" id="pcount-${screenName}">0</span>
+    </div>
+    <button class="panel-add-toggle" onclick="togglePanelForm('${screenName}')">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      Aggiungi pannello
+    </button>
+  </div>
+  <div class="panel-add-form" id="panel-form-${screenName}">
+    <div class="panel-add-row">
+      <textarea class="panel-add-ta" id="panel-prompt-${screenName}" placeholder='Descrivi il pannello che vuoi aggiungere...' rows="2"></textarea>
+      <button class="panel-gen-btn" id="panel-gen-btn-${screenName}" onclick="generatePanel('${screenName}')">Genera</button>
+    </div>
+    <div class="panel-add-exs">${exs}</div>
+    <div class="panel-add-status" id="panel-status-${screenName}"></div>
+  </div>
+  <div id="panels-list-${screenName}"></div>`;
+}
+
+function togglePanelForm(screenName){
+  const form = document.getElementById('panel-form-'+screenName);
+  if(!form) return;
+  const open = form.classList.toggle('open');
+  if(open) setTimeout(()=>{ const ta=document.getElementById('panel-prompt-'+screenName); if(ta) ta.focus(); },100);
+}
+
+function setPanelPrompt(screenName, text){
+  const ta = document.getElementById('panel-prompt-'+screenName);
+  if(ta){ ta.value=text; const form=document.getElementById('panel-form-'+screenName); if(form) form.classList.add('open'); ta.focus(); }
+}
+
+function renderAllPanels(screenName){
+  const list = document.getElementById('panels-list-'+screenName);
+  if(!list) return;
+  const panels = getPanels(screenName);
+  if(panels.length===0){ list.innerHTML=''; return; }
+  list.innerHTML = panels.map(p=>buildPanelHTML(p,screenName)).join('');
+  // Re-execute scripts per panel
+  list.querySelectorAll('.ai-panel').forEach(panelEl=>{
+    if(panelEl.classList.contains('is-hidden')) return;
+    panelEl.querySelectorAll('canvas').forEach(cv=>{ const c=Chart.getChart(cv); if(c) c.destroy(); });
+    panelEl.querySelectorAll('script').forEach(old=>{ const s=document.createElement('script'); s.textContent=old.textContent; old.replaceWith(s); });
+  });
+}
+
+function buildPanelHTML(panel, screenName){
+  const hidden = panel.hidden;
+  const eyeIcon = hidden
+    ? `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>`
+    : `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`;
+  return `<div class="ai-panel${hidden?' is-hidden':''}" id="apanel-${panel.id}">
+    <div class="ai-panel-header">
+      <div class="ai-panel-title">
+        <span style="color:var(--teal);font-size:10px;font-weight:700;letter-spacing:.5px;flex-shrink:0">AI</span>
+        <span class="lbl" title="${panel.title}">${panel.title}</span>
+      </div>
+      <div class="ai-panel-controls">
+        <button class="ai-panel-btn" title="${hidden?'Mostra':'Nascondi'}" onclick="toggleScreenPanel('${panel.id}','${screenName}')">${eyeIcon}</button>
+        <button class="ai-panel-btn danger" title="Elimina pannello" onclick="deleteScreenPanel('${panel.id}','${screenName}')">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+        </button>
+      </div>
+    </div>
+    ${hidden ? '' : `<div class="ai-panel-body">${panel.html}</div>`}
+  </div>`;
+}
+
+function updatePanelsCount(screenName){
+  const el = document.getElementById('pcount-'+screenName);
+  if(!el) return;
+  const count = getPanels(screenName).length;
+  el.textContent = count;
+  el.style.display = count>0?'inline':'none';
+}
+
+async function generatePanel(screenName){
+  const prompt = document.getElementById('panel-prompt-'+screenName)?.value.trim();
+  if(!prompt) return;
+  const key = localStorage.getItem('txc_ai_key');
+  if(!key){ alert('Configura prima la API Key nella sezione AI Advisor → Account.'); return; }
+
+  const genBtn = document.getElementById('panel-gen-btn-'+screenName);
+  const statusEl = document.getElementById('panel-status-'+screenName);
+  const spin = `<div class="db-spin" style="display:inline-block"></div>`;
+  if(genBtn) genBtn.disabled=true;
+  if(statusEl) statusEl.innerHTML = spin+' Generazione pannello in corso...';
+
+  try {
+    const resp = await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{
+        'content-type':'application/json',
+        'x-api-key':key,
+        'anthropic-version':'2023-06-01',
+        'anthropic-dangerous-direct-browser-access':'true'
+      },
+      body: JSON.stringify({
+        model:'claude-sonnet-4-6',
+        max_tokens:2048,
+        system: buildBuilderSystemPrompt(),
+        messages:[{role:'user', content:'Crea un pannello dashboard per la schermata "'+( pageTitles[screenName]||screenName)+'" con: '+prompt+'\n\nIMPORTANTE: genera un pannello compatto e autonomo. Usa ID canvas con prefisso "sp_'+Math.floor(Math.random()*9000+1000)+'_".'}]
+      })
+    });
+    if(!resp.ok){ const e=await resp.json(); if(statusEl) statusEl.textContent='⚠️ '+(e.error?.message||resp.status); }
+    else {
+      const data = await resp.json();
+      let html = data.content[0].text.replace(/^```html?\n?/i,'').replace(/\n?```$/,'').trim();
+      const panel = { id: 'p'+Date.now(), title: prompt.length>60?prompt.slice(0,60)+'…':prompt, html, hidden:false };
+      if(!screenPanels[screenName]) screenPanels[screenName]=[];
+      screenPanels[screenName].push(panel);
+      savePanelsToStorage();
+      renderAllPanels(screenName);
+      updatePanelsCount(screenName);
+      if(statusEl) statusEl.textContent='✓ Pannello aggiunto';
+      const ta=document.getElementById('panel-prompt-'+screenName); if(ta) ta.value='';
+      setTimeout(()=>{ if(statusEl) statusEl.textContent=''; },3000);
+    }
+  } catch(e){ if(statusEl) statusEl.textContent='⚠️ '+e.message; }
+  if(genBtn) genBtn.disabled=false;
+}
+
+function toggleScreenPanel(panelId, screenName){
+  const panels = getPanels(screenName);
+  const panel = panels.find(p=>p.id===panelId);
+  if(!panel) return;
+  panel.hidden = !panel.hidden;
+  savePanelsToStorage();
+  renderAllPanels(screenName);
+}
+
+function deleteScreenPanel(panelId, screenName){
+  if(!confirm('Eliminare questo pannello?')) return;
+  screenPanels[screenName] = getPanels(screenName).filter(p=>p.id!==panelId);
+  savePanelsToStorage();
+  renderAllPanels(screenName);
+  updatePanelsCount(screenName);
+}
+
+// ============================================================
 // EDIT MODE + DRAG & DROP
 // ============================================================
 let editMode = false;
@@ -2290,18 +2671,24 @@ const AI_MOD_CHIPS = {
 
 let aiModPanelOpen = false;
 let aiModScreenBackup = {};
+let qchatOpen = false;
 
-function toggleAiModPanel(){
-  aiModPanelOpen = !aiModPanelOpen;
-  document.getElementById('ai-mod-panel').classList.toggle('open', aiModPanelOpen);
-  if(aiModPanelOpen){
-    const screenName = document.querySelector('.screen.active')?.id?.replace('screen-','') || 'panoramica';
-    document.getElementById('ai-mod-screen-name').textContent = pageTitles[screenName]||screenName;
-    const chips = AI_MOD_CHIPS[screenName]||AI_MOD_CHIPS.default;
-    document.getElementById('ai-mod-chips').innerHTML = chips.map(c=>`<button class="ai-mod-chip" onclick="document.getElementById('ai-mod-input').value='${c}'">${c}</button>`).join('');
-    document.getElementById('ai-mod-status-text').textContent = '';
-    setTimeout(()=>document.getElementById('ai-mod-input').focus(), 300);
+function toggleQuickChat(){
+  qchatOpen = !qchatOpen;
+  document.getElementById('qchat-panel').classList.toggle('open', qchatOpen);
+  document.getElementById('chat-toggle-btn').classList.toggle('active', qchatOpen);
+  document.getElementById('chat-unread').classList.remove('show');
+  if(qchatOpen){
+    renderQChatMessages();
+    updateQChatSelect();
+    setTimeout(()=>document.getElementById('qchat-input').focus(), 300);
   }
+}
+
+function updateEditAiScreenName(){
+  const screenName = document.querySelector('.screen.active')?.id?.replace('screen-','')||'panoramica';
+  const el = document.getElementById('ai-mod-screen-name');
+  if(el) el.textContent = pageTitles[screenName]||screenName;
 }
 
 function buildModSystemPrompt(screenName, currentHtml){
@@ -2346,10 +2733,9 @@ async function applyAiMod(){
 
   const applyBtn = document.getElementById('ai-mod-apply-btn');
   const spin = document.getElementById('ai-mod-spin');
-  const statusTxt = document.getElementById('ai-mod-status-text');
-  applyBtn.disabled = true;
+  const statusTxt = document.getElementById('ai-mod-apply-btn'); // reuse btn text
+  applyBtn.disabled = true; applyBtn.textContent = '...';
   spin.classList.add('show');
-  statusTxt.textContent = 'Generazione in corso...';
 
   try {
     const resp = await fetch('https://api.anthropic.com/v1/messages',{
@@ -2370,7 +2756,7 @@ async function applyAiMod(){
 
     if(!resp.ok){
       const err = await resp.json();
-      statusTxt.textContent = '⚠️ Errore: '+(err.error?.message||resp.status);
+      showEditToast('⚠️ Errore: '+(err.error?.message||resp.status));
     } else {
       const data = await resp.json();
       let html = data.content[0].text.replace(/^```html?\n?/i,'').replace(/\n?```$/,'').trim();
@@ -2391,16 +2777,18 @@ async function applyAiMod(){
         if(screenName==='economico') updateEconomico(pd);
       }, 200);
       // Show undo
-      document.getElementById('ai-mod-undo-btn').style.display='block';
-      statusTxt.textContent = '✓ Modifiche applicate';
+      document.getElementById('ai-mod-undo-btn').classList.add('show');
+      statusTxt.textContent = '✓ Applicate';
       document.getElementById('ai-mod-input').value = '';
       showEditToast('Schermata aggiornata dall\'AI');
     }
   } catch(e){
-    statusTxt.textContent = '⚠️ Errore: '+e.message;
+    showEditToast('⚠️ Errore: '+e.message);
+  } finally {
+    spin.classList.remove('show');
+    applyBtn.disabled = false;
+    if(applyBtn.textContent === '...') applyBtn.textContent = 'Applica';
   }
-  spin.classList.remove('show');
-  applyBtn.disabled = false;
 }
 
 function undoAiMod(){
@@ -2417,18 +2805,16 @@ function undoAiMod(){
     if(screenName==='finanziario') updateFinanziario(pd);
     if(screenName==='economico') updateEconomico(pd);
   }, 200);
-  document.getElementById('ai-mod-undo-btn').style.display='none';
-  document.getElementById('ai-mod-status-text').textContent='';
+  document.getElementById('ai-mod-undo-btn').classList.remove('show');
+  const applyBtn = document.getElementById('ai-mod-apply-btn');
+  if(applyBtn) applyBtn.textContent = 'Applica';
   showEditToast('Modifiche annullate');
 }
 
-// Show/hide FAB based on current screen (not on AI/Account screens)
 function updateFabVisibility(screenName){
-  const fab = document.getElementById('ai-mod-fab');
-  if(!fab) return;
-  fab.style.display = ['ai','account'].includes(screenName) ? 'none' : 'flex';
-  // Close panel if switching screen
-  if(aiModPanelOpen){ toggleAiModPanel(); }
+  updateEditAiScreenName();
+  // Close quick chat panel when going to AI screen (already full page)
+  if(screenName==='ai' && qchatOpen) toggleQuickChat();
   // Re-setup draggables if edit mode is on
   if(editMode){ teardownDraggables(); setTimeout(setupDraggables, 100); }
 }
