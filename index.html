@@ -137,6 +137,118 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);font-
 .drp-backdrop{position:fixed;inset:0;z-index:199;display:none}
 .drp-backdrop.open{display:block}
 @media(max-width:1200px){.kpi-grid{grid-template-columns:repeat(3,1fr)}}
+/* ===== EDIT MODE ===== */
+.edit-mode-btn{padding:5px 12px;border:1.5px solid var(--border);border-radius:6px;font-size:12px;font-weight:600;color:var(--muted);cursor:pointer;background:transparent;transition:all .15s;display:flex;align-items:center;gap:5px}
+.edit-mode-btn:hover{border-color:var(--teal);color:var(--teal)}
+.edit-mode-btn.active{background:var(--teal);border-color:var(--teal);color:#fff}
+body.editing .kpi-card,body.editing .card,body.editing .dept-card,body.editing .machine-card{cursor:grab;outline:2px dashed rgba(0,201,177,.45);outline-offset:2px;position:relative;transition:outline .15s,box-shadow .15s}
+body.editing .kpi-card:hover,body.editing .card:hover,body.editing .dept-card:hover,body.editing .machine-card:hover{outline-color:var(--teal);box-shadow:0 4px 16px rgba(0,201,177,.2)}
+body.editing .kpi-card.dragging,body.editing .card.dragging,body.editing .dept-card.dragging,body.editing .machine-card.dragging{opacity:.35;cursor:grabbing}
+body.editing .drop-over{outline:2.5px solid var(--teal)!important;background:rgba(0,201,177,.06)!important}
+.drag-handle{position:absolute;top:6px;left:6px;color:var(--border);font-size:14px;line-height:1;cursor:grab;display:none;z-index:5;user-select:none}
+body.editing .drag-handle{display:block}
+body.editing .drag-handle:hover{color:var(--teal)}
+.edit-toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:var(--navy);color:#fff;padding:8px 18px;border-radius:20px;font-size:12px;font-weight:500;z-index:500;opacity:0;transition:opacity .25s;pointer-events:none}
+.edit-toast.show{opacity:1}
+/* ===== AI MODIFICA PANEL ===== */
+.ai-mod-fab{position:fixed;bottom:28px;right:28px;z-index:300;display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+.ai-mod-fab-btn{display:flex;align-items:center;gap:8px;padding:11px 18px;background:var(--navy);color:#fff;border:none;border-radius:50px;font-size:13px;font-weight:600;cursor:pointer;box-shadow:0 4px 16px rgba(27,42,74,.35);transition:all .2s;font-family:'Inter',sans-serif}
+.ai-mod-fab-btn:hover{background:#2d4a7a;transform:translateY(-1px)}
+.ai-mod-fab-btn svg{width:16px;height:16px}
+.ai-mod-panel{position:fixed;bottom:0;left:240px;right:0;z-index:299;transform:translateY(100%);transition:transform .3s cubic-bezier(.4,0,.2,1)}
+.ai-mod-panel.open{transform:translateY(0)}
+.ai-mod-panel-inner{background:var(--white);border-top:1px solid var(--border);box-shadow:0 -8px 32px rgba(0,0,0,.12);padding:16px 28px 20px}
+.ai-mod-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.ai-mod-title{font-size:13px;font-weight:700;color:var(--navy);display:flex;align-items:center;gap:8px}
+.ai-mod-close{width:28px;height:28px;border:none;background:var(--bg);border-radius:6px;cursor:pointer;font-size:16px;color:var(--muted);display:flex;align-items:center;justify-content:center}
+.ai-mod-close:hover{background:var(--border)}
+.ai-mod-bar{display:flex;gap:10px;align-items:center}
+.ai-mod-bar input{flex:1;padding:10px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:13px;font-family:'Inter',sans-serif;color:var(--text);outline:none;transition:border-color .15s}
+.ai-mod-bar input:focus{border-color:var(--teal)}
+.ai-mod-apply{padding:10px 20px;background:var(--teal);color:#fff;border:none;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;transition:background .15s;white-space:nowrap}
+.ai-mod-apply:hover{background:#00a896}
+.ai-mod-apply:disabled{background:var(--border);cursor:default;color:var(--muted)}
+.ai-mod-undo{padding:10px 14px;background:var(--bg);color:var(--muted);border:1.5px solid var(--border);border-radius:10px;font-size:13px;cursor:pointer;font-family:'Inter',sans-serif;display:none}
+.ai-mod-undo:hover{border-color:var(--navy);color:var(--navy)}
+.ai-mod-chips{display:flex;gap:7px;margin-top:10px;flex-wrap:wrap}
+.ai-mod-chip{padding:5px 11px;background:var(--bg);border:1px solid var(--border);border-radius:16px;font-size:11px;color:var(--muted);cursor:pointer;transition:all .15s}
+.ai-mod-chip:hover{border-color:var(--teal);color:var(--teal)}
+.ai-mod-status{font-size:11px;color:var(--muted);margin-top:8px;min-height:16px;display:flex;align-items:center;gap:6px}
+.ai-mod-spin{width:12px;height:12px;border:2px solid var(--border);border-top-color:var(--teal);border-radius:50%;animation:spin .7s linear infinite;display:none}
+.ai-mod-spin.show{display:inline-block}
+/* ===== AI ADVISOR ===== */
+.ai-layout{display:grid;grid-template-columns:1fr 300px;gap:20px;height:calc(100vh - 140px)}
+.ai-chat-col{display:flex;flex-direction:column;min-height:0}
+.ai-messages{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:14px;padding:4px 2px;margin-bottom:16px}
+.ai-messages::-webkit-scrollbar{width:4px}.ai-messages::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+.ai-msg{display:flex;gap:10px;align-items:flex-start;animation:msgIn .2s ease}
+@keyframes msgIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.ai-msg.user{flex-direction:row-reverse}
+.ai-msg-avatar{width:32px;height:32px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700}
+.ai-msg.user .ai-msg-avatar{background:var(--navy);color:#fff}
+.ai-msg.assistant .ai-msg-avatar{background:var(--teal);color:#fff}
+.ai-msg-bubble{max-width:78%;padding:11px 15px;border-radius:14px;font-size:13px;line-height:1.6}
+.ai-msg.user .ai-msg-bubble{background:var(--navy);color:#fff;border-bottom-right-radius:4px}
+.ai-msg.assistant .ai-msg-bubble{background:var(--white);color:var(--text);border:1px solid var(--border);border-bottom-left-radius:4px;box-shadow:var(--card-shadow)}
+.ai-msg.assistant .ai-msg-bubble strong{color:var(--navy)}
+.ai-msg.assistant .ai-msg-bubble ul{padding-left:16px;margin:6px 0}
+.ai-msg.assistant .ai-msg-bubble li{margin-bottom:3px}
+.ai-typing{display:flex;gap:4px;align-items:center;padding:12px 15px}
+.ai-typing span{width:7px;height:7px;background:var(--teal);border-radius:50%;animation:bounce .9s infinite}
+.ai-typing span:nth-child(2){animation-delay:.15s}.ai-typing span:nth-child(3){animation-delay:.3s}
+@keyframes bounce{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-6px)}}
+.ai-input-bar{display:flex;gap:10px;align-items:flex-end}
+.ai-input-bar textarea{flex:1;padding:11px 14px;border:1.5px solid var(--border);border-radius:12px;font-size:13px;font-family:'Inter',sans-serif;color:var(--text);resize:none;outline:none;transition:border-color .15s;line-height:1.5;max-height:120px;min-height:44px}
+.ai-input-bar textarea:focus{border-color:var(--teal)}
+.ai-send-btn{width:44px;height:44px;background:var(--teal);border:none;border-radius:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s;flex-shrink:0}
+.ai-send-btn:hover{background:#00a896}
+.ai-send-btn:disabled{background:var(--border);cursor:default}
+.ai-send-btn svg{width:18px;height:18px;color:#fff}
+.ai-sidebar-col{display:flex;flex-direction:column;gap:14px}
+.ai-chips{display:flex;flex-direction:column;gap:7px}
+.ai-chip{padding:9px 13px;background:var(--white);border:1px solid var(--border);border-radius:10px;font-size:11px;color:var(--text);cursor:pointer;text-align:left;transition:all .15s;line-height:1.4}
+.ai-chip:hover{border-color:var(--teal);color:var(--teal);background:#f0fffe}
+.ai-key-wrap{background:var(--white);border-radius:12px;box-shadow:var(--card-shadow);padding:16px}
+.ai-key-status{display:flex;align-items:center;gap:8px;font-size:12px;margin-bottom:10px}
+.ai-key-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.ai-key-dot.ok{background:var(--green)}.ai-key-dot.missing{background:var(--red)}
+.ai-key-input{width:100%;padding:8px 10px;border:1.5px solid var(--border);border-radius:8px;font-size:12px;font-family:monospace;color:var(--text);outline:none;transition:border-color .15s}
+.ai-key-input:focus{border-color:var(--teal)}
+.ai-key-save{width:100%;margin-top:8px;padding:8px;background:var(--navy);color:#fff;border:none;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif}
+.ai-key-save:hover{background:#2d4a7a}
+.ai-ctx-box{background:var(--white);border-radius:12px;box-shadow:var(--card-shadow);padding:16px;font-size:11px;color:var(--muted);line-height:1.6}
+.ai-ctx-box strong{color:var(--text);display:block;margin-bottom:6px;font-size:12px}
+/* ===== DASHBOARD BUILDER ===== */
+.db-layout{display:flex;flex-direction:column;gap:20px}
+.db-prompt-bar{display:flex;gap:12px;align-items:flex-start}
+.db-prompt-bar textarea{flex:1;padding:13px 16px;border:1.5px solid var(--border);border-radius:12px;font-size:13px;font-family:'Inter',sans-serif;color:var(--text);resize:none;outline:none;transition:border-color .15s;line-height:1.5;min-height:64px;max-height:140px}
+.db-prompt-bar textarea:focus{border-color:var(--teal)}
+.db-gen-btn{padding:13px 22px;background:var(--teal);color:#fff;border:none;border-radius:12px;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;font-family:'Inter',sans-serif;transition:background .15s;display:flex;align-items:center;gap:8px}
+.db-gen-btn:hover{background:#00a896}
+.db-gen-btn:disabled{background:var(--border);cursor:default;color:var(--muted)}
+.db-examples{display:flex;gap:8px;flex-wrap:wrap}
+.db-ex{padding:6px 12px;background:var(--white);border:1px solid var(--border);border-radius:20px;font-size:11px;color:var(--muted);cursor:pointer;transition:all .15s}
+.db-ex:hover{border-color:var(--teal);color:var(--teal)}
+.db-render-wrap{background:var(--white);border-radius:14px;box-shadow:var(--card-shadow);min-height:200px;overflow:hidden}
+.db-render-header{display:flex;justify-content:space-between;align-items:center;padding:14px 20px;border-bottom:1px solid var(--border)}
+.db-render-header span{font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+.db-render-actions{display:flex;gap:8px}
+.db-action-btn{padding:6px 12px;border-radius:7px;font-size:11px;font-weight:600;cursor:pointer;border:none;font-family:'Inter',sans-serif;transition:all .15s}
+.db-action-btn.save{background:#EDF2F7;color:var(--navy)}.db-action-btn.save:hover{background:#CBD5E0}
+.db-action-btn.export{background:rgba(0,201,177,.1);color:#00a896}.db-action-btn.export:hover{background:rgba(0,201,177,.2)}
+.db-action-btn.clear{background:#FFF5F5;color:var(--red)}.db-action-btn.clear:hover{background:#FED7D7}
+.db-render-body{padding:20px;min-height:180px}
+.db-placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:220px;color:var(--muted);text-align:center;gap:10px}
+.db-placeholder svg{opacity:.3}
+.db-placeholder p{font-size:13px}
+.db-generating{display:flex;align-items:center;justify-content:center;min-height:220px;gap:12px;color:var(--muted);font-size:13px}
+.db-spin{width:22px;height:22px;border:3px solid var(--border);border-top-color:var(--teal);border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.db-history{display:flex;flex-direction:column;gap:8px}
+.db-hist-item{background:var(--white);border-radius:10px;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;box-shadow:var(--card-shadow);cursor:pointer;transition:all .15s;border-left:3px solid var(--teal)}
+.db-hist-item:hover{box-shadow:0 4px 12px rgba(0,0,0,.1)}
+.db-hist-item .prompt{font-size:12px;color:var(--text);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-right:12px}
+.db-hist-item .ts{font-size:10px;color:var(--muted);white-space:nowrap}
 /* ===== LOGIN ===== */
 .login-screen{position:fixed;inset:0;background:var(--navy);display:flex;align-items:center;justify-content:center;z-index:1000}
 .login-screen.hidden{display:none}
@@ -178,6 +290,15 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);font-
 .acc-user-info .since{font-size:11px;color:var(--teal);font-weight:500;margin-top:4px}
 .logout-bar{background:#FFF5F5;border:1px solid #FED7D7;border-radius:12px;padding:16px 20px;display:flex;justify-content:space-between;align-items:center}
 .logout-bar span{font-size:13px;color:var(--muted)}
+/* ===== PROMPT EDITOR ===== */
+.prompt-textarea{width:100%;min-height:280px;padding:14px;border:1.5px solid var(--border);border-radius:10px;font-size:12px;font-family:'Menlo','Monaco',monospace;color:var(--text);line-height:1.65;resize:vertical;outline:none;transition:border-color .15s;background:#FAFBFC}
+.prompt-textarea:focus{border-color:var(--teal)}
+.prompt-textarea.is-custom{border-color:var(--teal);background:#f0fffe}
+.prompt-var{display:inline-flex;align-items:center;padding:2px 8px;border-radius:4px;font-size:11px;font-family:monospace;background:#EDF2F7;color:var(--navy);border:1px solid var(--border);cursor:pointer;transition:background .15s}
+.prompt-var:hover{background:#CBD5E0}
+.prompt-status{font-size:11px;font-weight:600;padding:4px 10px;border-radius:6px;display:inline-block}
+.prompt-status.default{background:#EDF2F7;color:var(--muted)}
+.prompt-status.custom{background:rgba(0,201,177,.12);color:#00897B}
 </style>
 </head>
 <body>
@@ -217,6 +338,8 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);font-
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg><span>Economico</span></div>
   </div>
   <div style="padding:12px 16px;border-top:1px solid rgba(255,255,255,.08)">
+    <div class="nav-item" data-screen="ai" onclick="showScreen('ai')" style="border-radius:8px">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a7 7 0 0 1 7 7c0 3-1.5 5.5-4 6.7V18H9v-2.3C6.5 14.5 5 12 5 9a7 7 0 0 1 7-7z"/><path d="M9 21h6"/><path d="M10 17v1"/><path d="M14 17v1"/></svg><span>AI Advisor</span></div>
     <div class="nav-item" data-screen="account" onclick="showScreen('account')" style="border-radius:8px">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg><span>Account</span></div>
   </div>
@@ -233,6 +356,10 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);font-
     <button class="period-btn" id="btn-custom" onclick="toggleDatePicker()">Personalizzato</button>
   </div>
   <div class="header-right" style="display:flex;align-items:center;gap:12px">
+    <button class="edit-mode-btn" id="edit-mode-btn" onclick="toggleEditMode()">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+      <span id="edit-btn-label">Modifica layout</span>
+    </button>
     <span style="font-size:11px;color:var(--muted)">Ult. aggiornamento: 30 mar 2026 14:30</span>
     <div onclick="showScreen('account')" style="display:flex;align-items:center;gap:8px;cursor:pointer;padding:5px 10px;border-radius:20px;border:1px solid var(--border);transition:background .15s" onmouseover="this.style.background='#f1f4f8'" onmouseout="this.style.background='transparent'">
       <div style="width:28px;height:28px;border-radius:50%;background:var(--navy);display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;font-weight:700">T</div>
@@ -512,6 +639,114 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);font-
     </div>
   </div>
 </div>
+<!-- ===== AI ADVISOR ===== -->
+<div id="screen-ai" class="screen">
+  <div class="tabs" style="margin-bottom:20px">
+    <button class="tab-btn active" onclick="showAiTab('chat',this)">💬 Chat Strategica</button>
+    <button class="tab-btn" onclick="showAiTab('builder',this)">🧩 Dashboard Builder</button>
+  </div>
+
+  <!-- TAB CHAT -->
+  <div id="ai-tab-chat" class="tab-content active">
+  <div class="ai-layout">
+    <!-- CHAT COLUMN -->
+    <div class="ai-chat-col card" style="padding:20px">
+      <div class="ai-messages" id="ai-messages">
+        <div class="ai-msg assistant">
+          <div class="ai-msg-avatar">AI</div>
+          <div class="ai-msg-bubble">
+            Ciao! Sono il tuo <strong>AI Advisor</strong> per Texcene.<br><br>
+            Ho accesso ai dati correnti della dashboard: ricavi, OEE, cash flow, scadenzario e portafoglio ordini. Puoi chiedermi analisi, confronti, o ragionare insieme su decisioni strategiche.<br><br>
+            Come posso aiutarti?
+          </div>
+        </div>
+      </div>
+      <div class="ai-input-bar">
+        <textarea id="ai-input" placeholder="Scrivi una domanda o scenario..." rows="1" onkeydown="aiKeyDown(event)" oninput="autoResize(this)"></textarea>
+        <button class="ai-send-btn" id="ai-send-btn" onclick="aiSend()" title="Invia">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        </button>
+      </div>
+    </div>
+    <!-- SIDEBAR -->
+    <div class="ai-sidebar-col">
+      <!-- API KEY -->
+      <div class="ai-key-wrap">
+        <div class="ai-key-status">
+          <div class="ai-key-dot" id="ai-key-dot"></div>
+          <span id="ai-key-label">API Key non configurata</span>
+        </div>
+        <input type="password" class="ai-key-input" id="ai-key-input" placeholder="sk-ant-api...">
+        <button class="ai-key-save" onclick="saveApiKey()">Salva API Key</button>
+      </div>
+      <!-- QUICK PROMPTS -->
+      <div class="card" style="padding:16px">
+        <div class="card-title" style="margin-bottom:10px">Domande rapide</div>
+        <div class="ai-chips">
+          <button class="ai-chip" onclick="aiQuick(this)">📊 Come sta andando il mese rispetto al target?</button>
+          <button class="ai-chip" onclick="aiQuick(this)">⚠️ Quali sono i rischi finanziari principali in questo momento?</button>
+          <button class="ai-chip" onclick="aiQuick(this)">🏭 RAM 3 e SPAZZOLATRICE sono fermi — che impatto ha sulla produzione?</button>
+          <button class="ai-chip" onclick="aiQuick(this)">💡 Dammi 3 azioni prioritarie da fare questa settimana come direzione</button>
+          <button class="ai-chip" onclick="aiQuick(this)">📈 Analisi del cash flow: ci sono tensioni finanziarie nei prossimi 30 giorni?</button>
+          <button class="ai-chip" onclick="aiQuick(this)">🎯 Come migliorare l'OEE dello stabilimento?</button>
+        </div>
+      </div>
+      <!-- CONTEXT -->
+      <div class="ai-ctx-box">
+        <strong>Contesto attivo</strong>
+        <span id="ai-ctx-summary">Periodo: Mese · Ricavi: € 1.075.000 · OEE: 72% · 2 macchine in fermo</span>
+      </div>
+    </div>
+  </div>
+  </div><!-- end tab-chat -->
+
+  <!-- TAB DASHBOARD BUILDER -->
+  <div id="ai-tab-builder" class="tab-content">
+    <div class="db-layout">
+      <!-- PROMPT BAR -->
+      <div>
+        <div class="db-prompt-bar">
+          <textarea id="db-prompt" placeholder='Descrivi la dashboard che vuoi... es. "Voglio un pannello con l\'OEE delle RAM degli ultimi 30 giorni, il cash flow settimanale e i top 3 clienti per Kg"' onkeydown="dbKeyDown(event)" oninput="autoResize(this)"></textarea>
+          <button class="db-gen-btn" id="db-gen-btn" onclick="dbGenerate()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            Genera
+          </button>
+        </div>
+        <div class="db-examples" style="margin-top:10px">
+          <span style="font-size:11px;color:var(--muted);align-self:center">Esempi:</span>
+          <button class="db-ex" onclick="dbExample(this)">OEE tutte le macchine + fermi oggi</button>
+          <button class="db-ex" onclick="dbExample(this)">Cash flow mensile + scadenzario clienti</button>
+          <button class="db-ex" onclick="dbExample(this)">Confronto ricavi Tela vs Spugna ultimi 6 mesi</button>
+          <button class="db-ex" onclick="dbExample(this)">KPI direzionali sintetici per board meeting</button>
+          <button class="db-ex" onclick="dbExample(this)">Portafoglio ordini + ciclo tempo per reparto</button>
+        </div>
+      </div>
+      <!-- RENDER AREA -->
+      <div class="db-render-wrap">
+        <div class="db-render-header">
+          <span id="db-render-title">Dashboard generata</span>
+          <div class="db-render-actions" id="db-render-actions" style="display:none">
+            <button class="db-action-btn save" onclick="dbSave()">💾 Salva</button>
+            <button class="db-action-btn export" onclick="dbExport()">⬇ Esporta HTML</button>
+            <button class="db-action-btn clear" onclick="dbClear()">✕ Pulisci</button>
+          </div>
+        </div>
+        <div class="db-render-body" id="db-render-body">
+          <div class="db-placeholder">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+            <p>Descrivi la dashboard che vuoi e premi <strong>Genera</strong></p>
+            <p style="font-size:11px">L'AI costruirà grafici e KPI personalizzati basati sui dati Texcene</p>
+          </div>
+        </div>
+      </div>
+      <!-- HISTORY -->
+      <div id="db-history-section" style="display:none">
+        <div class="card-title" style="margin-bottom:10px">Dashboard salvate</div>
+        <div class="db-history" id="db-history-list"></div>
+      </div>
+    </div>
+  </div><!-- end tab-builder -->
+</div>
 <!-- ===== ACCOUNT ===== -->
 <div id="screen-account" class="screen">
   <div class="acc-user-card">
@@ -568,6 +803,32 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);font-
       </div>
     </div>
   </div>
+  <!-- PROMPT AGENTE -->
+  <div class="card" style="margin-bottom:24px">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+      <div class="acc-section-title" style="margin-bottom:0">Prompt Agente AI</div>
+      <span class="prompt-status" id="prompt-status">Default</span>
+    </div>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:14px;line-height:1.5">
+      Personalizza il comportamento dell'AI Advisor. Usa le variabili dinamiche per includere i dati live della dashboard.
+    </p>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px">
+      <span style="font-size:11px;color:var(--muted);align-self:center">Variabili:</span>
+      <button class="prompt-var" onclick="insertPromptVar('{{PERIODO}}')">{{PERIODO}}</button>
+      <button class="prompt-var" onclick="insertPromptVar('{{RICAVI}}')">{{RICAVI}}</button>
+      <button class="prompt-var" onclick="insertPromptVar('{{OEE}}')">{{OEE}}</button>
+      <button class="prompt-var" onclick="insertPromptVar('{{MACCHINE}}')">{{MACCHINE}}</button>
+      <button class="prompt-var" onclick="insertPromptVar('{{CASH_FLOW}}')">{{CASH_FLOW}}</button>
+      <button class="prompt-var" onclick="insertPromptVar('{{SCADUTO_CLIENTI}}')">{{SCADUTO_CLIENTI}}</button>
+      <button class="prompt-var" onclick="insertPromptVar('{{DATI_COMPLETI}}')">{{DATI_COMPLETI}}</button>
+    </div>
+    <textarea class="prompt-textarea" id="prompt-editor" oninput="onPromptEdit()" spellcheck="false"></textarea>
+    <div style="display:flex;gap:8px;margin-top:12px;align-items:center">
+      <button class="acc-btn primary" onclick="saveAgentPrompt()">Salva prompt</button>
+      <button class="acc-btn" style="background:var(--bg);border:1px solid var(--border);color:var(--muted)" onclick="resetAgentPrompt()">Ripristina default</button>
+      <span style="font-size:11px;color:var(--muted);margin-left:4px" id="prompt-save-hint"></span>
+    </div>
+  </div>
   <div class="logout-bar">
     <span>Vuoi uscire dalla sessione corrente?</span>
     <button class="acc-btn danger" onclick="doLogout()">Disconnetti</button>
@@ -575,7 +836,474 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);font-
 </div>
 </main>
 </div><!-- end app-wrap -->
+<!-- ===== AI MODIFICA FAB ===== -->
+<div class="ai-mod-fab" id="ai-mod-fab" style="display:none">
+  <button class="ai-mod-fab-btn" onclick="toggleAiModPanel()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+    Modifica con AI
+  </button>
+</div>
+<div class="ai-mod-panel" id="ai-mod-panel">
+  <div class="ai-mod-panel-inner">
+    <div class="ai-mod-header">
+      <div class="ai-mod-title">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+        AI Modifica — <span id="ai-mod-screen-name">Panoramica</span>
+      </div>
+      <button class="ai-mod-close" onclick="toggleAiModPanel()">✕</button>
+    </div>
+    <div class="ai-mod-bar">
+      <input type="text" id="ai-mod-input" placeholder='Es. "Metti il cash flow in cima e aggiungi un KPI con il margine lordo"' onkeydown="if(event.key==='Enter') applyAiMod()">
+      <button class="ai-mod-apply" id="ai-mod-apply-btn" onclick="applyAiMod()">Applica</button>
+      <button class="ai-mod-undo" id="ai-mod-undo-btn" onclick="undoAiMod()">↩ Annulla</button>
+    </div>
+    <div class="ai-mod-chips" id="ai-mod-chips"></div>
+    <div class="ai-mod-status"><div class="ai-mod-spin" id="ai-mod-spin"></div><span id="ai-mod-status-text"></span></div>
+  </div>
+</div>
+<div class="edit-toast" id="edit-toast"></div>
 <script>
+// ============================================================
+// AI ADVISOR
+// ============================================================
+const AI_MODEL = 'claude-haiku-4-5-20251001';
+let aiHistory = [];
+
+function buildSystemPrompt(){
+  return getAgentPrompt();
+}
+
+function aiKeyDown(e){
+  if(e.key==='Enter' && !e.shiftKey){ e.preventDefault(); aiSend(); }
+}
+
+function autoResize(el){
+  el.style.height='auto';
+  el.style.height=Math.min(el.scrollHeight,120)+'px';
+}
+
+function aiQuick(btn){ document.getElementById('ai-input').value=btn.textContent.replace(/^[^\s]+\s/,'').trim(); aiSend(); }
+
+function aiAppendMsg(role, content){
+  const wrap = document.getElementById('ai-messages');
+  const div = document.createElement('div');
+  div.className = 'ai-msg '+role;
+  const avatar = role==='user'?'T':'AI';
+  // Convert markdown-lite: **bold**, bullet lists
+  let html = content
+    .replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>')
+    .replace(/^[-•]\s(.+)$/gm,'<li>$1</li>')
+    .replace(/(<li>.*<\/li>)/s,'<ul>$1</ul>')
+    .replace(/\n/g,'<br>');
+  div.innerHTML=`<div class="ai-msg-avatar">${avatar}</div><div class="ai-msg-bubble">${html}</div>`;
+  wrap.appendChild(div);
+  wrap.scrollTop=wrap.scrollHeight;
+}
+
+function aiShowTyping(){
+  const wrap=document.getElementById('ai-messages');
+  const div=document.createElement('div');
+  div.className='ai-msg assistant';div.id='ai-typing';
+  div.innerHTML='<div class="ai-msg-avatar">AI</div><div class="ai-msg-bubble"><div class="ai-typing"><span></span><span></span><span></span></div></div>';
+  wrap.appendChild(div);wrap.scrollTop=wrap.scrollHeight;
+}
+
+function aiHideTyping(){ const el=document.getElementById('ai-typing'); if(el) el.remove(); }
+
+async function aiSend(){
+  const input=document.getElementById('ai-input');
+  const text=input.value.trim();
+  if(!text) return;
+  const key=localStorage.getItem('txc_ai_key');
+  if(!key){ alert('Configura prima la tua API Key Anthropic nella colonna destra.'); return; }
+  input.value='';input.style.height='auto';
+  document.getElementById('ai-send-btn').disabled=true;
+  aiAppendMsg('user',text);
+  aiHistory.push({role:'user',content:text});
+  aiShowTyping();
+  // Update context summary
+  const pd=P[currentPeriod]||P['mese'];
+  const ctxEl=document.getElementById('ai-ctx-summary');
+  if(ctxEl) ctxEl.textContent=`Periodo: ${currentPeriod} · Ricavi: € ${fN(pd.ricavi)} · OEE: ${pd.oee}%`;
+  try{
+    const resp=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{
+        'content-type':'application/json',
+        'x-api-key':key,
+        'anthropic-version':'2023-06-01',
+        'anthropic-dangerous-direct-browser-access':'true'
+      },
+      body:JSON.stringify({
+        model:AI_MODEL,
+        max_tokens:1024,
+        system:buildSystemPrompt(),
+        messages:aiHistory
+      })
+    });
+    aiHideTyping();
+    if(!resp.ok){
+      const err=await resp.json();
+      aiAppendMsg('assistant','⚠️ Errore API: '+(err.error?.message||resp.status)+'. Controlla la tua API Key.');
+      aiHistory.pop();
+    } else {
+      const data=await resp.json();
+      const reply=data.content[0].text;
+      aiHistory.push({role:'assistant',content:reply});
+      aiAppendMsg('assistant',reply);
+    }
+  } catch(e){
+    aiHideTyping();
+    aiAppendMsg('assistant','⚠️ Errore di connessione: '+e.message+'. Assicurati che la API Key sia corretta e riprova.');
+    aiHistory.pop();
+  }
+  document.getElementById('ai-send-btn').disabled=false;
+  document.getElementById('ai-input').focus();
+}
+
+function saveApiKey(){
+  const val=document.getElementById('ai-key-input').value.trim();
+  if(!val){ alert('Inserisci una API Key valida.'); return; }
+  localStorage.setItem('txc_ai_key',val);
+  document.getElementById('ai-key-input').value='sk-ant-...'+val.slice(-4);
+  document.getElementById('ai-key-dot').className='ai-key-dot ok';
+  document.getElementById('ai-key-label').textContent='API Key configurata';
+}
+
+// ============================================================
+// DASHBOARD BUILDER
+// ============================================================
+let dbSaved = [];
+let dbCurrentHtml = '';
+let dbCurrentPrompt = '';
+
+function showAiTab(tab, btn){
+  document.querySelectorAll('#screen-ai .tab-content').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('#screen-ai .tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('ai-tab-'+tab).classList.add('active');
+  if(btn) btn.classList.add('active');
+  if(tab==='builder') initAiKeyStatus();
+}
+
+function dbKeyDown(e){ if(e.key==='Enter' && !e.shiftKey){ e.preventDefault(); dbGenerate(); } }
+function dbExample(btn){ document.getElementById('db-prompt').value=btn.textContent; }
+
+function buildBuilderSystemPrompt(){
+  const pd = P[currentPeriod] || P['mese'];
+  const machinesJson = JSON.stringify(BASE_MACHINES.map(m=>({
+    name:m.name, dept:m.dept, oee:m.oee.tutti, disp:m.disp, vel:m.vel, qual:m.qual,
+    status:m.status, fermi:m.fermi.tutti, kg:m.kg
+  })));
+  const dataJson = JSON.stringify({
+    periodo: currentPeriod,
+    ricavi: pd.ricavi,
+    prodKg: pd.prodKg,
+    oee: pd.oee,
+    ordini: pd.ordini,
+    pctTela: pd.pctTela,
+    pctSpugna: pd.pctSpugna,
+    cfLabels: pd.cfLabels,
+    cfEnt: pd.cfEnt,
+    cfUsc: pd.cfUsc,
+    hero1: pd.hero1,
+    hero2: pd.hero2
+  });
+
+  return `Sei un esperto generatore di dashboard HTML per Texcene S.r.l., azienda tessile italiana.
+
+DATI CORRENTI DASHBOARD (periodo: ${currentPeriod}):
+${dataJson}
+
+MACCHINE IMPIANTO:
+${machinesJson}
+
+VARIABILI JS GLOBALI DISPONIBILI (già caricate nella pagina):
+- fN(n): formatta numero italiano (es. 1.234.567)
+- fE(n): formatta euro (es. € 1.234.567)
+- P: oggetto con tutti i dati per periodo (chiavi: oggi,settimana,mese,trimestre,ytd,anno)
+- BASE_MACHINES: array macchine con tutti i KPI
+- currentPeriod: periodo attivo
+- Chart: libreria Chart.js 4.4 già caricata
+
+CSS CLASSES DISPONIBILI (già in pagina):
+.card, .card-title, .kpi-card, .kpi-val, .kpi-label, .kpi-sub, .kpi-delta, .delta-up, .delta-down,
+.badge.red, .badge.green, .badge.orange, .badge.teal, .data-table, .prog-bar, .prog-fill,
+.pct-pill.green, .pct-pill.orange, .pct-pill.red
+
+CSS VARIABLES:
+--navy:#1B2A4A  --teal:#00C9B1  --bg:#F7F8FA  --white:#fff
+--red:#E53E3E   --orange:#F6AD55  --green:#48BB78  --text:#2D3748
+--muted:#718096  --border:#E2E8F0  --card-shadow:0 1px 4px rgba(0,0,0,0.08)
+
+ISTRUZIONI FONDAMENTALI:
+1. Genera SOLO l'HTML del contenuto (NO doctype, NO html/head/body tags, NO markdown, NO spiegazioni)
+2. Usa grid/flex con inline styles per il layout
+3. Per i Canvas Chart.js usa ID univoci con prefisso "db_" seguito da numero random (es. "db_7382")
+4. Inizializza i chart in un tag <script> alla fine dello snippet con setTimeout(..., 100)
+5. Usa i dati reali forniti sopra — NON inventare dati diversi
+6. Tutto il testo in italiano
+7. Font Inter già caricato, usa font-family:'Inter',sans-serif
+8. Stile coerente con il design system Texcene (navy/teal/bianco)
+9. La dashboard deve essere autonoma e funzionante appena renderizzata
+10. Massimo ~80 righe di HTML — focus su ciò che è stato richiesto`;
+}
+
+async function dbGenerate(){
+  const prompt = document.getElementById('db-prompt').value.trim();
+  if(!prompt){ alert('Descrivi prima cosa vuoi nella dashboard.'); return; }
+  const key = localStorage.getItem('txc_ai_key');
+  if(!key){ alert('Configura prima la tua API Key nella scheda Chat Strategica.'); return; }
+
+  const btn = document.getElementById('db-gen-btn');
+  btn.disabled = true;
+  const body = document.getElementById('db-render-body');
+  body.innerHTML = '<div class="db-generating"><div class="db-spin"></div>Generazione in corso...</div>';
+  document.getElementById('db-render-actions').style.display = 'none';
+  document.getElementById('db-render-title').textContent = 'Generazione in corso...';
+
+  try {
+    const resp = await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{
+        'content-type':'application/json',
+        'x-api-key':key,
+        'anthropic-version':'2023-06-01',
+        'anthropic-dangerous-direct-browser-access':'true'
+      },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-6',
+        max_tokens: 2048,
+        system: buildBuilderSystemPrompt(),
+        messages:[{role:'user', content:'Crea una dashboard con: '+prompt}]
+      })
+    });
+
+    if(!resp.ok){
+      const err = await resp.json();
+      body.innerHTML = `<div class="db-placeholder"><p style="color:var(--red)">⚠️ Errore: ${err.error?.message||resp.status}</p></div>`;
+    } else {
+      const data = await resp.json();
+      let html = data.content[0].text;
+      // Strip markdown code blocks if present
+      html = html.replace(/^```html?\n?/i,'').replace(/\n?```$/,'').trim();
+      dbCurrentHtml = html;
+      dbCurrentPrompt = prompt;
+      body.innerHTML = html;
+      // Re-run scripts (innerHTML doesn't execute them)
+      body.querySelectorAll('script').forEach(old=>{
+        const s = document.createElement('script');
+        s.textContent = old.textContent;
+        old.replaceWith(s);
+      });
+      document.getElementById('db-render-title').textContent = prompt.length>60?prompt.slice(0,60)+'…':prompt;
+      document.getElementById('db-render-actions').style.display = 'flex';
+    }
+  } catch(e){
+    body.innerHTML = `<div class="db-placeholder"><p style="color:var(--red)">⚠️ Errore di connessione: ${e.message}</p></div>`;
+  }
+  btn.disabled = false;
+}
+
+function dbSave(){
+  if(!dbCurrentHtml) return;
+  const now = new Date();
+  const ts = now.getHours()+':'+String(now.getMinutes()).padStart(2,'0');
+  dbSaved.unshift({ prompt:dbCurrentPrompt, html:dbCurrentHtml, ts });
+  if(dbSaved.length > 8) dbSaved.pop();
+  renderDbHistory();
+}
+
+function dbClear(){
+  dbCurrentHtml=''; dbCurrentPrompt='';
+  document.getElementById('db-render-body').innerHTML=`<div class="db-placeholder">
+    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+    <p>Descrivi la dashboard che vuoi e premi <strong>Genera</strong></p></div>`;
+  document.getElementById('db-render-actions').style.display='none';
+  document.getElementById('db-render-title').textContent='Dashboard generata';
+  document.getElementById('db-prompt').value='';
+}
+
+function dbExport(){
+  if(!dbCurrentHtml) return;
+  const full = `<!DOCTYPE html><html lang="it"><head><meta charset="UTF-8">
+<title>${dbCurrentPrompt.slice(0,40)} — Texcene</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"><\/script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}body{font-family:'Inter',sans-serif;background:#F7F8FA;color:#2D3748;font-size:14px;padding:24px}
+:root{--navy:#1B2A4A;--teal:#00C9B1;--bg:#F7F8FA;--white:#fff;--red:#E53E3E;--orange:#F6AD55;--green:#48BB78;--text:#2D3748;--muted:#718096;--border:#E2E8F0;--card-shadow:0 1px 4px rgba(0,0,0,0.08)}
+.card{background:#fff;border-radius:12px;box-shadow:var(--card-shadow);padding:20px}.card-title{font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:14px}
+.kpi-card{background:#fff;border-radius:12px;box-shadow:var(--card-shadow);padding:18px 16px}.kpi-val{font-size:21px;font-weight:700;color:var(--navy)}.kpi-label{font-size:11px;color:var(--muted);font-weight:500;margin-bottom:6px}.kpi-sub{font-size:11px;color:var(--muted)}.kpi-delta{font-size:11px;font-weight:600}.delta-up{color:#48BB78}.delta-down{color:#E53E3E}
+.badge{display:inline-flex;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700}.badge.green{background:#C6F6D5;color:#276749}.badge.red{background:#FED7D7;color:#E53E3E}.badge.orange{background:#FEEBC8;color:#C05621}.badge.teal{background:#E6FFFA;color:#234E52}
+.pct-pill{display:inline-block;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:600}.pct-pill.green{background:#C6F6D5;color:#276749}.pct-pill.orange{background:#FEEBC8;color:#C05621}.pct-pill.red{background:#FED7D7;color:#E53E3E}
+.data-table{width:100%;border-collapse:collapse;font-size:13px}.data-table th{background:#1B2A4A;color:#fff;padding:10px 12px;text-align:left;font-size:11px}.data-table td{padding:9px 12px;border-bottom:1px solid #E2E8F0}
+.prog-bar{height:5px;background:#E2E8F0;border-radius:10px;overflow:hidden;margin-top:8px}.prog-fill{height:100%;border-radius:10px}
+</style></head><body>
+<div style="margin-bottom:20px"><span style="font-size:11px;color:#718096">Texcene Dashboard — Esportata il ${new Date().toLocaleDateString('it-IT')}</span></div>
+${dbCurrentHtml}
+<script>const fN=n=>Math.round(n).toLocaleString('it-IT');const fE=n=>'€ '+fN(n);<\/script>
+</body></html>`;
+  const blob = new Blob([full],{type:'text/html'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'texcene-custom-'+ Date.now()+'.html';
+  a.click();
+}
+
+function renderDbHistory(){
+  const sec = document.getElementById('db-history-section');
+  const list = document.getElementById('db-history-list');
+  if(!sec||!list) return;
+  sec.style.display = dbSaved.length?'block':'none';
+  list.innerHTML = dbSaved.map((item,i)=>`
+    <div class="db-hist-item" onclick="dbLoad(${i})">
+      <span class="prompt">${item.prompt}</span>
+      <span class="ts">${item.ts}</span>
+    </div>`).join('');
+}
+
+function dbLoad(i){
+  const item = dbSaved[i];
+  if(!item) return;
+  dbCurrentHtml = item.html;
+  dbCurrentPrompt = item.prompt;
+  document.getElementById('db-prompt').value = item.prompt;
+  const body = document.getElementById('db-render-body');
+  body.innerHTML = item.html;
+  body.querySelectorAll('script').forEach(old=>{ const s=document.createElement('script');s.textContent=old.textContent;old.replaceWith(s); });
+  document.getElementById('db-render-title').textContent = item.prompt.length>60?item.prompt.slice(0,60)+'…':item.prompt;
+  document.getElementById('db-render-actions').style.display='flex';
+}
+
+function initAiKeyStatus(){
+  const key=localStorage.getItem('txc_ai_key');
+  const dot=document.getElementById('ai-key-dot');
+  const lbl=document.getElementById('ai-key-label');
+  if(!dot||!lbl) return;
+  if(key){ dot.className='ai-key-dot ok'; lbl.textContent='API Key configurata'; document.getElementById('ai-key-input').value='sk-ant-...'+key.slice(-4); }
+  else { dot.className='ai-key-dot missing'; lbl.textContent='API Key non configurata'; }
+}
+
+// ============================================================
+// AGENT PROMPT EDITOR
+// ============================================================
+const DEFAULT_AGENT_PROMPT =
+`Sei l'AI Advisor strategico della direzione di Texcene S.r.l., un'azienda tessile italiana in Valseriana (BG).
+
+STRUTTURA AZIENDALE:
+- Texcene Produzione: conto lavoro tintoria Tessuto e Spugna (i clienti portano il materiale)
+- Texcene Vendita: acquisto e rivendita tessuti
+- Fatturato 2025: € 16.891.240 (+4,8% vs 2024)
+
+{{DATI_COMPLETI}}
+
+ISTRUZIONI:
+- Rispondi sempre in italiano
+- Sii diretto, concreto e operativo — sei uno sparring partner per la direzione, non un chatbot generico
+- Usa i dati reali della dashboard quando pertinenti
+- Quando dai consigli strategici, considera il contesto del settore tessile italiano e la struttura di Texcene
+- Formatta le risposte con elenchi puntati quando utile per leggibilità
+- Evidenzia sempre rischi e opportunità concrete`;
+
+function resolvePromptVars(template){
+  const pd = P[currentPeriod] || P['mese'];
+  const fermi = BASE_MACHINES.filter(m=>m.status==='fermo').map(m=>m.name).join(', ') || 'nessuna';
+  const critici = BASE_MACHINES.filter(m=>m.critico).map(m=>m.name+' OEE '+m.oee.tutti+'%').join(', ') || 'nessuna';
+  const macchineList = BASE_MACHINES.map(m=>`- ${m.name} [${m.dept}]: OEE ${m.oee.tutti}% | ${m.status}`).join('\n');
+  const datiCompleti = `DATI DASHBOARD — PERIODO CORRENTE (${currentPeriod.toUpperCase()}):
+- Ricavi: € ${fN(pd.ricavi)}
+- Produzione: ${pd.prodKg} (${pd.prodSub})
+- OEE stabilimento: ${pd.oee}% (target 85%)
+- Ordini attivi: ${pd.ordini}
+- Macchine in fermo: ${fermi}
+- Macchine critiche: ${critici}
+- Liquidità disponibile: € 284.500
+- Credito utilizzato: € 742.000 su € 1.200.000 (61,8%)
+- Scaduto clienti: € 47.200 (3 posizioni)
+- PCT Tela: ${fN(pd.pctTela)} | PCT Spugna: ${fN(pd.pctSpugna)}
+
+MACCHINE IMPIANTO:
+${macchineList}`;
+
+  return template
+    .replace(/\{\{PERIODO\}\}/g, currentPeriod)
+    .replace(/\{\{RICAVI\}\}/g, '€ '+fN(pd.ricavi))
+    .replace(/\{\{OEE\}\}/g, pd.oee+'%')
+    .replace(/\{\{MACCHINE\}\}/g, macchineList)
+    .replace(/\{\{CASH_FLOW\}\}/g, `Entrate cumulate: € ${fN((pd.cfEnt||[]).slice(-1)[0]||0)} | Uscite cumulate: € ${fN((pd.cfUsc||[]).slice(-1)[0]||0)}`)
+    .replace(/\{\{SCADUTO_CLIENTI\}\}/g, '€ 47.200 — 3 posizioni oltre scadenza')
+    .replace(/\{\{DATI_COMPLETI\}\}/g, datiCompleti);
+}
+
+function getAgentPrompt(){
+  const custom = localStorage.getItem('txc_agent_prompt');
+  return resolvePromptVars(custom || DEFAULT_AGENT_PROMPT);
+}
+
+function initPromptEditor(){
+  const ta = document.getElementById('prompt-editor');
+  if(!ta) return;
+  const custom = localStorage.getItem('txc_agent_prompt');
+  ta.value = custom || DEFAULT_AGENT_PROMPT;
+  updatePromptStatus(!!custom);
+}
+
+function onPromptEdit(){
+  document.getElementById('prompt-save-hint').textContent = 'Modifiche non salvate';
+  document.getElementById('prompt-save-hint').style.color = 'var(--orange)';
+}
+
+function saveAgentPrompt(){
+  const val = document.getElementById('prompt-editor').value.trim();
+  if(!val) return;
+  const isDefault = val === DEFAULT_AGENT_PROMPT;
+  if(isDefault){
+    localStorage.removeItem('txc_agent_prompt');
+  } else {
+    localStorage.setItem('txc_agent_prompt', val);
+  }
+  updatePromptStatus(!isDefault);
+  const hint = document.getElementById('prompt-save-hint');
+  hint.textContent = '✓ Salvato';
+  hint.style.color = 'var(--green)';
+  setTimeout(()=>{ hint.textContent=''; }, 2500);
+}
+
+function resetAgentPrompt(){
+  localStorage.removeItem('txc_agent_prompt');
+  document.getElementById('prompt-editor').value = DEFAULT_AGENT_PROMPT;
+  document.getElementById('prompt-editor').classList.remove('is-custom');
+  updatePromptStatus(false);
+  const hint = document.getElementById('prompt-save-hint');
+  hint.textContent = '✓ Ripristinato al default';
+  hint.style.color = 'var(--green)';
+  setTimeout(()=>{ hint.textContent=''; }, 2500);
+}
+
+function updatePromptStatus(isCustom){
+  const el = document.getElementById('prompt-status');
+  const ta = document.getElementById('prompt-editor');
+  if(!el) return;
+  if(isCustom){
+    el.textContent = 'Personalizzato'; el.className = 'prompt-status custom';
+    if(ta) ta.classList.add('is-custom');
+  } else {
+    el.textContent = 'Default'; el.className = 'prompt-status default';
+    if(ta) ta.classList.remove('is-custom');
+  }
+}
+
+function insertPromptVar(variable){
+  const ta = document.getElementById('prompt-editor');
+  if(!ta) return;
+  const start = ta.selectionStart;
+  const end = ta.selectionEnd;
+  ta.value = ta.value.slice(0,start) + variable + ta.value.slice(end);
+  ta.selectionStart = ta.selectionEnd = start + variable.length;
+  ta.focus();
+  onPromptEdit();
+}
+
 // ============================================================
 // AUTH
 // ============================================================
@@ -590,6 +1318,7 @@ function doLogin(){
     sessionStorage.setItem('txc_user', user);
     document.getElementById('login-screen').classList.add('hidden');
     document.getElementById('app-wrap').classList.add('visible');
+    document.getElementById('ai-mod-fab').style.display = 'flex';
     document.getElementById('header-username').textContent = user;
     document.getElementById('acc-display-name').textContent = user;
     const now = new Date();
@@ -1296,7 +2025,7 @@ function applyPeriod(p, btn){
 // ============================================================
 // NAVIGATION
 // ============================================================
-const pageTitles={panoramica:'Panoramica',produttivo:'Produttivo',finanziario:'Finanziario',economico:'Economico',account:'Account'};
+const pageTitles={panoramica:'Panoramica',produttivo:'Produttivo',finanziario:'Finanziario',economico:'Economico',ai:'AI Advisor',account:'Account'};
 
 function showScreen(name){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
@@ -1304,7 +2033,10 @@ function showScreen(name){
   document.getElementById('screen-'+name).classList.add('active');
   document.querySelector('[data-screen="'+name+'"]').classList.add('active');
   document.getElementById('page-title').textContent=pageTitles[name]||name;
-  if(name!=='account') setTimeout(()=>{ ensureChart(name); if(name==='produttivo') updateProduttivo(P[currentPeriod]); },50);
+  updateFabVisibility(name);
+  if(name==='ai'){ setTimeout(()=>{ initAiKeyStatus(); renderDbHistory(); },50); return; }
+  if(name==='account'){ setTimeout(initPromptEditor, 50); return; }
+  setTimeout(()=>{ ensureChart(name); if(name==='produttivo') updateProduttivo(P[currentPeriod]); },50);
 }
 
 function showProdTab(tab,btn){
@@ -1437,6 +2169,268 @@ function applyCustomPeriod(){
   if(inited.economico)   updateEconomico(pd);
 
   closeDatePicker();
+}
+
+// ============================================================
+// EDIT MODE + DRAG & DROP
+// ============================================================
+let editMode = false;
+let dragSrc = null;
+let savedLayouts = JSON.parse(localStorage.getItem('txc_layouts') || '{}');
+
+const EDIT_SELECTORS = '.kpi-grid > *, .row-2 > *, .dept-grid > *, .machine-grid > *:not(.hidden), .porto-panels > *, .hero-nums > *';
+
+function toggleEditMode(){
+  editMode = !editMode;
+  const btn = document.getElementById('edit-mode-btn');
+  document.body.classList.toggle('editing', editMode);
+  const lbl = document.getElementById('edit-btn-label');
+  if(editMode){
+    btn.classList.add('active');
+    if(lbl) lbl.textContent = 'Fine modifica';
+    setupDraggables();
+    showEditToast('Trascina i componenti per riordinarli');
+  } else {
+    btn.classList.remove('active');
+    if(lbl) lbl.textContent = 'Modifica layout';
+    teardownDraggables();
+    saveLayoutState();
+    showEditToast('Layout salvato');
+  }
+}
+
+function setupDraggables(){
+  const screen = document.querySelector('.screen.active');
+  if(!screen) return;
+  screen.querySelectorAll(EDIT_SELECTORS).forEach(el=>{
+    if(el.classList.contains('ai-mod-panel')) return;
+    el.setAttribute('draggable','true');
+    el.classList.add('editable-item');
+    // Inject drag handle if not present
+    if(!el.querySelector('.drag-handle')){
+      const h = document.createElement('div');
+      h.className='drag-handle'; h.textContent='⠿'; h.title='Trascina per spostare';
+      el.insertBefore(h, el.firstChild);
+    }
+    el.addEventListener('dragstart', onDragStart);
+    el.addEventListener('dragover', onDragOver);
+    el.addEventListener('dragleave', onDragLeave);
+    el.addEventListener('drop', onDragDrop);
+    el.addEventListener('dragend', onDragEnd);
+  });
+}
+
+function teardownDraggables(){
+  document.querySelectorAll('.editable-item').forEach(el=>{
+    el.removeAttribute('draggable');
+    el.classList.remove('editable-item','drop-over','dragging');
+    el.removeEventListener('dragstart', onDragStart);
+    el.removeEventListener('dragover', onDragOver);
+    el.removeEventListener('dragleave', onDragLeave);
+    el.removeEventListener('drop', onDragDrop);
+    el.removeEventListener('dragend', onDragEnd);
+  });
+}
+
+function onDragStart(e){
+  dragSrc = this;
+  this.classList.add('dragging');
+  e.dataTransfer.effectAllowed = 'move';
+  e.dataTransfer.setData('text/plain','drag');
+}
+function onDragOver(e){
+  e.preventDefault();
+  e.dataTransfer.dropEffect = 'move';
+  if(this !== dragSrc) this.classList.add('drop-over');
+  return false;
+}
+function onDragLeave(){ this.classList.remove('drop-over'); }
+function onDragEnd(){ this.classList.remove('dragging'); document.querySelectorAll('.drop-over').forEach(el=>el.classList.remove('drop-over')); }
+function onDragDrop(e){
+  e.stopPropagation(); e.preventDefault();
+  if(this === dragSrc) return;
+  const parent = this.parentNode;
+  if(dragSrc.parentNode !== parent) return; // only within same container
+  const srcIdx = Array.from(parent.children).indexOf(dragSrc);
+  const tgtIdx = Array.from(parent.children).indexOf(this);
+  if(srcIdx < tgtIdx) parent.insertBefore(dragSrc, this.nextSibling);
+  else parent.insertBefore(dragSrc, this);
+  this.classList.remove('drop-over');
+  // Resize charts after DOM move
+  setTimeout(()=>Object.values(CI).forEach(c=>{ try{c.resize();}catch(e){} }), 50);
+}
+
+function saveLayoutState(){
+  const screen = document.querySelector('.screen.active');
+  if(!screen) return;
+  const id = screen.id;
+  savedLayouts[id] = {};
+  screen.querySelectorAll('.kpi-grid, .row-2, .dept-grid, .machine-grid, .porto-panels, .hero-nums').forEach((grid,gi)=>{
+    savedLayouts[id][gi] = Array.from(grid.children).map(c=>c.id||c.dataset.key||c.className.split(' ')[0]);
+  });
+  localStorage.setItem('txc_layouts', JSON.stringify(savedLayouts));
+}
+
+function showEditToast(msg){
+  const t = document.getElementById('edit-toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 2200);
+}
+
+// ============================================================
+// AI MODIFICA PER SCHERMATA
+// ============================================================
+const AI_MOD_CHIPS = {
+  panoramica: ['Metti il cash flow in cima','Aggiungi KPI margine lordo','Sposta gli alert sotto i KPI','Rendi i KPI più grandi','Aggiungi grafico OEE trending'],
+  produttivo: ['Metti i reparti in 2 colonne','Aggiungi tabella fermi per macchina','Mostra solo macchine critiche in evidenza','Aggiungi gauge OEE stabilimento grande'],
+  finanziario: ['Metti scadenzario in cima','Aggiungi riepilogo RIBA','Mostra saldo netto più grande','Aggiungi KPI DSO clienti'],
+  economico: ['Aggiungi grafico trend ricavi 12 mesi','Metti hero numbers più in evidenza','Aggiungi tabella EBITDA','Sposta treemap in cima'],
+  default: ['Rendi il layout più compatto','Aggiungi un titolo di sezione','Evidenzia i dati critici','Aumenta la dimensione dei numeri chiave']
+};
+
+let aiModPanelOpen = false;
+let aiModScreenBackup = {};
+
+function toggleAiModPanel(){
+  aiModPanelOpen = !aiModPanelOpen;
+  document.getElementById('ai-mod-panel').classList.toggle('open', aiModPanelOpen);
+  if(aiModPanelOpen){
+    const screenName = document.querySelector('.screen.active')?.id?.replace('screen-','') || 'panoramica';
+    document.getElementById('ai-mod-screen-name').textContent = pageTitles[screenName]||screenName;
+    const chips = AI_MOD_CHIPS[screenName]||AI_MOD_CHIPS.default;
+    document.getElementById('ai-mod-chips').innerHTML = chips.map(c=>`<button class="ai-mod-chip" onclick="document.getElementById('ai-mod-input').value='${c}'">${c}</button>`).join('');
+    document.getElementById('ai-mod-status-text').textContent = '';
+    setTimeout(()=>document.getElementById('ai-mod-input').focus(), 300);
+  }
+}
+
+function buildModSystemPrompt(screenName, currentHtml){
+  const pd = P[currentPeriod]||P['mese'];
+  return `Sei un esperto UI developer per Texcene S.r.l. (azienda tessile italiana).
+Devi modificare la schermata "${pageTitles[screenName]||screenName}" della dashboard.
+
+DATI CORRENTI (periodo: ${currentPeriod}):
+- Ricavi: € ${fN(pd.ricavi)} | OEE: ${pd.oee}% | Produzione: ${pd.prodKg}
+- Cash flow: entrate ${fN((pd.cfEnt||[]).slice(-1)[0]||0)} / uscite ${fN((pd.cfUsc||[]).slice(-1)[0]||0)}
+- Macchine critiche: ${BASE_MACHINES.filter(m=>m.critico).map(m=>m.name).join(', ')}
+
+HTML ATTUALE DELLA SCHERMATA (da modificare):
+${currentHtml.substring(0,3000)}
+
+VARIABILI JS GLOBALI: fN(n), fE(n), P, BASE_MACHINES, currentPeriod, CI (chart instances), Chart
+CSS CLASSES DISPONIBILI: .card, .card-title, .kpi-card, .kpi-val, .kpi-label, .kpi-sub, .kpi-delta, .delta-up, .delta-down, .badge, .data-table, .row-2, .kpi-grid, .dept-grid
+CSS VARS: --navy:#1B2A4A --teal:#00C9B1 --bg:#F7F8FA --white:#fff --red:#E53E3E --orange:#F6AD55 --green:#48BB78 --muted:#718096 --border:#E2E8F0
+
+ISTRUZIONI:
+1. Restituisci SOLO l'HTML modificato della schermata — NO html/head/body, NO markdown, NO spiegazioni
+2. Mantieni TUTTI gli id esistenti degli elementi (es. #kpi-ricavi-val, #chart-cashflow-pan) — sono usati dal JS
+3. Puoi riordinare i blocchi, aggiungere nuovi elementi statici, cambiare layout grid/flex
+4. Se aggiungi nuovi Chart.js, usa ID con prefisso "mod_" + numero random e inizializzali con setTimeout(...,150)
+5. Tutto il testo in italiano
+6. Mantieni la coerenza visiva con il design system Texcene
+7. NON rimuovere i canvas esistenti — solo spostali se necessario`;
+}
+
+async function applyAiMod(){
+  const prompt = document.getElementById('ai-mod-input').value.trim();
+  if(!prompt) return;
+  const key = localStorage.getItem('txc_ai_key');
+  if(!key){ alert('Configura prima la API Key nella sezione AI Advisor.'); return; }
+
+  const screenEl = document.querySelector('.screen.active');
+  if(!screenEl) return;
+  const screenName = screenEl.id.replace('screen-','');
+
+  // Backup current HTML for undo
+  aiModScreenBackup[screenName] = screenEl.innerHTML;
+
+  const applyBtn = document.getElementById('ai-mod-apply-btn');
+  const spin = document.getElementById('ai-mod-spin');
+  const statusTxt = document.getElementById('ai-mod-status-text');
+  applyBtn.disabled = true;
+  spin.classList.add('show');
+  statusTxt.textContent = 'Generazione in corso...';
+
+  try {
+    const resp = await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{
+        'content-type':'application/json',
+        'x-api-key':key,
+        'anthropic-version':'2023-06-01',
+        'anthropic-dangerous-direct-browser-access':'true'
+      },
+      body: JSON.stringify({
+        model:'claude-sonnet-4-6',
+        max_tokens:3000,
+        system: buildModSystemPrompt(screenName, screenEl.innerHTML),
+        messages:[{role:'user', content:'Modifica la schermata: '+prompt}]
+      })
+    });
+
+    if(!resp.ok){
+      const err = await resp.json();
+      statusTxt.textContent = '⚠️ Errore: '+(err.error?.message||resp.status);
+    } else {
+      const data = await resp.json();
+      let html = data.content[0].text.replace(/^```html?\n?/i,'').replace(/\n?```$/,'').trim();
+      // Apply to screen
+      screenEl.innerHTML = html;
+      // Re-execute injected scripts
+      screenEl.querySelectorAll('script').forEach(old=>{
+        const s=document.createElement('script'); s.textContent=old.textContent; old.replaceWith(s);
+      });
+      // Re-init charts for this screen
+      inited[screenName] = false;
+      setTimeout(()=>{
+        ensureChart(screenName);
+        const pd = P[currentPeriod];
+        if(screenName==='panoramica') updatePanoramica(pd);
+        if(screenName==='produttivo') updateProduttivo(pd);
+        if(screenName==='finanziario') updateFinanziario(pd);
+        if(screenName==='economico') updateEconomico(pd);
+      }, 200);
+      // Show undo
+      document.getElementById('ai-mod-undo-btn').style.display='block';
+      statusTxt.textContent = '✓ Modifiche applicate';
+      document.getElementById('ai-mod-input').value = '';
+      showEditToast('Schermata aggiornata dall\'AI');
+    }
+  } catch(e){
+    statusTxt.textContent = '⚠️ Errore: '+e.message;
+  }
+  spin.classList.remove('show');
+  applyBtn.disabled = false;
+}
+
+function undoAiMod(){
+  const screenEl = document.querySelector('.screen.active');
+  if(!screenEl) return;
+  const screenName = screenEl.id.replace('screen-','');
+  if(!aiModScreenBackup[screenName]) return;
+  screenEl.innerHTML = aiModScreenBackup[screenName];
+  screenEl.querySelectorAll('script').forEach(old=>{ const s=document.createElement('script');s.textContent=old.textContent;old.replaceWith(s); });
+  inited[screenName]=false;
+  setTimeout(()=>{ ensureChart(screenName); const pd=P[currentPeriod];
+    if(screenName==='panoramica') updatePanoramica(pd);
+    if(screenName==='produttivo') updateProduttivo(pd);
+    if(screenName==='finanziario') updateFinanziario(pd);
+    if(screenName==='economico') updateEconomico(pd);
+  }, 200);
+  document.getElementById('ai-mod-undo-btn').style.display='none';
+  document.getElementById('ai-mod-status-text').textContent='';
+  showEditToast('Modifiche annullate');
+}
+
+// Show/hide FAB based on current screen (not on AI/Account screens)
+function updateFabVisibility(screenName){
+  const fab = document.getElementById('ai-mod-fab');
+  if(!fab) return;
+  fab.style.display = ['ai','account'].includes(screenName) ? 'none' : 'flex';
+  // Close panel if switching screen
+  if(aiModPanelOpen){ toggleAiModPanel(); }
+  // Re-setup draggables if edit mode is on
+  if(editMode){ teardownDraggables(); setTimeout(setupDraggables, 100); }
 }
 
 // ============================================================
