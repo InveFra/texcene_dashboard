@@ -578,6 +578,7 @@ body.editing .edit-ai-bar{display:flex}
     <button class="tab-btn" onclick="showProdTab('ciclo',this)">Ciclo Tempo</button>
     <button class="tab-btn" onclick="showProdTab('rvsp',this)">Realizzato vs Pianificato</button>
     <button class="tab-btn" onclick="showProdTab('porto',this)">Portafoglio Ordini</button>
+    <button class="tab-btn" onclick="showProdTab('bottleneck',this)">Collo di Bottiglia</button>
   </div>
 
   <!-- TAB OEE -->
@@ -606,6 +607,11 @@ body.editing .edit-ai-bar{display:flex}
     <div class="card">
       <div class="card-title" id="turno-oee-title">OEE per Turno — Settimana corrente (media turni)</div>
       <canvas id="chart-turni-oee" height="200"></canvas>
+    </div>
+    <div class="card" style="margin-top:20px">
+      <div class="card-title">Correlazione OEE vs Assenteismo — ultimi 6 mesi per reparto</div>
+      <div style="font-size:11px;color:var(--muted);margin-bottom:12px">Le barre mostrano l'OEE realizzato; le linee l'assenteismo del reparto. La correlazione inversa è evidente nel reparto Spugna.</div>
+      <canvas id="chart-oee-ass" height="200"></canvas>
     </div>
   </div>
 
@@ -643,6 +649,116 @@ body.editing .edit-ai-bar{display:flex}
       </table>
     </div>
     <div class="card"><div class="card-title">Realizzato vs Pianificato per Macchina</div><canvas id="chart-rvsp" height="240"></canvas></div>
+  </div>
+
+  <!-- TAB COLLO DI BOTTIGLIA -->
+  <div id="prod-tab-bottleneck" class="tab-content">
+    <!-- Riepilogo constraint -->
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:20px">
+      <div class="kpi-card alert-card">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start">
+          <div class="kpi-label">Collo di Bottiglia Attivo</div><span class="badge critico">CRITICO</span>
+        </div>
+        <div class="kpi-val red" style="font-size:16px">SPAZZOLATRICE</div>
+        <div class="kpi-sub">80 Kg/gg · utiliz. 23% su cap. 350</div>
+        <div class="kpi-delta delta-down">Limita l'intera linea TELA bianco</div>
+      </div>
+      <div class="kpi-card alert-card">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start">
+          <div class="kpi-label">Fermo Critico Spugna</div><span class="badge red">FERMO</span>
+        </div>
+        <div class="kpi-val red" style="font-size:16px">RAM 3 [01-03]</div>
+        <div class="kpi-sub">120 Kg/gg · utiliz. 19% su cap. 640</div>
+        <div class="kpi-delta delta-down">−520 Kg/gg di produzione mancante</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Capacità Persa (oggi)</div>
+        <div class="kpi-val orange">−1.110 Kg/gg</div>
+        <div class="kpi-sub">Per i due colli di bottiglia attivi</div>
+        <div class="kpi-delta delta-down">≈ −€ 4.800 mancato margine/gg</div>
+      </div>
+    </div>
+
+    <!-- Grafico flusso TELA -->
+    <div class="card" style="margin-bottom:16px">
+      <div class="card-title">Flusso Produttivo TELA — Throughput attuale vs Capacità (Kg/gg)</div>
+      <div style="font-size:11px;color:var(--muted);margin-bottom:10px">Il nodo con il throughput più basso definisce la velocità dell'intera linea. Le barre rosse sono i vincoli da eliminare.</div>
+      <canvas id="chart-bottle-tela" height="180"></canvas>
+    </div>
+
+    <!-- Grafico flusso SPUGNA -->
+    <div class="card" style="margin-bottom:16px">
+      <div class="card-title">Flusso Produttivo SPUGNA — Throughput attuale vs Capacità (Kg/gg)</div>
+      <canvas id="chart-bottle-spugna" height="160"></canvas>
+    </div>
+
+    <!-- Tabella azioni -->
+    <div class="card">
+      <div class="card-title">Piano d'Azione — Rimozione Vincoli</div>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Macchina / Fase</th>
+            <th>Reparto</th>
+            <th>Throughput Attuale</th>
+            <th>Capacità</th>
+            <th>Saturazione</th>
+            <th>Impatto sul Flusso</th>
+            <th>Azione Suggerita</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="critico-row">
+            <td><strong>SPAZZOLATRICE</strong></td><td>TELA</td>
+            <td><span class="pct-pill red">80 Kg/gg</span></td>
+            <td>350 Kg/gg</td>
+            <td><span class="pct-pill red">23%</span></td>
+            <td>Blocca linea bianco — coda 1.400 Kg WIP a monte</td>
+            <td>Manutenzione urgente o sostituzione</td>
+          </tr>
+          <tr class="critico-row">
+            <td><strong>RAM 3 [01-03]</strong></td><td>SPUGNA</td>
+            <td><span class="pct-pill red">120 Kg/gg</span></td>
+            <td>640 Kg/gg</td>
+            <td><span class="pct-pill red">19%</span></td>
+            <td>Riduce capacità Spugna del 34% — OEE 38%</td>
+            <td>Intervento manutentivo in corso</td>
+          </tr>
+          <tr>
+            <td><strong>GARZA</strong></td><td>TELA</td>
+            <td><span class="pct-pill orange">290 Kg/gg</span></td>
+            <td>380 Kg/gg</td>
+            <td><span class="pct-pill orange">76%</span></td>
+            <td>Prossimo vincolo se Spazzolatrice viene risolta</td>
+            <td>Monitorare — ottimizzare parametri</td>
+          </tr>
+          <tr>
+            <td><strong>CANDEGGIO KUSTER</strong></td><td>TELA</td>
+            <td><span class="pct-pill orange">410 Kg/gg</span></td>
+            <td>480 Kg/gg</td>
+            <td><span class="pct-pill orange">85%</span></td>
+            <td>Alta saturazione — rischio collo di bottiglia futuro</td>
+            <td>Ridurre fermi programmati, ottimizzare ciclo</td>
+          </tr>
+          <tr>
+            <td><strong>FOULARD</strong></td><td>TELA</td>
+            <td><span class="pct-pill green">580 Kg/gg</span></td>
+            <td>640 Kg/gg</td>
+            <td><span class="pct-pill green">91%</span></td>
+            <td>Ok — buona saturazione produttiva</td>
+            <td>Nessuna azione immediata</td>
+          </tr>
+          <tr>
+            <td><strong>RAM 1 + RAM 2</strong></td><td>SPUGNA</td>
+            <td><span class="pct-pill green">1.400 Kg/gg</span></td>
+            <td>1.550 Kg/gg</td>
+            <td><span class="pct-pill green">90%</span></td>
+            <td>Ok — ma sovraccaricati per compensare RAM 3 fermo</td>
+            <td>Preservare efficienza — no straordinari eccessivi</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 
   <!-- TAB PORTAFOGLIO -->
@@ -2188,6 +2304,96 @@ function ensureChart(screen){
         ]},
       options:{indexAxis:'y',plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:11}}}},
         scales:{x:{ticks:{callback:v=>fN(v)+' Kg'}}}}
+    });
+
+    // OEE vs Assenteismo correlation
+    const assMonths = ['Ott','Nov','Dic','Gen','Feb','Mar'];
+    CI.oeeAss = new Chart(document.getElementById('chart-oee-ass'),{
+      type:'bar',
+      data:{labels:assMonths,datasets:[
+        {label:'OEE TELA (%)',data:[83,82,81,80,81,81],backgroundColor:'rgba(0,201,177,.6)',yAxisID:'y',order:2},
+        {label:'OEE SPUGNA (%)',data:[68,66,65,63,62,61],backgroundColor:'rgba(27,42,74,.5)',yAxisID:'y',order:2},
+        {label:'Assenteismo TELA (%)',data:[5,6,7,7,8,8],borderColor:'#00C9B1',backgroundColor:'transparent',
+          type:'line',yAxisID:'y1',pointRadius:5,borderWidth:2.5,tension:.3,order:1},
+        {label:'Assenteismo SPUGNA (%)',data:[9,10,11,13,14,15],borderColor:'#E53E3E',backgroundColor:'transparent',
+          type:'line',yAxisID:'y1',pointRadius:5,borderWidth:2.5,tension:.3,order:1,borderDash:[4,3]}
+      ]},
+      options:{
+        plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:11}}}},
+        scales:{
+          y:{min:0,max:100,ticks:{callback:v=>v+'%'},title:{display:true,text:'OEE (%)',font:{size:10}}},
+          y1:{position:'right',min:0,max:25,ticks:{callback:v=>v+'%'},grid:{drawOnChartArea:false},
+            title:{display:true,text:'Assenteismo (%)',font:{size:10}}}
+        },
+        interaction:{mode:'index',intersect:false}
+      }
+    });
+
+    // Bottleneck TELA
+    const telaPipeline = [
+      {s:'Bruciapelo',      act:620, cap:680},
+      {s:'Foulard',         act:580, cap:640},
+      {s:'Candeggio Kuster',act:410, cap:480},
+      {s:'Garza',           act:290, cap:380},
+      {s:'Lav. Continua',   act:680, cap:720},
+      {s:'Spazzolatrice',   act:80,  cap:350},
+    ];
+    const telaColors = telaPipeline.map(r => r.act/r.cap < 0.4 ? '#E53E3E' : r.act/r.cap < 0.80 ? '#D97706' : '#48BB78');
+    CI.bottTela = new Chart(document.getElementById('chart-bottle-tela'),{
+      type:'bar',
+      data:{
+        labels: telaPipeline.map(r=>r.s),
+        datasets:[
+          {label:'Throughput attuale (Kg/gg)', data:telaPipeline.map(r=>r.act), backgroundColor:telaColors, borderRadius:4},
+          {label:'Capacità massima (Kg/gg)',   data:telaPipeline.map(r=>r.cap), backgroundColor:'rgba(0,0,0,0.07)', borderRadius:4}
+        ]
+      },
+      options:{
+        plugins:{
+          legend:{position:'bottom',labels:{boxWidth:10,font:{size:11}}},
+          tooltip:{callbacks:{
+            afterLabel: ctx => ctx.datasetIndex===0 ? '  Saturazione: '+Math.round(telaPipeline[ctx.dataIndex].act/telaPipeline[ctx.dataIndex].cap*100)+'%' : ''
+          }}
+        },
+        scales:{
+          x:{ticks:{font:{size:11}}},
+          y:{ticks:{callback:v=>v+' Kg'},title:{display:true,text:'Kg/giorno',font:{size:10}}}
+        },
+        interaction:{mode:'index',intersect:false}
+      }
+    });
+
+    // Bottleneck SPUGNA
+    const spugnaPipeline = [
+      {s:'RAM 1 [01-04]', act:720, cap:800},
+      {s:'RAM 2 [01-05]', act:680, cap:750},
+      {s:'RAM 3 [01-03]', act:120, cap:640},
+      {s:'RAM Spugna 4',  act:520, cap:600},
+      {s:'Falda',         act:340, cap:400},
+    ];
+    const spugnaColors = spugnaPipeline.map(r => r.act/r.cap < 0.4 ? '#E53E3E' : r.act/r.cap < 0.80 ? '#D97706' : '#48BB78');
+    CI.bottSpugna = new Chart(document.getElementById('chart-bottle-spugna'),{
+      type:'bar',
+      data:{
+        labels: spugnaPipeline.map(r=>r.s),
+        datasets:[
+          {label:'Throughput attuale (Kg/gg)', data:spugnaPipeline.map(r=>r.act), backgroundColor:spugnaColors, borderRadius:4},
+          {label:'Capacità massima (Kg/gg)',   data:spugnaPipeline.map(r=>r.cap), backgroundColor:'rgba(0,0,0,0.07)', borderRadius:4}
+        ]
+      },
+      options:{
+        plugins:{
+          legend:{position:'bottom',labels:{boxWidth:10,font:{size:11}}},
+          tooltip:{callbacks:{
+            afterLabel: ctx => ctx.datasetIndex===0 ? '  Saturazione: '+Math.round(spugnaPipeline[ctx.dataIndex].act/spugnaPipeline[ctx.dataIndex].cap*100)+'%' : ''
+          }}
+        },
+        scales:{
+          x:{ticks:{font:{size:11}}},
+          y:{ticks:{callback:v=>v+' Kg'},title:{display:true,text:'Kg/giorno',font:{size:10}}}
+        },
+        interaction:{mode:'index',intersect:false}
+      }
     });
   }
 
