@@ -462,19 +462,19 @@ body.editing .edit-ai-bar{display:flex}
 <!-- ===== PANORAMICA ===== -->
 <div id="screen-panoramica" class="screen active">
   <div class="kpi-grid">
-    <div class="kpi-card">
+    <div class="kpi-card" id="pan-costo-card">
       <div class="kpi-label">Costo Personale / Kg</div>
-      <div class="kpi-val orange">€ 1,42</div>
-      <div class="kpi-sub">Media stabilimento</div>
-      <div class="kpi-delta delta-down">▲ +0,08 vs target € 1,34</div>
-      <div class="prog-bar"><div class="prog-fill" style="width:94%;background:#D97706"></div></div>
+      <div class="kpi-val orange" id="pan-costo-val">€ 1,42</div>
+      <div class="kpi-sub" id="pan-costo-sub">Media stabilimento</div>
+      <div class="kpi-delta delta-down" id="pan-costo-delta">▲ +0,08 vs target € 1,34</div>
+      <div class="prog-bar"><div class="prog-fill" id="pan-costo-bar" style="width:94%;background:#D97706"></div></div>
     </div>
-    <div class="kpi-card">
+    <div class="kpi-card" id="pan-consegne-card">
       <div class="kpi-label">Rispetto Consegne Fornitori</div>
-      <div class="kpi-val orange">74%</div>
-      <div class="kpi-sub">Puntualità consegne — marzo</div>
-      <div class="kpi-delta delta-down">▼ −6% vs target 80%</div>
-      <div class="prog-bar"><div class="prog-fill" style="width:74%;background:#D97706"></div></div>
+      <div class="kpi-val orange" id="pan-consegne-val">74%</div>
+      <div class="kpi-sub" id="pan-consegne-sub">Puntualità consegne — marzo</div>
+      <div class="kpi-delta delta-down" id="pan-consegne-delta">▼ −6% vs target 80%</div>
+      <div class="prog-bar"><div class="prog-fill" id="pan-consegne-bar" style="width:74%;background:#D97706"></div></div>
     </div>
     <div class="kpi-card">
       <div class="kpi-label" id="kpi-ricavi-label">Ricavi — Marzo 2026</div>
@@ -733,38 +733,38 @@ body.editing .edit-ai-bar{display:flex}
 <!-- ===== RISORSE UMANE ===== -->
 <div id="screen-hr" class="screen">
   <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:20px">
-    <div class="kpi-card">
+    <div class="kpi-card" id="hr-ass-tela-card">
       <div class="kpi-label">Assenteismo — TELA</div>
-      <div class="kpi-val orange">8%</div>
-      <div class="kpi-sub">Ore assenza / ore disponibili</div>
-      <div class="kpi-delta delta-down">▲ +2% vs mese prec.</div>
-      <div class="prog-bar"><div class="prog-fill" style="width:8%;background:#D97706"></div></div>
+      <div class="kpi-val orange" id="hr-ass-tela-val">8%</div>
+      <div class="kpi-sub" id="hr-ass-tela-sub">Ore assenza / ore disponibili</div>
+      <div class="kpi-delta delta-down" id="hr-ass-tela-delta">▲ +2% vs mese prec.</div>
+      <div class="prog-bar"><div class="prog-fill" id="hr-ass-tela-bar" style="width:8%;background:#D97706"></div></div>
     </div>
-    <div class="kpi-card alert-card">
+    <div class="kpi-card alert-card" id="hr-ass-spugna-card">
       <div style="display:flex;justify-content:space-between;align-items:flex-start">
-        <div class="kpi-label">Assenteismo — SPUGNA</div><span class="badge red">CRITICO</span>
+        <div class="kpi-label">Assenteismo — SPUGNA</div><span class="badge red" id="hr-ass-spugna-badge">CRITICO</span>
       </div>
-      <div class="kpi-val red">15%</div>
-      <div class="kpi-sub">Ore assenza / ore disponibili</div>
-      <div class="kpi-delta delta-down">▲ +7% vs mese prec.</div>
-      <div class="prog-bar"><div class="prog-fill" style="width:15%;background:var(--red)"></div></div>
+      <div class="kpi-val red" id="hr-ass-spugna-val">15%</div>
+      <div class="kpi-sub" id="hr-ass-spugna-sub">Ore assenza / ore disponibili</div>
+      <div class="kpi-delta delta-down" id="hr-ass-spugna-delta">▲ +7% vs mese prec.</div>
+      <div class="prog-bar"><div class="prog-fill" id="hr-ass-spugna-bar" style="width:15%;background:var(--red)"></div></div>
     </div>
     <div class="kpi-card">
       <div class="kpi-label">Incidenza Straordinari</div>
-      <div class="kpi-val orange">12,4%</div>
-      <div class="kpi-sub">Su totale ore lavorate</div>
-      <div class="kpi-delta delta-down">▲ +3,1% vs target 9%</div>
+      <div class="kpi-val orange" id="hr-straord-val">12,4%</div>
+      <div class="kpi-sub" id="hr-straord-sub">Su totale ore lavorate</div>
+      <div class="kpi-delta" id="hr-straord-delta">▲ +3,1% vs target 9%</div>
     </div>
     <div class="kpi-card">
       <div class="kpi-label">Costo Lavoro / Kg</div>
-      <div class="kpi-val">€ 1,42</div>
-      <div class="kpi-sub">Media stabilimento</div>
-      <div class="kpi-delta delta-down">▲ +0,08 vs target € 1,34</div>
+      <div class="kpi-val" id="hr-costo-val">€ 1,42</div>
+      <div class="kpi-sub" id="hr-costo-sub">Media stabilimento</div>
+      <div class="kpi-delta" id="hr-costo-delta">▲ +0,08 vs target € 1,34</div>
     </div>
   </div>
   <div style="display:grid;grid-template-columns:3fr 2fr;gap:16px;margin-bottom:20px">
     <div class="card">
-      <div class="card-title">Produttività (Kg/H Personale) vs Ore Lavorate Effettive</div>
+      <div class="card-title" id="hr-prod-title">Produttività (Kg/H Personale) vs Ore Lavorate Effettive</div>
       <canvas id="chart-hr-prod" height="240"></canvas>
     </div>
     <div class="card">
@@ -773,60 +773,65 @@ body.editing .edit-ai-bar{display:flex}
     </div>
   </div>
   <div class="card" style="overflow-x:auto">
-    <div class="card-title">Dettaglio Performance per Reparto</div>
-    <table class="data-table">
+    <div class="card-title">Dettaglio Performance per Reparto — da timbrature e giustificativi</div>
+    <table class="data-table" id="hr-table">
       <thead>
         <tr>
-          <th>Reparto</th>
+          <th>Reparto / Funzione</th>
           <th>Addetti</th>
-          <th>Ore Lavorate</th>
-          <th>Produttività (Kg/H)</th>
-          <th>Assenteismo</th>
+          <th>Ore Presenti</th>
+          <th>Ore Assenza</th>
+          <th>di cui Malattia</th>
+          <th>di cui Permessi/Ferie</th>
           <th>Straordinari</th>
+          <th>Produttività (Kg/H)</th>
           <th>Costo / Kg</th>
-          <th>Formazione</th>
         </tr>
       </thead>
-      <tbody>
+      <tbody id="hr-tbody">
         <tr>
           <td><strong>TELA</strong></td>
           <td>34</td>
           <td>5.440 h</td>
+          <td><span class="pct-pill orange">435 h (8%)</span></td>
+          <td>261 h</td>
+          <td>174 h</td>
+          <td><span class="pct-pill orange">555 h (10,2%)</span></td>
           <td><span class="pct-pill green">8,6 Kg/H</span></td>
-          <td><span class="pct-pill orange">8%</span></td>
-          <td><span class="pct-pill orange">10,2%</span></td>
           <td>€ 1,31</td>
-          <td>3/34 completata</td>
         </tr>
         <tr>
           <td><strong>SPUGNA</strong></td>
           <td>28</td>
           <td>4.032 h</td>
+          <td><span class="pct-pill red">605 h (15%)</span></td>
+          <td>423 h</td>
+          <td>182 h</td>
+          <td><span class="pct-pill red">662 h (16,4%)</span></td>
           <td><span class="pct-pill red">6,1 Kg/H</span></td>
-          <td><span class="pct-pill red">15%</span></td>
-          <td><span class="pct-pill red">16,4%</span></td>
           <td>€ 1,58</td>
-          <td>1/28 completata</td>
         </tr>
         <tr>
           <td><strong>MANUTENZIONE</strong></td>
           <td>8</td>
           <td>1.360 h</td>
+          <td><span class="pct-pill green">54 h (4%)</span></td>
+          <td>27 h</td>
+          <td>27 h</td>
+          <td><span class="pct-pill green">92 h (6,8%)</span></td>
           <td><span class="pct-pill green">—</span></td>
-          <td><span class="pct-pill green">4%</span></td>
-          <td><span class="pct-pill green">6,8%</span></td>
           <td>—</td>
-          <td>2/8 completata</td>
         </tr>
         <tr class="total-row">
           <td><strong>STABILIMENTO</strong></td>
           <td><strong>70</strong></td>
           <td><strong>10.832 h</strong></td>
+          <td><strong>1.094 h (11%)</strong></td>
+          <td><strong>711 h</strong></td>
+          <td><strong>383 h</strong></td>
+          <td><strong>1.343 h (12,4%)</strong></td>
           <td><strong>7,4 Kg/H</strong></td>
-          <td><strong>11%</strong></td>
-          <td><strong>12,4%</strong></td>
           <td><strong>€ 1,42</strong></td>
-          <td><strong>6/70 completata</strong></td>
         </tr>
       </tbody>
     </table>
@@ -836,38 +841,38 @@ body.editing .edit-ai-bar{display:flex}
 <!-- ===== ACQUISTI ===== -->
 <div id="screen-acquisti" class="screen">
   <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:20px">
-    <div class="kpi-card alert-card">
+    <div class="kpi-card alert-card" id="acq-ppv-card">
       <div style="display:flex;justify-content:space-between;align-items:flex-start">
-        <div class="kpi-label">PPV — Purchase Price Variance</div><span class="badge orange">ATTENZIONE</span>
+        <div class="kpi-label">PPV — Purchase Price Variance</div><span class="badge orange" id="acq-ppv-badge">ATTENZIONE</span>
       </div>
-      <div class="kpi-val orange">+€ 38.400</div>
-      <div class="kpi-sub">Scostamento prezzo acquisto vs budget</div>
-      <div class="kpi-delta delta-down">▲ +5,6% vs budget previsto</div>
+      <div class="kpi-val orange" id="acq-ppv-val">+€ 38.400</div>
+      <div class="kpi-sub" id="acq-ppv-sub">Scostamento prezzo acquisto vs budget</div>
+      <div class="kpi-delta delta-down" id="acq-ppv-delta">▲ +5,6% vs budget previsto</div>
     </div>
     <div class="kpi-card">
       <div class="kpi-label">Lead Time Mediano</div>
-      <div class="kpi-val">18 gg</div>
-      <div class="kpi-sub">Giorni medi attesa consegna</div>
-      <div class="kpi-delta delta-down">▲ +3 gg vs target 15 gg</div>
+      <div class="kpi-val" id="acq-lead-val">18 gg</div>
+      <div class="kpi-sub" id="acq-lead-sub">Giorni medi attesa consegna</div>
+      <div class="kpi-delta" id="acq-lead-delta">▲ +3 gg vs target 15 gg</div>
     </div>
     <div class="kpi-card">
       <div class="kpi-label">Rispetto Consegne</div>
-      <div class="kpi-val orange">74%</div>
-      <div class="kpi-sub">Puntualità fornitori — marzo</div>
-      <div class="kpi-delta delta-down">▼ −6% vs target 80%</div>
-      <div class="prog-bar"><div class="prog-fill" style="width:74%;background:#D97706"></div></div>
+      <div class="kpi-val orange" id="acq-puntualita-val">74%</div>
+      <div class="kpi-sub" id="acq-puntualita-sub">Puntualità fornitori — marzo</div>
+      <div class="kpi-delta delta-down" id="acq-puntualita-delta">▼ −6% vs target 80%</div>
+      <div class="prog-bar"><div class="prog-fill" id="acq-puntualita-bar" style="width:74%;background:#D97706"></div></div>
     </div>
     <div class="kpi-card">
       <div class="kpi-label">Concentrazione Fornitori</div>
-      <div class="kpi-val orange">68%</div>
+      <div class="kpi-val orange" id="acq-concent-val">68%</div>
       <div class="kpi-sub">Dipendenza dai top 3 fornitori</div>
       <div class="kpi-delta" style="color:var(--muted)">Risk management: alto</div>
-      <div class="prog-bar"><div class="prog-fill" style="width:68%;background:#D97706"></div></div>
+      <div class="prog-bar"><div class="prog-fill" id="acq-concent-bar" style="width:68%;background:#D97706"></div></div>
     </div>
   </div>
   <div style="display:grid;grid-template-columns:2fr 1fr;gap:16px;margin-bottom:20px">
     <div class="card">
-      <div class="card-title">Andamento Prezzi Materie Prime vs Budget — ultimi 6 mesi</div>
+      <div class="card-title" id="acq-prezzi-title">Andamento Prezzi Materie Prime vs Budget — ultimi 6 mesi</div>
       <canvas id="chart-acq-prezzi" height="240"></canvas>
     </div>
     <div class="card">
@@ -890,7 +895,7 @@ body.editing .edit-ai-bar{display:flex}
           <th>Ranking</th>
         </tr>
       </thead>
-      <tbody>
+      <tbody id="acq-tbody">
         <tr>
           <td><strong>Cottex International</strong></td>
           <td>Cotone</td>
@@ -1862,7 +1867,20 @@ const P = {
     cicloMin:[4.2,5.8], cicloGg:[1.8,2.4],
     heroLbl:'Oggi 30 mar 2026', hero1:58400, hero2:24800, hero3:47,
     yoyTitle:'Oggi vs ieri',
-    yoy:[{l:'Ricavi',v:'€ 58.400',d:'▲ +3,2%',up:true},{l:'Kg prodotti',v:'4.840 Kg',d:'▲ +2,1%',up:true},{l:'OEE medio',v:'72%',d:'▼ −2,0%',up:false},{l:'Fermi impr.',v:'530 min',d:'▼ −18%',up:false}]
+    yoy:[{l:'Ricavi',v:'€ 58.400',d:'▲ +3,2%',up:true},{l:'Kg prodotti',v:'4.840 Kg',d:'▲ +2,1%',up:true},{l:'OEE medio',v:'72%',d:'▼ −2,0%',up:false},{l:'Fermi impr.',v:'530 min',d:'▼ −18%',up:false}],
+    hrAssTela:6, hrAssSpugna:11, hrStraord:8.2, hrCostoKg:1.38, hrProdTela:9.1, hrProdSpugna:6.8, hrOreTela:181, hrOreSpugna:134, hrOreMnt:45,
+    hrLabel:'Oggi 30 mar 2026',
+    hrChartLabels:['08:00','10:00','12:00','14:00','16:00','18:00','20:00'],
+    hrChartProdTela:[9.0,9.2,9.1,9.3,9.0,8.9,9.1], hrChartProdSpugna:[6.7,6.9,6.8,7.0,6.7,6.6,6.8],
+    hrChartOre:[70,72,76,74,68,71,73],
+    hrCostoTela:1.29, hrCostoSpugna:1.50,
+    acqPpvEur:1270, acqPpvPct:4.2, acqLead:15, acqPuntualita:80, acqConcent:68,
+    acqLabel:'Oggi 30 mar',
+    acqPrezziLabels:['08:00','10:00','12:00','14:00','16:00','18:00'],
+    acqPrezziCotone:[1.99,2.00,2.01,2.01,2.00,2.01],
+    acqPrezziPoliestere:[1.44,1.44,1.45,1.45,1.44,1.45],
+    acqPrezziChimici:[2.27,2.27,2.28,2.28,2.27,2.28],
+    acqOrdini:2
   },
   settimana:{
     ricaviLabel:'Ricavi — Settimana 24–30 mar', ricavi:298600, ricaviSub:'settimana 24–30 marzo 2026',
@@ -1883,7 +1901,20 @@ const P = {
     cicloMin:[4.3,5.9], cicloGg:[1.8,2.5],
     heroLbl:'Settimana 24–30 mar', hero1:298600, hero2:128000, hero3:47,
     yoyTitle:'Settimana vs sett. prec.',
-    yoy:[{l:'Ricavi',v:'€ 298.600',d:'▲ +5,1%',up:true},{l:'Kg prodotti',v:'33.880 Kg',d:'▲ +5,3%',up:true},{l:'OEE medio',v:'73%',d:'▲ +1,0%',up:true},{l:'Cycle Time',v:'4,3 gg',d:'▼ −4,4%',up:false}]
+    yoy:[{l:'Ricavi',v:'€ 298.600',d:'▲ +5,1%',up:true},{l:'Kg prodotti',v:'33.880 Kg',d:'▲ +5,3%',up:true},{l:'OEE medio',v:'73%',d:'▲ +1,0%',up:true},{l:'Cycle Time',v:'4,3 gg',d:'▼ −4,4%',up:false}],
+    hrAssTela:7, hrAssSpugna:13, hrStraord:10.5, hrCostoKg:1.40, hrProdTela:8.9, hrProdSpugna:6.4, hrOreTela:1268, hrOreSpugna:938, hrOreMnt:312,
+    hrLabel:'Settimana 24–30 mar',
+    hrChartLabels:['Lun','Mar','Mer','Gio','Ven','Sab','Dom'],
+    hrChartProdTela:[8.8,9.0,8.9,9.1,8.9,8.7,8.9], hrChartProdSpugna:[6.3,6.5,6.4,6.6,6.4,6.2,6.4],
+    hrChartOre:[356,378,390,372,362,210,200],
+    hrCostoTela:1.30, hrCostoSpugna:1.53,
+    acqPpvEur:8900, acqPpvPct:5.1, acqLead:17, acqPuntualita:77, acqConcent:68,
+    acqLabel:'Sett. 24–30 mar',
+    acqPrezziLabels:['Lun','Mar','Mer','Gio','Ven','Sab'],
+    acqPrezziCotone:[1.99,2.00,2.00,2.01,2.01,2.01],
+    acqPrezziPoliestere:[1.44,1.44,1.44,1.45,1.45,1.45],
+    acqPrezziChimici:[2.27,2.27,2.27,2.28,2.28,2.28],
+    acqOrdini:8
   },
   mese:{
     ricaviLabel:'Ricavi — Marzo 2026', ricavi:1075000, ricaviSub:'marzo 2026',
@@ -1904,7 +1935,20 @@ const P = {
     cicloMin:[4.2,5.8], cicloGg:[1.8,2.4],
     heroLbl:'Marzo 2026', hero1:1075000, hero2:461313, hero3:47,
     yoyTitle:'Marzo 2026 vs Marzo 2025',
-    yoy:[{l:'Ricavi',v:'€ 1.075.000',d:'▲ +4,2%',up:true},{l:'Margine lordo',v:'€ 461.313',d:'▲ +5,1%',up:true},{l:'Kg prodotti',v:'145.200 Kg',d:'▲ +3,8%',up:true},{l:'OEE medio',v:'72%',d:'▼ −2,0%',up:false},{l:'Ordini attivi',v:'47',d:'▲ +14,6%',up:true},{l:'Cycle Time',v:'4,2 gg',d:'▲ −6,7%',up:true}]
+    yoy:[{l:'Ricavi',v:'€ 1.075.000',d:'▲ +4,2%',up:true},{l:'Margine lordo',v:'€ 461.313',d:'▲ +5,1%',up:true},{l:'Kg prodotti',v:'145.200 Kg',d:'▲ +3,8%',up:true},{l:'OEE medio',v:'72%',d:'▼ −2,0%',up:false},{l:'Ordini attivi',v:'47',d:'▲ +14,6%',up:true},{l:'Cycle Time',v:'4,2 gg',d:'▲ −6,7%',up:true}],
+    hrAssTela:8, hrAssSpugna:15, hrStraord:12.4, hrCostoKg:1.42, hrProdTela:8.6, hrProdSpugna:6.1, hrOreTela:5440, hrOreSpugna:4032, hrOreMnt:1360,
+    hrLabel:'Marzo 2026',
+    hrChartLabels:['Ott','Nov','Dic','Gen','Feb','Mar'],
+    hrChartProdTela:[9.1,8.8,8.6,8.4,8.7,8.6], hrChartProdSpugna:[7.2,6.9,6.8,6.5,6.3,6.1],
+    hrChartOre:[10200,9800,9400,10500,9900,10832],
+    hrCostoTela:1.31, hrCostoSpugna:1.58,
+    acqPpvEur:38400, acqPpvPct:5.6, acqLead:18, acqPuntualita:74, acqConcent:68,
+    acqLabel:'Marzo 2026',
+    acqPrezziLabels:['Ott','Nov','Dic','Gen','Feb','Mar'],
+    acqPrezziCotone:[1.82,1.85,1.90,1.94,1.97,2.01],
+    acqPrezziPoliestere:[1.35,1.33,1.36,1.39,1.41,1.45],
+    acqPrezziChimici:[2.10,2.08,2.14,2.18,2.22,2.28],
+    acqOrdini:50
   },
   trimestre:{
     ricaviLabel:'Ricavi — Q1 2026', ricavi:3225000, ricaviSub:'gennaio–marzo 2026',
@@ -1925,7 +1969,20 @@ const P = {
     cicloMin:[4.1,5.7], cicloGg:[1.7,2.3],
     heroLbl:'Q1 2026', hero1:3225000, hero2:1384000, hero3:134,
     yoyTitle:'Q1 2026 vs Q1 2025',
-    yoy:[{l:'Ricavi',v:'€ 3.225.000',d:'▲ +6,2%',up:true},{l:'Margine lordo',v:'€ 1.384.000',d:'▲ +7,1%',up:true},{l:'Kg prodotti',v:'435.600 Kg',d:'▲ +5,9%',up:true},{l:'OEE medio',v:'73%',d:'▼ −1,0%',up:false},{l:'Ordini chiusi',v:'134',d:'▲ +12,6%',up:true},{l:'Cycle Time',v:'4,1 gg',d:'▲ −8,9%',up:true}]
+    yoy:[{l:'Ricavi',v:'€ 3.225.000',d:'▲ +6,2%',up:true},{l:'Margine lordo',v:'€ 1.384.000',d:'▲ +7,1%',up:true},{l:'Kg prodotti',v:'435.600 Kg',d:'▲ +5,9%',up:true},{l:'OEE medio',v:'73%',d:'▼ −1,0%',up:false},{l:'Ordini chiusi',v:'134',d:'▲ +12,6%',up:true},{l:'Cycle Time',v:'4,1 gg',d:'▲ −8,9%',up:true}],
+    hrAssTela:8.5, hrAssSpugna:13, hrStraord:11.0, hrCostoKg:1.40, hrProdTela:8.5, hrProdSpugna:6.4, hrOreTela:16320, hrOreSpugna:12096, hrOreMnt:4080,
+    hrLabel:'Q1 2026 — Gen/Mar',
+    hrChartLabels:['Lug','Ago','Set','Ott','Nov','Dic','Gen','Feb','Mar'],
+    hrChartProdTela:[8.9,8.7,8.8,9.1,8.8,8.6,8.4,8.7,8.6], hrChartProdSpugna:[6.8,6.6,6.7,7.2,6.9,6.8,6.5,6.3,6.1],
+    hrChartOre:[30600,29400,30600,30600,29400,28200,31500,29700,32496],
+    hrCostoTela:1.30, hrCostoSpugna:1.53,
+    acqPpvEur:102000, acqPpvPct:4.9, acqLead:17, acqPuntualita:76, acqConcent:68,
+    acqLabel:'Q1 2026 — Gen/Mar',
+    acqPrezziLabels:['Lug','Ago','Set','Ott','Nov','Dic','Gen','Feb','Mar'],
+    acqPrezziCotone:[1.78,1.80,1.80,1.82,1.85,1.90,1.94,1.97,2.01],
+    acqPrezziPoliestere:[1.30,1.31,1.32,1.35,1.33,1.36,1.39,1.41,1.45],
+    acqPrezziChimici:[2.05,2.06,2.08,2.10,2.08,2.14,2.18,2.22,2.28],
+    acqOrdini:148
   },
   ytd:{
     ricaviLabel:'Ricavi YTD — gen/mar 2026', ricavi:4284500, ricaviSub:'1 gennaio – 30 marzo 2026',
@@ -1946,7 +2003,20 @@ const P = {
     cicloMin:[4.1,5.7], cicloGg:[1.7,2.3],
     heroLbl:'YTD gen–mar 2026', hero1:4284500, hero2:1840000, hero3:134,
     yoyTitle:'YTD 2026 vs YTD 2025',
-    yoy:[{l:'Ricavi YTD',v:'€ 4.284.500',d:'▲ +6,2%',up:true},{l:'Margine YTD',v:'€ 1.840.000',d:'▲ +7,1%',up:true},{l:'Kg prodotti',v:'1.842.400 Kg',d:'▲ +7,6%',up:true},{l:'OEE medio',v:'73%',d:'▼ −1,0%',up:false},{l:'Ordini chiusi',v:'134',d:'▲ +12,6%',up:true},{l:'Cycle Time medio',v:'4,1 gg',d:'▲ −8,9%',up:true}]
+    yoy:[{l:'Ricavi YTD',v:'€ 4.284.500',d:'▲ +6,2%',up:true},{l:'Margine YTD',v:'€ 1.840.000',d:'▲ +7,1%',up:true},{l:'Kg prodotti',v:'1.842.400 Kg',d:'▲ +7,6%',up:true},{l:'OEE medio',v:'73%',d:'▼ −1,0%',up:false},{l:'Ordini chiusi',v:'134',d:'▲ +12,6%',up:true},{l:'Cycle Time medio',v:'4,1 gg',d:'▲ −8,9%',up:true}],
+    hrAssTela:8.5, hrAssSpugna:13, hrStraord:11.0, hrCostoKg:1.40, hrProdTela:8.5, hrProdSpugna:6.4, hrOreTela:16320, hrOreSpugna:12096, hrOreMnt:4080,
+    hrLabel:'YTD gen–mar 2026',
+    hrChartLabels:['Gen','Feb','Mar'],
+    hrChartProdTela:[8.4,8.7,8.6], hrChartProdSpugna:[6.5,6.3,6.1],
+    hrChartOre:[31500,29700,32496],
+    hrCostoTela:1.30, hrCostoSpugna:1.53,
+    acqPpvEur:102000, acqPpvPct:4.9, acqLead:17, acqPuntualita:76, acqConcent:68,
+    acqLabel:'YTD gen–mar 2026',
+    acqPrezziLabels:['Gen','Feb','Mar'],
+    acqPrezziCotone:[1.94,1.97,2.01],
+    acqPrezziPoliestere:[1.39,1.41,1.45],
+    acqPrezziChimici:[2.18,2.22,2.28],
+    acqOrdini:148
   },
   anno:{
     ricaviLabel:'Ricavi — Anno 2025', ricavi:16891240, ricaviSub:'consuntivo 2025',
@@ -1967,7 +2037,20 @@ const P = {
     cicloMin:[4.0,5.6], cicloGg:[1.7,2.3],
     heroLbl:'Anno 2025', hero1:16891240, hero2:7619524, hero3:537,
     yoyTitle:'Anno 2025 vs Anno 2024',
-    yoy:[{l:'Ricavi',v:'€ 16.891.240',d:'▲ +4,8%',up:true},{l:'Margine lordo',v:'€ 7.619.524',d:'▲ +5,2%',up:true},{l:'Kg prodotti',v:'7.384.000 Kg',d:'▲ +3,2%',up:true},{l:'OEE medio',v:'74%',d:'▲ +1,0%',up:true},{l:'Ordini',v:'537',d:'▲ +8,9%',up:true},{l:'Cycle Time',v:'4,0 gg',d:'▲ −11,1%',up:true}]
+    yoy:[{l:'Ricavi',v:'€ 16.891.240',d:'▲ +4,8%',up:true},{l:'Margine lordo',v:'€ 7.619.524',d:'▲ +5,2%',up:true},{l:'Kg prodotti',v:'7.384.000 Kg',d:'▲ +3,2%',up:true},{l:'OEE medio',v:'74%',d:'▲ +1,0%',up:true},{l:'Ordini',v:'537',d:'▲ +8,9%',up:true},{l:'Cycle Time',v:'4,0 gg',d:'▲ −11,1%',up:true}],
+    hrAssTela:7.2, hrAssSpugna:10.8, hrStraord:9.5, hrCostoKg:1.36, hrProdTela:8.8, hrProdSpugna:6.5, hrOreTela:65280, hrOreSpugna:48384, hrOreMnt:16320,
+    hrLabel:'Anno 2025',
+    hrChartLabels:['Gen','Feb','Mar','Apr','Mag','Giu','Lug','Ago','Set','Ott','Nov','Dic'],
+    hrChartProdTela:[8.6,8.7,8.5,8.8,8.9,9.0,9.1,8.8,8.7,9.1,8.8,8.6], hrChartProdSpugna:[6.4,6.5,6.3,6.6,6.7,6.8,7.0,6.7,6.5,7.2,6.9,6.5],
+    hrChartOre:[31500,28560,31500,30600,31500,30600,31500,25200,30600,31500,30600,31500],
+    hrCostoTela:1.26, hrCostoSpugna:1.49,
+    acqPpvEur:318000, acqPpvPct:3.2, acqLead:16, acqPuntualita:79, acqConcent:65,
+    acqLabel:'Anno 2025',
+    acqPrezziLabels:['Gen','Feb','Mar','Apr','Mag','Giu','Lug','Ago','Set','Ott','Nov','Dic'],
+    acqPrezziCotone:[1.72,1.74,1.76,1.78,1.80,1.82,1.83,1.84,1.82,1.82,1.85,1.90],
+    acqPrezziPoliestere:[1.28,1.29,1.28,1.30,1.31,1.32,1.33,1.32,1.31,1.35,1.33,1.36],
+    acqPrezziChimici:[2.02,2.02,2.03,2.04,2.05,2.06,2.07,2.08,2.08,2.10,2.08,2.14],
+    acqOrdini:598
   }
 };
 
@@ -2144,13 +2227,13 @@ function ensureChart(screen){
       data:{labels:hrMonths,datasets:[
         {label:'Produttività TELA (Kg/H)',data:[9.1,8.8,8.6,8.4,8.7,8.6],backgroundColor:'rgba(0,201,177,.75)',order:2},
         {label:'Produttività SPUGNA (Kg/H)',data:[7.2,6.9,6.8,6.5,6.3,6.1],backgroundColor:'rgba(27,42,74,.65)',order:2},
-        {label:'Ore lavorate effettive (÷100)',data:[102,98,94,105,99,108].map(v=>v),type:'line',
+        {label:'Ore lavorate effettive',data:[10200,9800,9400,10500,9900,10832],type:'line',
           borderColor:'#F6AD55',borderWidth:2,pointRadius:4,yAxisID:'y1',order:1,tension:.3}
       ]},
       options:{plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:11}}}},
         scales:{y:{ticks:{callback:v=>v+' Kg/H'},title:{display:true,text:'Kg/H Personale',font:{size:10}}},
-          y1:{position:'right',ticks:{callback:v=>(v*100)+' h'},grid:{drawOnChartArea:false},
-            title:{display:true,text:'Ore Lavorate (÷100)',font:{size:10}}}},
+          y1:{position:'right',ticks:{callback:v=>v.toLocaleString('it-IT')+' h'},grid:{drawOnChartArea:false},
+            title:{display:true,text:'Ore Lavorate',font:{size:10}}}},
         interaction:{mode:'index',intersect:false}}
     });
     CI.hrCosto = new Chart(document.getElementById('chart-hr-costo'),{
@@ -2313,6 +2396,251 @@ function updateEconomico(pd){
   }
   // Rebuild eco table
   buildEcoTable(s);
+}
+
+// ============================================================
+// HR UPDATE
+// ============================================================
+function updateHr(pd){
+  const fmt1 = v => v.toFixed(1).replace('.',',');
+  const fmtE = v => '€ '+v.toFixed(2).replace('.',',');
+  const fmtH = v => v.toLocaleString('it-IT')+' h';
+
+  // Assenteismo TELA
+  const assTela = pd.hrAssTela;
+  const assTelaCls = assTela >= 10 ? 'red' : assTela >= 7 ? 'orange' : 'green';
+  const assTelaEl = document.getElementById('hr-ass-tela-val');
+  if(assTelaEl){ assTelaEl.textContent = fmt1(assTela)+'%'; assTelaEl.className='kpi-val '+assTelaCls; }
+  const assTelaBar = document.getElementById('hr-ass-tela-bar');
+  if(assTelaBar){ assTelaBar.style.width=assTela+'%'; assTelaBar.style.background=assTelaCls==='red'?'var(--red)':assTelaCls==='orange'?'#D97706':'var(--green)'; }
+  const assTelaCard = document.getElementById('hr-ass-tela-card');
+  if(assTelaCard){ assTelaCard.className='kpi-card'+(assTela>=10?' alert-card':''); }
+
+  // Assenteismo SPUGNA
+  const assSpugna = pd.hrAssSpugna;
+  const assSpugnaCls = assSpugna >= 12 ? 'red' : assSpugna >= 8 ? 'orange' : 'green';
+  const assSpugnaEl = document.getElementById('hr-ass-spugna-val');
+  if(assSpugnaEl){ assSpugnaEl.textContent = fmt1(assSpugna)+'%'; assSpugnaEl.className='kpi-val '+assSpugnaCls; }
+  const assSpugnaBar = document.getElementById('hr-ass-spugna-bar');
+  if(assSpugnaBar){ assSpugnaBar.style.width=assSpugna+'%'; assSpugnaBar.style.background=assSpugnaCls==='red'?'var(--red)':assSpugnaCls==='orange'?'#D97706':'var(--green)'; }
+  const assSpugnaCard = document.getElementById('hr-ass-spugna-card');
+  if(assSpugnaCard){ assSpugnaCard.className='kpi-card'+(assSpugna>=12?' alert-card':''); }
+  const assSpugnaBadge = document.getElementById('hr-ass-spugna-badge');
+  if(assSpugnaBadge){ assSpugnaBadge.textContent = assSpugna>=12?'CRITICO':'OK'; assSpugnaBadge.className='badge '+(assSpugna>=12?'red':'green'); }
+
+  // Straordinari
+  const straord = pd.hrStraord;
+  const straordEl = document.getElementById('hr-straord-val');
+  if(straordEl){ straordEl.textContent = fmt1(straord)+'%'; straordEl.className='kpi-val '+(straord>=12?'red':straord>=9?'orange':'green'); }
+  const straordDelta = document.getElementById('hr-straord-delta');
+  const straordDiff = (straord-9).toFixed(1).replace('.',',');
+  if(straordDelta){ straordDelta.textContent=(straord>9?'▲ +'+straordDiff+'% vs target 9%':'▼ '+straordDiff+'% vs target 9%'); straordDelta.className='kpi-delta '+(straord>9?'delta-down':'delta-up'); }
+  const straordSub = document.getElementById('hr-straord-sub');
+  if(straordSub) straordSub.textContent = 'Su totale ore lavorate — '+pd.hrLabel;
+
+  // Costo lavoro/kg
+  const costo = pd.hrCostoKg;
+  const costoEl = document.getElementById('hr-costo-val');
+  if(costoEl){ costoEl.textContent = fmtE(costo); costoEl.className='kpi-val '+(costo>1.40?'red':costo>1.34?'orange':'green'); }
+  const costoDelta = document.getElementById('hr-costo-delta');
+  const costoDiff = (costo-1.34).toFixed(2).replace('.',',');
+  if(costoDelta){ costoDelta.textContent=(costo>1.34?'▲ +€'+costoDiff+' vs target € 1,34':'▼ −€'+Math.abs(costoDiff)+' vs target € 1,34'); costoDelta.className='kpi-delta '+(costo>1.34?'delta-down':'delta-up'); }
+  const costoSub = document.getElementById('hr-costo-sub');
+  if(costoSub) costoSub.textContent = 'Media stabilimento — '+pd.hrLabel;
+
+  // Chart produttività
+  const hrProdTitle = document.getElementById('hr-prod-title');
+  if(hrProdTitle) hrProdTitle.textContent = 'Produttività (Kg/H Personale) vs Ore Lavorate — '+pd.hrLabel;
+  if(CI.hrProd){
+    CI.hrProd.data.labels = pd.hrChartLabels;
+    CI.hrProd.data.datasets[0].data = pd.hrChartProdTela;
+    CI.hrProd.data.datasets[1].data = pd.hrChartProdSpugna;
+    CI.hrProd.data.datasets[2].data = pd.hrChartOre;
+    CI.hrProd.update();
+  }
+  if(CI.hrCosto){
+    const nLabels = pd.hrChartLabels.length;
+    CI.hrCosto.data.labels = pd.hrChartLabels;
+    CI.hrCosto.data.datasets[0].data = Array(nLabels).fill(pd.hrCostoTela);
+    CI.hrCosto.data.datasets[1].data = Array(nLabels).fill(pd.hrCostoSpugna);
+    CI.hrCosto.data.datasets[2].data = Array(nLabels).fill(1.34);
+    CI.hrCosto.update();
+  }
+
+  // Tabella dettaglio — da timbrature e giustificativi
+  const tbody = document.getElementById('hr-tbody');
+  if(tbody){
+    const pTela = pd.hrProdTela; const pSpugna = pd.hrProdSpugna;
+    const pilProd = (v,thr) => v>0?`<span class="pct-pill ${v>=thr?'green':v>=thr*0.85?'orange':'red'}">${fmt1(v)} Kg/H</span>`:'<span class="pct-pill green">—</span>';
+    const pilAss = (h,tot,ok,warn) => { const pct=(h/tot*100); return `<span class="pct-pill ${pct<=ok?'green':pct<=warn?'orange':'red'}">${h.toLocaleString('it-IT')} h (${fmt1(pct)}%)</span>`; };
+    const pilStr = (h,tot,ok,warn) => { const pct=(h/tot*100); return `<span class="pct-pill ${pct<=ok?'green':pct<=warn?'orange':'red'}">${h.toLocaleString('it-IT')} h (${fmt1(pct)}%)</span>`; };
+    // ore assenza = ore totali disponibili * tasso assenza
+    const dispTela = Math.round(pd.hrOreTela / (1 - pd.hrAssTela/100));
+    const dispSpugna = Math.round(pd.hrOreSpugna / (1 - pd.hrAssSpugna/100));
+    const dispMnt = Math.round(pd.hrOreMnt / 0.96);
+    const assHrTela = Math.round(dispTela * pd.hrAssTela/100);
+    const assHrSpugna = Math.round(dispSpugna * pd.hrAssSpugna/100);
+    const assHrMnt = Math.round(dispMnt * 0.04);
+    const strHrTela = Math.round(pd.hrOreTela * pd.hrStraord * 0.82 / 100);
+    const strHrSpugna = Math.round(pd.hrOreSpugna * pd.hrStraord * 1.32 / 100);
+    const strHrMnt = Math.round(pd.hrOreMnt * pd.hrStraord * 0.55 / 100);
+    const totPres = pd.hrOreTela + pd.hrOreSpugna + pd.hrOreMnt;
+    const totAss = assHrTela + assHrSpugna + assHrMnt;
+    const totStr = strHrTela + strHrSpugna + strHrMnt;
+    tbody.innerHTML = `
+      <tr>
+        <td><strong>TELA</strong></td><td>34</td><td>${fmtH(pd.hrOreTela)}</td>
+        <td>${pilAss(assHrTela,dispTela,6,9)}</td>
+        <td>${Math.round(assHrTela*0.6).toLocaleString('it-IT')} h</td>
+        <td>${Math.round(assHrTela*0.4).toLocaleString('it-IT')} h</td>
+        <td>${pilStr(strHrTela,pd.hrOreTela,9,12)}</td>
+        <td>${pilProd(pTela,8.5)}</td>
+        <td>${fmtE(pd.hrCostoTela)}</td>
+      </tr>
+      <tr>
+        <td><strong>SPUGNA</strong></td><td>28</td><td>${fmtH(pd.hrOreSpugna)}</td>
+        <td>${pilAss(assHrSpugna,dispSpugna,8,12)}</td>
+        <td>${Math.round(assHrSpugna*0.70).toLocaleString('it-IT')} h</td>
+        <td>${Math.round(assHrSpugna*0.30).toLocaleString('it-IT')} h</td>
+        <td>${pilStr(strHrSpugna,pd.hrOreSpugna,9,12)}</td>
+        <td>${pilProd(pSpugna,6.5)}</td>
+        <td>${fmtE(pd.hrCostoSpugna)}</td>
+      </tr>
+      <tr>
+        <td><strong>MANUTENZIONE</strong></td><td>8</td><td>${fmtH(pd.hrOreMnt)}</td>
+        <td>${pilAss(assHrMnt,dispMnt,6,9)}</td>
+        <td>${Math.round(assHrMnt*0.5).toLocaleString('it-IT')} h</td>
+        <td>${Math.round(assHrMnt*0.5).toLocaleString('it-IT')} h</td>
+        <td>${pilStr(strHrMnt,pd.hrOreMnt,9,12)}</td>
+        <td>${pilProd(0,8.5)}</td>
+        <td>—</td>
+      </tr>
+      <tr class="total-row">
+        <td><strong>STABILIMENTO</strong></td><td><strong>70</strong></td>
+        <td><strong>${fmtH(totPres)}</strong></td>
+        <td><strong>${totAss.toLocaleString('it-IT')} h (${fmt1(totAss/(totPres+totAss)*100)}%)</strong></td>
+        <td><strong>${Math.round(totAss*0.63).toLocaleString('it-IT')} h</strong></td>
+        <td><strong>${Math.round(totAss*0.37).toLocaleString('it-IT')} h</strong></td>
+        <td><strong>${totStr.toLocaleString('it-IT')} h (${fmt1(pd.hrStraord)}%)</strong></td>
+        <td><strong>${fmt1((pTela+pSpugna)/2)} Kg/H</strong></td>
+        <td><strong>${fmtE(pd.hrCostoKg)}</strong></td>
+      </tr>`;
+  }
+
+  // Panoramica KPIs (Costo Personale / Kg)
+  const panCostoVal = document.getElementById('pan-costo-val');
+  if(panCostoVal){ panCostoVal.textContent = fmtE(pd.hrCostoKg); panCostoVal.className='kpi-val '+(pd.hrCostoKg>1.40?'red':pd.hrCostoKg>1.34?'orange':'green'); }
+  const panCostoDelta = document.getElementById('pan-costo-delta');
+  if(panCostoDelta){ panCostoDelta.textContent=(pd.hrCostoKg>1.34?'▲ +€'+(pd.hrCostoKg-1.34).toFixed(2).replace('.',',')+' vs target € 1,34':'▼ Sotto target € 1,34'); }
+  const panCostoSub = document.getElementById('pan-costo-sub');
+  if(panCostoSub) panCostoSub.textContent = 'Media stabilimento — '+pd.hrLabel;
+}
+
+// ============================================================
+// ACQUISTI UPDATE
+// ============================================================
+function updateAcquisti(pd){
+  const fmtN = v => v.toLocaleString('it-IT');
+  const fmt1 = v => v.toFixed(1).replace('.',',');
+
+  // PPV
+  const ppvEl = document.getElementById('acq-ppv-val');
+  if(ppvEl){ ppvEl.textContent = '+€ '+fmtN(pd.acqPpvEur); ppvEl.className='kpi-val '+(pd.acqPpvPct>6?'red':pd.acqPpvPct>3?'orange':'green'); }
+  const ppvDelta = document.getElementById('acq-ppv-delta');
+  if(ppvDelta){ ppvDelta.textContent = '▲ +'+fmt1(pd.acqPpvPct)+'% vs budget previsto'; }
+  const ppvSub = document.getElementById('acq-ppv-sub');
+  if(ppvSub) ppvSub.textContent = 'Scostamento acquisto vs budget — '+pd.acqLabel;
+  const ppvBadge = document.getElementById('acq-ppv-badge');
+  if(ppvBadge){ ppvBadge.textContent = pd.acqPpvPct>6?'CRITICO':'ATTENZIONE'; ppvBadge.className='badge '+(pd.acqPpvPct>6?'red':'orange'); }
+
+  // Lead time
+  const leadEl = document.getElementById('acq-lead-val');
+  if(leadEl){ leadEl.textContent = pd.acqLead+' gg'; leadEl.className='kpi-val '+(pd.acqLead>20?'red':pd.acqLead>15?'orange':'green'); }
+  const leadDelta = document.getElementById('acq-lead-delta');
+  const leadDiff = pd.acqLead-15;
+  if(leadDelta){ leadDelta.textContent=(leadDiff>0?'▲ +'+leadDiff+' gg vs target 15 gg':'▼ Sotto target 15 gg'); leadDelta.className='kpi-delta '+(leadDiff>0?'delta-down':'delta-up'); }
+  const leadSub = document.getElementById('acq-lead-sub');
+  if(leadSub) leadSub.textContent = 'Giorni medi attesa — '+pd.acqLabel;
+
+  // Puntualità consegne
+  const puntEl = document.getElementById('acq-puntualita-val');
+  if(puntEl){ puntEl.textContent = pd.acqPuntualita+'%'; puntEl.className='kpi-val '+(pd.acqPuntualita<70?'red':pd.acqPuntualita<80?'orange':'green'); }
+  const puntBar = document.getElementById('acq-puntualita-bar');
+  if(puntBar){ puntBar.style.width=pd.acqPuntualita+'%'; puntBar.style.background=pd.acqPuntualita<70?'var(--red)':pd.acqPuntualita<80?'#D97706':'var(--green)'; }
+  const puntDelta = document.getElementById('acq-puntualita-delta');
+  const puntDiff = pd.acqPuntualita-80;
+  if(puntDelta){ puntDelta.textContent=(puntDiff<0?'▼ '+puntDiff+'% vs target 80%':'▲ +'+puntDiff+'% vs target 80%'); puntDelta.className='kpi-delta '+(puntDiff<0?'delta-down':'delta-up'); }
+  const puntSub = document.getElementById('acq-puntualita-sub');
+  if(puntSub) puntSub.textContent = 'Puntualità fornitori — '+pd.acqLabel;
+
+  // Concentrazione
+  const concentEl = document.getElementById('acq-concent-val');
+  if(concentEl){ concentEl.textContent = pd.acqConcent+'%'; concentEl.className='kpi-val '+(pd.acqConcent>70?'red':pd.acqConcent>60?'orange':'green'); }
+  const concentBar = document.getElementById('acq-concent-bar');
+  if(concentBar){ concentBar.style.width=pd.acqConcent+'%'; }
+
+  // Prezzi chart
+  const acqTitle = document.getElementById('acq-prezzi-title');
+  if(acqTitle) acqTitle.textContent = 'Andamento Prezzi Materie Prime vs Budget — '+pd.acqLabel;
+  if(CI.acqPrezzi){
+    const nL = pd.acqPrezziLabels.length;
+    CI.acqPrezzi.data.labels = pd.acqPrezziLabels;
+    CI.acqPrezzi.data.datasets[0].data = pd.acqPrezziCotone;
+    CI.acqPrezzi.data.datasets[1].data = pd.acqPrezziPoliestere;
+    CI.acqPrezzi.data.datasets[2].data = pd.acqPrezziChimici;
+    // Budget lines (flat reference)
+    CI.acqPrezzi.data.datasets[3].data = Array(nL).fill(1.85);
+    CI.acqPrezzi.data.datasets[4].data = Array(nL).fill(1.38);
+    CI.acqPrezzi.data.datasets[5].data = Array(nL).fill(2.10);
+    CI.acqPrezzi.update();
+  }
+
+  // PPV per categoria (scale by ecoS)
+  const s = pd.ecoS;
+  if(CI.acqPpv){
+    CI.acqPpv.data.datasets[0].data = [Math.round(18200*s),Math.round(9400*s),Math.round(4800*s),Math.round(7600*s),Math.round(2800*s)];
+    CI.acqPpv.update();
+  }
+
+  // Tabella fornitori
+  const tbody = document.getElementById('acq-tbody');
+  if(tbody){
+    const base = [
+      {name:'Cottex International',cat:'Cotone',baseOrd:12,punt:91,ppvPct:4.2,lead:14,aff:'Alta',stars:'⭐⭐⭐⭐'},
+      {name:'PolyFibre SpA',cat:'Poliestere',baseOrd:8,punt:72,ppvPct:9.1,lead:22,aff:'Media',stars:'⭐⭐⭐'},
+      {name:'ChemTex Solutions',cat:'Prod. Chimici',baseOrd:15,punt:88,ppvPct:1.8,lead:10,aff:'Alta',stars:'⭐⭐⭐⭐⭐'},
+      {name:'ColorDye Europe',cat:'Coloranti',baseOrd:9,punt:58,ppvPct:12.3,lead:28,aff:'Bassa',stars:'⭐⭐'},
+      {name:'FiberTrade GmbH',cat:'Cotone/Blended',baseOrd:6,punt:83,ppvPct:3.5,lead:16,aff:'Alta',stars:'⭐⭐⭐⭐'}
+    ];
+    const pilPct = (v,ok,warn) => `<span class="pct-pill ${v>=ok?'green':v>=warn?'orange':'red'}">${v}%</span>`;
+    const pilPpv = v => `<span class="pct-pill ${v<4?'green':v<8?'orange':'red'}">+${v.toFixed(1).replace('.',',')}%</span>`;
+    const totOrd = Math.round(pd.acqOrdini);
+    tbody.innerHTML = base.map(r=>`
+      <tr>
+        <td><strong>${r.name}</strong></td><td>${r.cat}</td>
+        <td>${Math.round(r.baseOrd*s)||1}</td>
+        <td>${pilPct(r.punt,85,70)}</td>
+        <td>${pilPpv(r.ppvPct)}</td>
+        <td>${r.lead} gg</td>
+        <td><span class="pct-pill ${r.aff==='Alta'?'green':r.aff==='Media'?'orange':'red'}">${r.aff}</span></td>
+        <td>${r.stars}</td>
+      </tr>`).join('') + `
+      <tr class="total-row">
+        <td><strong>TOTALE / MEDIA</strong></td><td>—</td><td><strong>${totOrd}</strong></td>
+        <td><strong>${pd.acqPuntualita}%</strong></td><td><strong>+${fmt1(pd.acqPpvPct)}%</strong></td>
+        <td><strong>${pd.acqLead} gg</strong></td><td>—</td><td>—</td>
+      </tr>`;
+  }
+
+  // Panoramica KPI (Rispetto Consegne)
+  const panConsEl = document.getElementById('pan-consegne-val');
+  if(panConsEl){ panConsEl.textContent = pd.acqPuntualita+'%'; panConsEl.className='kpi-val '+(pd.acqPuntualita<70?'red':pd.acqPuntualita<80?'orange':'green'); }
+  const panConsSub = document.getElementById('pan-consegne-sub');
+  if(panConsSub) panConsSub.textContent = 'Puntualità consegne — '+pd.acqLabel;
+  const panConsBar = document.getElementById('pan-consegne-bar');
+  if(panConsBar){ panConsBar.style.width=pd.acqPuntualita+'%'; }
+  const panConsDelta = document.getElementById('pan-consegne-delta');
+  if(panConsDelta){ const d=pd.acqPuntualita-80; panConsDelta.textContent=(d<0?'▼ '+d+'% vs target 80%':'▲ +'+d+'% vs target 80%'); panConsDelta.className='kpi-delta '+(d<0?'delta-down':'delta-up'); }
 }
 
 // ============================================================
@@ -2521,6 +2849,8 @@ function applyPeriod(p, btn){
   if(inited.produttivo) updateProduttivo(pd);
   if(inited.finanziario) updateFinanziario(pd);
   if(inited.economico) updateEconomico(pd);
+  updateHr(pd);
+  if(inited.acquisti) updateAcquisti(pd);
 }
 
 // ============================================================
@@ -2539,7 +2869,10 @@ function showScreen(name){
   if(name==='account'){ setTimeout(initPromptEditor, 50); return; }
   setTimeout(()=>{
     ensureChart(name);
-    if(name==='produttivo') updateProduttivo(P[currentPeriod]);
+    const _pd = P[currentPeriod];
+    if(name==='produttivo') updateProduttivo(_pd);
+    if(name==='hr') updateHr(_pd);
+    if(name==='acquisti') updateAcquisti(_pd);
     initScreenPanels(name);
   },50);
 }
@@ -2657,7 +2990,26 @@ function applyCustomPeriod(){
       {l:'Kg prodotti', v:fmt(kg)+' Kg', d:'▲ periodo personalizzato', up:true},
       {l:'OEE medio', v:'72%', d:'—', up:true},
       {l:'Ordini attivi', v:'47', d:'—', up:true}
-    ]
+    ],
+    // HR — interpolated from monthly base
+    hrAssTela: 8, hrAssSpugna: 15, hrStraord: 12.4, hrCostoKg: 1.42,
+    hrProdTela: 8.6, hrProdSpugna: 6.1,
+    hrOreTela: Math.round(5440 * ecoS), hrOreSpugna: Math.round(4032 * ecoS), hrOreMnt: Math.round(1360 * ecoS),
+    hrLabel: shortRange,
+    hrChartLabels: cfLabels.slice(1),
+    hrChartProdTela: cfLabels.slice(1).map(()=>+(8.3+Math.random()*0.6).toFixed(1)),
+    hrChartProdSpugna: cfLabels.slice(1).map(()=>+(5.9+Math.random()*0.5).toFixed(1)),
+    hrChartOre: cfLabels.slice(1).map(()=>Math.round(2500+Math.random()*1200)),
+    hrCostoTela: 1.31, hrCostoSpugna: 1.58,
+    // Acquisti — interpolated from monthly base
+    acqPpvEur: Math.round(38400 * ecoS), acqPpvPct: 5.6,
+    acqLead: 18, acqPuntualita: 74, acqConcent: 68,
+    acqLabel: shortRange,
+    acqPrezziLabels: cfLabels.slice(1),
+    acqPrezziCotone: cfLabels.slice(1).map(()=>+(1.95+Math.random()*0.08).toFixed(2)),
+    acqPrezziPoliestere: cfLabels.slice(1).map(()=>+(1.40+Math.random()*0.06).toFixed(2)),
+    acqPrezziChimici: cfLabels.slice(1).map(()=>+(2.22+Math.random()*0.08).toFixed(2)),
+    acqOrdini: Math.round(50 * ecoS)
   };
 
   // Update button state
@@ -2672,6 +3024,8 @@ function applyCustomPeriod(){
   if(inited.produttivo)  updateProduttivo(pd);
   if(inited.finanziario) updateFinanziario(pd);
   if(inited.economico)   updateEconomico(pd);
+  updateHr(pd);
+  if(inited.acquisti) updateAcquisti(pd);
 
   closeDatePicker();
 }
@@ -2686,7 +3040,7 @@ const PANEL_SCREEN_EXAMPLES = {
   produttivo: ['Heatmap OEE tutte le macchine','Fermi imprevisti per reparto','Top 5 macchine per efficienza'],
   finanziario: ['Proiezione cash flow 30 giorni dettagliata','Scadenzario clienti top 10','DSO e DPO per mese'],
   economico: ['Trend margine per entità ultimi 6 mesi','Costi energia vs ricavi mensile','Confronto budget vs consuntivo'],
-  hr: ['Trend assenteismo per reparto ultimi 6 mesi','Costo straordinari mensile per reparto','Formazione completata vs pianificata'],
+  hr: ['Trend assenteismo per reparto ultimi 6 mesi','Analisi giustificativi: malattia vs permessi per reparto','Distribuzione straordinari per macchinario/funzione'],
   acquisti: ['Top 5 fornitori per volume acquistato','Trend lead time per categoria materia prima','Scadenzario ordini aperti prossimi 30 giorni']
 };
 
