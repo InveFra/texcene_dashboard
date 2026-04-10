@@ -876,7 +876,7 @@ body.editing .edit-ai-bar{display:flex}
       <canvas id="chart-acq-prezzi" height="240"></canvas>
     </div>
     <div class="card">
-      <div class="card-title">PPV per Categoria</div>
+      <div class="card-title">Scostamento Prezzo vs Budget per Categoria (PPV%)</div>
       <canvas id="chart-acq-ppv" height="240"></canvas>
     </div>
   </div>
@@ -2266,14 +2266,41 @@ function ensureChart(screen){
         scales:{y:{ticks:{callback:v=>'€ '+v.toFixed(2)}}},
         interaction:{mode:'index',intersect:false}}
     });
+    const ppvPcts = [4.2, 9.1, 1.8, 12.3, 3.5];
+    const ppvColors = ppvPcts.map(v => v > 6 ? '#E53E3E' : v > 3 ? '#D97706' : '#48BB78');
     CI.acqPpv = new Chart(document.getElementById('chart-acq-ppv'),{
       type:'bar',
-      data:{labels:['Cotone','Poliestere','Chimici','Coloranti','Blended'],
-        datasets:[{label:'PPV (€)',data:[18200,9400,4800,7600,2800],
-          backgroundColor:['#E53E3E','#F6AD55','#48BB78','#E53E3E','#00C9B1']}]},
-      options:{plugins:{legend:{display:false}},
-        scales:{y:{ticks:{callback:v=>'€ '+v.toLocaleString('it')}}},
-        indexAxis:'y'}
+      data:{labels:['Cotone','Poliestere','Prod. Chimici','Coloranti','Blended'],
+        datasets:[{
+          label:'Scostamento % vs budget',
+          data: ppvPcts,
+          backgroundColor: ppvColors,
+          borderRadius: 4
+        }]},
+      options:{
+        indexAxis:'y',
+        layout:{padding:{left:0}},
+        plugins:{
+          legend:{display:false},
+          tooltip:{callbacks:{label:ctx=>' +'+ctx.parsed.x.toFixed(1).replace('.',',')+'% vs budget'}}
+        },
+        scales:{
+          x:{
+            min:0,
+            ticks:{callback:v=>'+'+v+'%'},
+            grid:{color:'rgba(0,0,0,0.06)'},
+            title:{display:true,text:'Scostamento % vs prezzo budget',font:{size:10},color:'#718096'}
+          },
+          y:{
+            ticks:{
+              font:{size:12},
+              autoSkip:false,
+              padding:6
+            },
+            afterFit(axis){ axis.width = 110; }
+          }
+        }
+      }
     });
   }
 }
@@ -2595,10 +2622,15 @@ function updateAcquisti(pd){
     CI.acqPrezzi.update();
   }
 
-  // PPV per categoria (scale by ecoS)
+  // PPV% per categoria — valori % relativi che non dipendono dal periodo
   const s = pd.ecoS;
   if(CI.acqPpv){
-    CI.acqPpv.data.datasets[0].data = [Math.round(18200*s),Math.round(9400*s),Math.round(4800*s),Math.round(7600*s),Math.round(2800*s)];
+    // La % di scostamento è una caratteristica del mercato, non scala col periodo
+    // Aggiustiamo leggermente in base alla pressione del periodo (YTD/anno = media più bassa)
+    const scale = pd.ecoS >= 10 ? 0.72 : pd.ecoS >= 3 ? 0.88 : 1.0;
+    const ppvPcts = [4.2*scale, 9.1*scale, 1.8*scale, 12.3*scale, 3.5*scale];
+    CI.acqPpv.data.datasets[0].data = ppvPcts.map(v=>+v.toFixed(2));
+    CI.acqPpv.data.datasets[0].backgroundColor = ppvPcts.map(v => v > 6 ? '#E53E3E' : v > 3 ? '#D97706' : '#48BB78');
     CI.acqPpv.update();
   }
 
