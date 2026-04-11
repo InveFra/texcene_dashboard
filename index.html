@@ -445,9 +445,29 @@ body.editing .edit-ai-bar{display:flex}
   /* Summary pills */
   .s-pill{padding:6px 14px;font-size:11px}
 
-  /* AI layout */
+  /* AI layout — mobile stack */
   .ai-full-layout{grid-template-columns:1fr;height:auto;gap:12px}
-  .conv-sidebar{max-height:180px}
+  /* Conversation sidebar: compact scrollable list */
+  .conv-sidebar{max-height:140px;overflow-y:auto}
+  /* Main chat column: reasonable height so messages scroll */
+  .ai-chat-col{min-height:320px;display:flex;flex-direction:column}
+  .ai-messages{flex:1;min-height:200px;-webkit-overflow-scrolling:touch}
+  /* Right sidebar: full width below chat */
+  .ai-sidebar-col{width:100%}
+  .ai-chips{display:flex;flex-direction:column;gap:6px}
+  .ai-chip{font-size:12px;text-align:left;white-space:normal}
+  /* Textarea and send button: prevent iOS zoom + comfortable size */
+  .ai-input-bar textarea{font-size:16px}
+  /* Quick-chat overlay: full width on mobile (remove sidebar offset) */
+  .qchat-panel{left:0 !important}
+  .qchat-inner{height:260px}
+  .qchat-input-bar input{font-size:16px}
+  .qchat-messages{-webkit-overflow-scrolling:touch}
+  /* Qchat header: hide conversation selector + new button on mobile — use AI screen for management */
+  .qchat-conv-sel{display:none}
+  .qchat-actions>button:not(.qchat-close){display:none}
+  .qchat-header{padding:10px 14px}
+  .qchat-input-bar{padding:8px 12px}
 
   /* Date range picker */
   .drp-wrap{left:12px;right:12px;transform:none}
@@ -510,6 +530,8 @@ body.editing .edit-ai-bar{display:flex}
   .machine-grid{grid-template-columns:1fr}
   .kpi-val{font-size:18px}
   .main{padding:10px;padding-top:108px}
+  .qchat-inner{height:220px}
+  .conv-sidebar{max-height:100px}
 }
 </style>
 </head>
